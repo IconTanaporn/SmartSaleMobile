@@ -1,0 +1,600 @@
+{
+  "common": {
+    "alert": {
+      "confirm": "ยืนยัน",
+      "cancel": "ยกเลิก",
+      "success": "สำเร็จ",
+      "fail": "ผิดพลาด",
+      "alert": "แจ้งเตือน",
+      "try_again": "ลองอีกครั้ง",
+      "save_complete": "บันทึกสำเร็จ",
+      "save_fail": "บันทึกไม่สำเร็จ",
+      "save_change": "มีการแก้ไขข้อมูล\nต้องการบันทึกข้อมูลที่แก้ไข หรือไม่",
+      "default_error": "กรุณาลองอีกครั้ง หรือติดต่อเจ้าหน้าที่"
+    },
+    "input": {
+      "alert": {
+        "default_title": "กรุณาตรวจสอบ",
+        "check_validate": "กรุณากรอกข้อมูลที่มีเครื่องหมาย (*) ให้ถูกต้องและครบถ้วน"
+      },
+      "validate": {
+        "required": "* กรุณากรอก{label}",
+        "min": "* กรุณากรอก{label}อย่างน้อย {value}",
+        "max": "* กรุณากรอก{label}ไม่เกิน {value}",
+        "dropdown_required": "* กรุณาเลือก{label}",
+        "default_validate": "* กรุณาตรวจสอบ{label}ให้ถูกต้อง"
+      }
+    },
+    "unit": {
+      "million_baht": "ล้านบาท",
+      "baht": "บาท",
+      "sq": {
+        "m": "ตร.ม.",
+        "w": "ตร.ว."
+      },
+      "room": "ห้อง",
+      "installment": "งวด",
+      "times": "ครั้ง"
+    },
+    "no_data": "ไม่พบข้อมูล",
+    "search": "ค้นหา",
+    "share_qr": "แชร์ QR",
+    "confirm": "ยืนยัน",
+    "done": "เสร็จสิ้น",
+    "save": "บันทึก",
+    "next": "ถัดไป"
+  },
+  "module": {
+    "sbu": "SBU",
+    "project": {
+      "start_price": "ราคาเริ่มต้น",
+      "brochure": "ใบโฆษณา",
+      "building": "อาคาร/เฟส",
+      "floor": "ชั้น/ซับเฟส",
+      "questionnaire": {
+        "title": "แบบสอบถาม",
+        "no_data": "ไม่มีแบบสอบถามสำหรับโครงการนี้",
+        "default_error": "ไม่สามารถดึงข้อมูลแบบสอบถามได้ กรุณาติดต่อเจ้าหน้าที่"
+      }
+    },
+    "unit": {
+      "project": "โครงการ",
+      "building": "อาคาร/เฟส",
+      "floor": "ชั้น/ซับเฟส",
+      "unit": "ยูนิต",
+      "model_type": "แบบห้อง/บ้าน",
+      "area": "พื้นที่",
+      "usable_area": "พื้นที่ใช้สอย",
+      "price": "ราคา",
+      "price_sqm": "ราคา/ตร.ม.",
+      "status": "สถานะ"
+    },
+    "booking": {
+      "sale": "พนักงานขาย",
+      "recommender": "ผู้แนะนำ",
+      "unit_price": "ราคาห้อง/บ้าน",
+      "book_contract": "จอง+สัญญา",
+      "contract_discount": "ส่วนลดหน้าสัญญา",
+      "contract_price": "ราคาหน้าสัญญา",
+      "down_payment": "เงินดาวน์",
+      "down_per_month": "เงินดาวน์ต่อเดือน",
+      "transfer_price": "เงินโอน",
+      "full_price": "ราคาเต็ม",
+      "promotion_discount": "ส่วนลดโปรโมชั่น",
+      "total_price": "ยอดรวมที่ต้องชำระ",
+      "booking_price": "ยอดเงินจองทั้งหมด",
+      "booking_paid": "ชำระแล้ว",
+      "booking_balance": "ยอดคงเหลือ",
+      "status": "สถานะ"
+    },
+    "contact": {
+      "gender": "เพศ",
+      "prefix": "คำนำหน้า",
+      "name": "ชื่อ",
+      "firstname": "ชื่อ",
+      "lastname": "นามสกุล",
+      "nationality": "สัญชาติ",
+      "citizen_id": "เลขประจำตัวประชาชน",
+      "passport_id": "หมายเลขพาสปอร์ต",
+      "birthday": "วันเกิด",
+      "mobile": "เบอร์มือถือ",
+      "email": "อีเมล",
+      "line": "Line ID",
+      "we_chat": "WeChat",
+      "tracking_amount": "การติดตาม",
+      "source": "แหล่งที่มา",
+      "address": "ที่อยู่",
+      "gender_value": {
+        "male": "ชาย",
+        "female": "หญิง",
+        "not_specified": "ไม่ระบุ"
+      },
+      "duplicate": {
+        "title": "รายชื่อหรือเบอร์โทรศัพท์นี้มีการบันทึกในอยู่ระบบแล้ว",
+        "sub_title": "กรุณาเลือกข้อมูลลูกค้าที่คุณต้องการแก้ไขในระบบ"
+      },
+      "contact_customer": {
+        "title": "ติดต่อลูกค้า",
+        "line": "ไลน์",
+        "email": "อีเมล",
+        "telephone": "โทรศัพท์",
+        "alert": {
+          "no_line": "กรุณากรอกไอดีไลน์",
+          "no_email": "กรุณากรอกอีเมล",
+          "no_tel": "กรุณากรอกเบอร์มือถือ"
+        }
+      }
+    },
+    "address": {
+      "address_no": "บ้านเลขที่",
+      "moo": "หมู่ที่",
+      "soi": "ซอย",
+      "village": "หมู่บ้าน",
+      "road": "ถนน",
+      "sub_district": "ตำบล/แขวง",
+      "district": "อำเภอ/เขต",
+      "province": "จังหวัด",
+      "zipcode": "รหัสไปรษณีย์",
+      "city":"เมือง",
+      "country": "ประเทศ"
+    },
+    "opportunity": {
+      "project": "โครงการ",
+      "date": "วันที่",
+      "status": "สถานะ",
+      "budget": "งบประมาณ",
+      "comment": "ความคิดเห็น",
+      "close_job": {
+        "reason": "เหตุผล"
+      }
+    },
+    "activity": {
+      "date": "วันที่",
+      "time": "เวลา",
+      "event": "เหตุการณ์",
+      "sub_event": "กิจกรรม",
+      "description": "รายละเอียด"
+    }
+  },
+  "type": {
+    "unit_status": {
+      "All": "ห้องทั้งหมด",
+      "NotAvailable": "ห้องไม่เปิดขาย",
+      "Available": "ห้องว่างพร้อมขาย",
+      "Reserve": "ห้องจองไม่ทำสัญญา",
+      "Contract": "ห้องทำสัญญาแล้วแต่ยังไม่โอน",
+      "Transfer": "ห้องที่มีการตั้งเรื่องโอน",
+      "Complete": "ห้องจบสัญญาแล้ว"
+    },
+    "room": {
+      "bed_room": "ห้องนอน",
+      "bath_room": "ห้องน้ำ",
+      "kitchen_room": "ห้องครัว",
+      "living_room": "ห้องนั่งเล่น",
+      "car_room": "ที่จอดรถ"
+    }
+  },
+  "screen": {
+    "login": {
+      "username": "ชื่อผู้ใช้งาน",
+      "password": "รหัสผ่าน",
+      "login": "เข้าสู่ระบบ",
+      "alert": {
+        "login_fail": "เข้าสู่ระบบไม่สำเร็จ",
+        "check_input": "กรุณาตรวจสอบ {label}"
+      }
+    },
+    "splash": {
+      "alert": {
+        "no_internet": "ไม่สามารถเชื่อมต่ออินเตอร์เน็ตได้"
+      }
+    },
+    "setting": {
+      "title": "ตั้งค่า",
+      "language": {
+        "title": "ภาษา",
+        "change_language": "ยืนยันการเปลี่ยนภาษา"
+      },
+      "profile": {
+        "title": "ประวัติ",
+        "firstname": "ชื่อ",
+        "lastname": "นามสกุล",
+        "mobile": "โทรศัพท์",
+        "email": "อีเมล"
+      },
+      "bu": {
+        "title": "เลือก BU",
+        "change_bu": "ยืนยันการเปลี่ยน BU",
+        "default": "ค่าเริ่มต้น"
+      },
+      "logout": {
+        "title": "ออกจากระบบ",
+        "confirm_logout": "คุณต้องการออกจากระบบ?"
+      }
+    },
+    "project_list": {
+      "title": "กรุณาเลือกโครงการ",
+      "search": "ค้นหาโครงการ"
+    },
+    "project": {
+      "title": "ข้อมูล",
+      "sub_title": "ข้อมูลโครงการ",
+      "menu": {
+        "information": "ข้อมูล",
+        "walk_in": "ผู้เยี่ยมชม",
+        "contact": "ข้อมูลลูกค้า",
+        "lead": "กลุ่มผู้มุ่งหวัง",
+        "opportunity": "โอกาสการขาย",
+        "scan_qr": "Scan QR",
+        "info": "ข้อมูล",
+        "unit_type": "แบบห้อง/บ้าน",
+        "floor_plan": "แผนผัง",
+        "location": "สถานที่",
+        "gallery": "รูปภาพ",
+        "create_contact": "Create Contact",
+        "concept": "รายละเอียด",
+        "facility": "สิ่งอำนวยความสะดวก",
+        "fact_sheet": "ข้อมูล"
+      },
+      "facility": {
+        "title": "สิ่งอำนวยความสะดวก",
+        "sub_title": "สิ่งอำนวยความสะดวกต่างๆ ของโครงการ"
+      },
+      "fact_sheet": {
+        "project_area": "พื้นที่โครงการ",
+        "sale_unit": "จำนวนแปลงขาย",
+        "sales_area": "พื้นที่ผังขาย",
+        "condominium": "คอนโดมิเนี่ยม",
+        "//": "รอถามพี่ prasit ว่ามี key อะไรบ้าง",
+        "phase": "เฟส"
+      },
+      "unit_type": {
+        "title": "แบบห้อง/บ้าน",
+        "detail": "รายละเอียด",
+        "no_data": "ไม่มีแปลนแบบบ้าน/ห้องนี้",
+        "plan": "แปลน"
+      },
+      "floor_plan": {
+        "title": "แผนผัง",
+        "statistic": {
+          "show": "แสดงตัวอย่างสถานะห้อง",
+          "hide": "ย่อตัวอย่างสถานะห้อง"
+        }
+      },
+      "location": {
+        "title": "สถานที่"
+      },
+      "gallery": {
+        "title": "รูปภาพ",
+        "all_category": "รูปทั้งหมด"
+      },
+      "create_contact": {
+        "title": "Create Contact",
+        "no_data": "ไม่มี QR Create Contact สำหรับโครงการนี้"
+      }
+    },
+    "unit_list": {
+      "title": "ยูนิต",
+      "matrix": {
+        "title": "Unit Matrix"
+      },
+      "floor_plan": {
+        "title": "แผนผัง"
+      }
+    },
+    "unit": {
+      "title": "จองห้อง/บ้าน",
+      "sub_title": "รายละเอียดห้อง/บ้าน",
+      "menu": {
+        "quotation": "ใบเสนอราคา",
+        "booking": "จอง"
+      },
+      "alert": {
+        "confirm_booking": "ยืนยันการทำรายการจอง\nเพื่อล็อกยูนิตนี้",
+        "no_quotation": "ไม่มีใบเสนอราคาสำหรับยูนิตนี้"
+      }
+    },
+    "lead_list": {
+      "title": "กลุ่มผู้มุ่งหวัง",
+      "search": "ชื่อที่ต้องการค้นหา"
+    },
+    "lead": {
+      "title": "ประวัติ",
+      "info": {
+        "title": "ข้อมูลลูกค้า",
+        "status": "สถานะการติดตาม"
+      },
+      "menu": {
+        "calendar": "ปฏิทิน",
+        "activity_log": "ประวัติกิจกรรม",
+        "brochure": "ใบโฆษณา",
+        "contact_customer": "ติดต่อลูกค้า"
+      },
+      "qualify": {
+        "title": "สถานะ",
+        "status": {
+          "qualify": "มีคุณสมบัติ",
+          "disqualify": "ตัดสิทธิ์"
+        },
+        "alert": {
+          "confirm_status": "ยืนยันสถานะ \"{status}\""
+        },
+        "input": {
+          "reason": {
+            "label": "เหตุผล",
+            "error": "กรุณากรอกเหตุผล"
+          }
+        }
+      },
+      "edit": {
+        "title": "แก้ไขข้อมูล",
+        "sub_title": "ข้อมูลลูกค้า"
+      }
+    },
+    "walk_in": {
+      "title": "ลูกค้าใหม่",
+      "sub_title": "ข้อมูลลูกค้า",
+      "source_type": {
+        "title": "เลือกประเภทการ Walk In",
+        "walk_in": "Walk In",
+        "virtual_walk_in": "Virtual\nWalk In"
+      },
+      "no_link": "ไม่มี QR Create Contact สำหรับโครงการนี้"
+    },
+    "contact_list": {
+      "title": "ข้อมูลลูกค้า",
+      "search": "ชื่อที่ต้องการค้นหา"
+    },
+    "contact": {
+      "title": "ประวัติ",
+      "sub_title": "ข้อมูล",
+      "info": {
+        "title": "ข้อมูลลูกค้า",
+        "expand": "รายละเอียดเพิ่มเติม",
+        "hide": "ย่อรายละเอียด"
+      },
+      "address": {
+        "title": "ข้อมูลที่อยู่"
+      },
+      "opportunity": {
+        "title": "โอกาสการขาย",
+        "create_button": "เพิ่มโอกาสการขาย",
+        "day_left": "เหลือ {day} วัน"
+      },
+      "menu": {
+        "activity_log": "ประวัติกิจกรรม",
+        "booking_list": "รายการจอง",
+        "booking_history": "ประวัติการขาย",
+        "brochure": "ใบโฆษณา",
+        "questionnaire": "แบบสอบถาม",
+        "booking": "จอง",
+        "contact_customer": "ติดต่อลูกค้า"
+      },
+      "edit": {
+        "title": "แก้ไขข้อมูล",
+        "sub_title": "ข้อมูลลูกค้า",
+        "menu": {
+          "edit_address": "แก้ไขที่อยู่"
+        }
+      },
+      "edit_address": {
+        "title": "แก้ไขทที่อยู่",
+        "copy_address": "เลือกใช้ที่อยู่เดียวกับ \"{label}\"",
+        "save_change": "มีการแก้ไขข้อมูล \"{label}\"\nทำการบันทึกข้อมูลที่แก้ไข หรือไม่"
+      }
+    },
+    "opportunity_list": {
+      "title": "โอกาสการขาย",
+      "search": "ค้นหา",
+      "day_left": {
+        "top": "เหลือ",
+        "bottom": "วัน"
+      }
+    },
+    "opportunity": {
+      "title": "โอกาสการขาย",
+      "sub_title": "ข้อมูล",
+      "day_left": "เหลือ {day} วัน",
+      "menu": {
+        "progress": "ความคืบหน้า",
+        "questionnaire": "แบบสอบถาม",
+        "calendar": "ปฏิทิน",
+        "activity_log": "ประวัติกิจกรรม",
+        "close_job": "ปิดงาน",
+        "booking": "จอง"
+      },
+      "edit": {
+        "title": "แก้ไขโอกาสการขาย"
+      },
+      "progress": {
+        "title": "โอกาสการขาย",
+        "sub_title": "ความคืบหน้า"
+      },
+      "questionnaire": {
+        "title": "แบบสอบถาม",
+        "no_data": "ไม่มีแบบสอบถามสำหรับโอกาสการขายนี้"
+      },
+      "close_job": {
+        "title": "โอกาสการขาย",
+        "sub_title": "ปิดงาน"
+      },
+      "create": {
+        "title": "โอกาสการขาย"
+      }
+    },
+    "booking_list": {
+      "title": "รายการจอง",
+      "sub_title": "รายการจอง",
+      "cancel_booking": {
+        "title": "ต้องการยกเลิกการจองห้องหรือไม่?"
+      }
+    },
+    "booking_history": {
+      "title": "ประวัติการขาย",
+      "sub_title": "รายละเอียด"
+    },
+    "booking_detail": {
+      "title": "ข้อมูลการจอง",
+      "status": {
+        "success": {
+          "title": "ทำรายการสำเร็จ",
+          "sub_title": "This information will let us know more about you."
+        }
+      },
+      "form": {
+        "unit": "รายละเอียดห้อง",
+        "price": "ข้อมูลราคา",
+        "promotion": "โปรโมชั่น",
+        "sale": "พนักงานขายและผู้แนะนำ"
+      },
+      "menu": {
+        "booking_list": "ดูรายการจอง",
+        "to_home": "หน้าหลัก",
+        "booking_form": "ใบจอง",
+        "quotation": "ใบเสนอราคา",
+        "receipt": "ใบเสร็จรับเงิน",
+        "booking_again": "จองอีกครั้ง",
+        "edit_promotion": "แก้ไขโปรโมชั่น"
+      }
+    },
+    "booking_process": {
+      "title": "ขั้นตอนการจอง",
+      "menu": {
+        "unit": "รายละเอียดห้อง",
+        "price": "ข้อมูลราคา",
+        "promotion": "เลือกโปรโมชั่น",
+        "salesman": "พนักงานขาย",
+        "payment": "ชำระเงินจอง"
+      },
+      "unit": {
+        "unit_detail": "รายละเอียดห้องที่ต้องการจอง",
+        "contact": "ข้อมูลผู้จอง",
+        "address": {
+          "card_id": "ที่อยู่ตามบัตรประชาชน",
+          "document": "ที่อยู่ส่งเอกสาร"
+        },
+        "cancel_booking": "ยกเลิกการจอง",
+        "alert": {
+          "cancel_edit": "ต้องการยกเลิกการแก้ไขโปรโมชั่นหรือไม่?",
+          "cancel_booking": "ยกเลิกการจอง"
+        }
+      },
+      "price": {
+        "title": "ข้อมูลราคา",
+        "price_type": {
+          "title": "ชื่อชุดราคา",
+          "unit_price": "ราคาห้อง/บ้าน",
+          "contract_discount": "ส่วนลดหน้าสัญญา",
+          "contract_price": "ราคาหน้าสัญญา",
+          "price_sqm": "ราคาต่อ ตร.ม."
+        },
+        "condition_type": {
+          "title": "ชื่อเงื่อนไข",
+          "book_contract": "จอง + สัญญา",
+          "booking_price": "เงินจอง",
+          "contract_price": "เงินทำสัญญา",
+          "down_payment": "เงินดาวน์",
+          "down_per_month": "ดาวน์ต่อเดือน",
+          "number_down_payment": "จำนวนงวดดาวน์",
+          "transfer_price": "เงินโอน"
+        }
+      },
+      "promotion": {
+        "selected_promotions": {
+          "title": "จำนวนโปรโมชั่นที่เลือก",
+          "unit": "รายการ"
+        },
+        "discount": {
+          "label": "ราคาโปรโมชั่น",
+          "contract": "ส่วนลดหน้าสัญญา",
+          "transfer": "ส่วนลด ณ วันโอน",
+          "ltv": "ส่วนลด LTV"
+        },
+        "promotion": {
+          "value": "มูลค่า",
+          "group": "กลุ่ม",
+          "promotion_id": "รหัสโปรโมชั่น",
+          "item_id": "รหัสไอเทม",
+          "detail_id": "รหัสรายละเอียด",
+          "promotion_type": "ประเภทโปรโมชั่น",
+          "promotion_type_name": "ชื่อประเภทโปรโมชั่น",
+          "customer_type": "ประเภทลูกค้า",
+          "promotion_name": "ชื่อโปรโมชั่น",
+          "price": "ราคา",
+          "description": "คำอธิบาย",
+          "bullet": {
+            "document": "แสดงเอกสาร",
+            "base_price": "คำนวณ Base Price",
+            "per_table": "คำนวณราคาต่อตาราง"
+          }
+        }
+      },
+      "salesman": {
+        "title": "พนักงานขายและผู้แนะนำ",
+        "sale_by": "ขายโดย",
+        "salesman": "พนักงานขาย",
+        "assistant": "พนักงานผู้ช่วย",
+        "recommender_type": "ประเภทผู้แนะนำ",
+        "recommender": "ผู้แนะนำ",
+        "confirm_booking": "ยืนยันการทำรายการจอง"
+      }
+    },
+    "booking_payment": {
+      "selected_payment": {
+        "title": "เลือกช่องทางการชำระเงิน",
+        "credit": "เงินสด / บัตรเครดิต",
+        "qr_code": "ชำระผ่าน QR code",
+        "input_payment": "ระบุจำนวนเงินที่ชำระ",
+        "get_qr_code": "QR รับเงิน"
+      },
+      "qr_code": {
+        "title": "ชำระผ่าน QR Code",
+        "sub_title": "แสกน QR Code เพื่อชำระเงิน",
+        "account_name": "ชื่อบัญชี",
+        "ref_number": "เลขที่อ้างอิง",
+        "amount": "จำนวนเงิน"
+      }
+    },
+    "calendar": {
+      "title": "ปฏิทิน",
+      "add_activity": "เพิ่มกิจกรรม"
+    },
+    "activity": {
+      "title": "ประวิติกิจกรรม",
+      "description": "รายละเอียด",
+      "add_activity": "เพิ่มกิจกรรม",
+      "create": {
+        "title": "เพิ่มกิจกรรม",
+        "sub_title": "กิจกรรม"
+      }
+    },
+    "brochure": {
+      "title": "ส่งใบโฆษณา",
+      "sub_title": "ใบโฆษณา",
+      "preview": "แสดงเอกสาร",
+      "email": "อีเมลที่ต้องการส่งใบโฆษณา",
+      "input": {
+        "email": {
+          "label": "อีเมล",
+          "error": "กรุณาระบุอีเมลที่ต้องการส่งใบโฆษณา"
+        }
+      },
+      "alert": {
+        "no_data": "ไม่มีใบโฆษณาสำหรับโครงการนี้",
+        "success": "ส่งใบโฆษณาสำเร็จ"
+      }
+    },
+    "scan_card": {
+      "alert": {
+        "address": "ที่อยู่",
+        "try_again": "ถ่ายอีกครั้ง"
+      }
+    },
+    "qr_code": {
+      "title": "QR Code"
+    },
+    "inbox": {
+      "title": "แจ้งเตือน"
+    }
+  }
+}

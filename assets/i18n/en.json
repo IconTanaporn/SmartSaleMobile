@@ -1,0 +1,596 @@
+{
+  "common": {
+    "alert": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "success": "Success",
+      "fail": "Failed!",
+      "alert": "Alert",
+      "try_again": "Try again",
+      "save_complete": "Successfully saved",
+      "save_fail": "An error occurred while saving the data",
+      "save_change": "Do you want to save the changes data?",
+      "default_error": "Please try again or contact support for help."
+    },
+    "input": {
+      "alert": {
+        "default_title": "Please check your information",
+        "check_validate": "Please complete all required fields (*)."
+      },
+      "validate": {
+        "required": "* Please enter {label}",
+        "min": "* Value must be more than or equal to {value}",
+        "max": "*  Value must be less than or equal to {value}",
+        "dropdown_required": "* Please enter {label}",
+        "default_validate": "* {label} not validate"
+      }
+    },
+    "unit": {
+      "million_baht": "Million Baht",
+      "baht": "Baht",
+      "sq": {
+        "m": "sq.m.",
+        "w": "sq.w."
+      },
+      "room": "Room",
+      "installment": "Installment",
+      "times": "Times"
+    },
+    "no_data": "No results found.",
+    "search": "Search",
+    "share_qr": "Share QR",
+    "confirm": "Confirm",
+    "done": "Done",
+    "save": "Save",
+    "next": "Next"
+  },
+  "module": {
+    "sbu": "SBU",
+    "project": {
+      "start_price": "Start price",
+      "brochure": "Brochure",
+      "building": "Building/Phase",
+      "floor": "Floor/Sub Phase",
+      "questionnaire": {
+        "title": "Questionnaire",
+        "no_data": "This project doesn't provide the questionnaire.",
+        "default_error": "Please try again or contact support for help."
+      }
+    },
+    "unit": {
+      "project": "Project",
+      "building": "Building/Phase",
+      "floor": "Floor/Sub Phase",
+      "unit": "Unit",
+      "model_type": "Unit type",
+      "area": "Area",
+      "usable_area": "Usable area",
+      "price": "Price",
+      "price_sqm": "Price/Sq.m.",
+      "status": "Status"
+    },
+    "booking": {
+      "sale": "Sale",
+      "recommender": "Recommender",
+      "unit_price": "Unit price",
+      "book_contract": "Book+Contract",
+      "contract_discount": "Contract discount",
+      "contract_price": "Contract price",
+      "down_payment": "Down payment",
+      "down_per_month": "Down per month",
+      "transfer_price": "Transfer price",
+      "full_price": "Full price",
+      "promotion_discount": "Promotion discount",
+      "total_price": "Total price",
+      "booking_price": "Booking price",
+      "booking_paid": "Paid",
+      "booking_balance": "Balance",
+      "status": "Status"
+    },
+    "contact": {
+      "gender": "Gender",
+      "prefix": "Prefix",
+      "name": "Name",
+      "firstname": "Firstname",
+      "lastname": "Lastname",
+      "nationality": "Nationality",
+      "citizen_id": "Citizen ID",
+      "passport_id": "Passport ID",
+      "birthday": "Birthday",
+      "mobile": "Mobile No.",
+      "email": "Email",
+      "line": "Line ID",
+      "we_chat": "WeChat",
+      "tracking_amount": "Follow up",
+      "source": "Source",
+      "address": "Address",
+      "gender_value": {
+        "male": "Male",
+        "female": "Female",
+        "not_specified": "Not Specified"
+      },
+      "duplicate": {
+        "title": "Found duplicate name(s) or mobile(s) in system",
+        "sub_title": "please select customer information"
+      },
+      "contact_customer": {
+        "title": "Contact Customer",
+        "line": "Line",
+        "email": "E-mail",
+        "telephone": "Telephone",
+        "alert": {
+          "no_line": "Please enter line ID.",
+          "no_email": "Please enter an email address.",
+          "no_tel": "Please enter mobile no."
+        }
+      }
+    },
+    "address": {
+      "address_no": "Address no.",
+      "moo": "Moo.",
+      "soi": "Soi",
+      "village": "Village",
+      "road": "Road",
+      "sub_district": "Subdistrict",
+      "district": "District",
+      "province": "Province",
+      "zipcode": "Zipcode",
+      "city":"City",
+      "country": "Country"
+    },
+    "opportunity": {
+      "project": "Project",
+      "date": "Date",
+      "status": "Status",
+      "budget": "Budget",
+      "comment": "Comment",
+      "close_job": {
+        "reason": "Reason"
+      }
+    },
+    "activity": {
+      "date": "Date",
+      "time": "Time",
+      "event": "Event",
+      "sub_event": "Sub event",
+      "description": "Description"
+    }
+  },
+  "type": {
+    "unit_status": {
+      "All": "All",
+      "NotAvailable": "Not Available",
+      "Available": "Available",
+      "Reserve": "Reserved",
+      "Contract": "Contract",
+      "Transfer": "Transferred",
+      "Complete": "Completed Contract"
+    },
+    "room": {
+      "bed_room": "Bed room",
+      "bath_room": "Bath room",
+      "kitchen_room": "Kitchen room",
+      "living_room": "Living room",
+      "car_room": "Car park"
+    }
+  },
+  "screen": {
+    "login": {
+      "username": "Username",
+      "password": "Password",
+      "login": "Login",
+      "alert": {
+        "login_fail": "Login failed!",
+        "check_input": "Please recheck {label} and try again."
+      }
+    },
+    "splash": {
+      "alert": {
+        "no_internet": "No Internet."
+      }
+    },
+    "setting": {
+      "title": "Setting",
+      "language": {
+        "title": "Language",
+        "change_language": "Confirm to change language?"
+      },
+      "profile": {
+        "title": "Profile",
+        "firstname": "First name",
+        "lastname": "Last name",
+        "mobile": "Mobile",
+        "email": "Email"
+      },
+      "bu": {
+        "title": "Select a BU",
+        "change_bu": "Confirm to change BU?",
+        "default": "Default"
+      },
+      "logout": {
+        "title": "Logout",
+        "confirm_logout": "Do you want to log out?"
+      }
+    },
+    "project_list": {
+      "title": "Please select a project",
+      "search": "Search Project"
+    },
+    "project": {
+      "title": "Information",
+      "sub_title": "Project Information",
+      "menu": {
+        "information": "Information",
+        "walk_in": "Walk-In",
+        "contact": "Contact",
+        "lead": "Lead",
+        "opportunity": "Opportunity",
+        "scan_qr": "Scan QR",
+        "info": "Info",
+        "unit_type": "Unit Type",
+        "floor_plan": "Floor Plan",
+        "location": "Location",
+        "gallery": "Gallery",
+        "create_contact": "Create Contact",
+        "concept": "Concept",
+        "facility": "Facilities",
+        "fact_sheet": "Fact Sheet"
+      },
+      "facility": {
+        "title": "Facility",
+        "sub_title": "Facilities of the project"
+      },
+      "fact_sheet": {
+        "project_area": "Project area",
+        "sale_unit": "Sale unit",
+        "sales_area": "Sales area",
+        "condominium": "Condominium",
+        "//": "รอถามพี่ prasit ว่ามี key อะไรบ้าง",
+        "phase": "Phase"
+      },
+      "unit_type": {
+        "title": "Unit type",
+        "detail": "Information",
+        "no_data": "This unit type doesn't provide plan.",
+        "plan": "Plan"
+      },
+      "floor_plan": {
+        "title": "Floor plan",
+        "statistic": {
+          "show": "Show unit statistics",
+          "hide": "Hide unit statistics"
+        }
+      },
+      "location": {
+        "title": "Location"
+      },
+      "gallery": {
+        "title": "Gallery",
+        "all_category": "All"
+      },
+      "create_contact": {
+        "title": "Create Contact",
+        "no_data": "This project doesn't provide the QR create contact."
+      }
+    },
+    "unit_list": {
+      "title": "Unit",
+      "matrix": {
+        "title": "Unit Matrix"
+      },
+      "floor_plan": {
+        "title": "Floor Plan"
+      }
+    },
+    "unit": {
+      "title": "Booking",
+      "sub_title": "Unit Information",
+      "menu": {
+        "quotation": "Quotation",
+        "booking": "Booking"
+      },
+      "alert": {
+        "confirm_booking": "Confirm to lock unit.",
+        "no_quotation": "This unit doesn't provide quotation."
+      }
+    },
+    "lead_list": {
+      "title": "Leads",
+      "search": "Search"
+    },
+    "lead": {
+      "title": "Profile",
+      "info": {
+        "title": "Customer Information",
+        "status": "Status"
+      },
+      "menu": {
+        "calendar": "Calendar",
+        "activity_log": "Activity Log",
+        "brochure": "Brochure",
+        "contact_customer": "Contact Customer"
+      },
+      "qualify": {
+        "title": "Status",
+        "status": {
+          "qualify": "Qualify",
+          "disqualify": "Disqualify"
+        },
+        "alert": {
+          "confirm_status": "Confirm status \"{status}\""
+        },
+        "input": {
+          "reason": {
+            "label": "Reason",
+            "error": "Please specify the reasons"
+          }
+        }
+      },
+      "edit": {
+        "title": "Edit Information",
+        "sub_title": "Customer Information"
+      }
+    },
+    "walk_in": {
+      "title": "Walk-In",
+      "sub_title": "Customer Information",
+      "source_type": {
+        "title": "Select type",
+        "walk_in": "Walk In",
+        "virtual_walk_in": "Virtual\nWalk In"
+      },
+      "no_link": "This project doesn't provide the QR create contact."
+    },
+    "contact_list": {
+      "title": "Contacts",
+      "search": "Search"
+    },
+    "contact": {
+      "title": "Profile",
+      "sub_title": "Information",
+      "info": {
+        "title": "Customer Information",
+        "expand": "More Information",
+        "hide": "Less Information"
+      },
+      "address": {
+        "title": "Address Information"
+      },
+      "opportunity": {
+        "title": "Opportunity",
+        "create_button": "Add Opportunity",
+        "day_left": "{day} day(s) left"
+      },
+      "menu": {
+        "activity_log": "Activity Log",
+        "booking_list": "Booking List",
+        "booking_history": "Booking History",
+        "brochure": "Brochure",
+        "questionnaire": "Questionnaire",
+        "booking": "Booking",
+        "contact_customer": "Contact Customer"
+      },
+      "edit": {
+        "title": "Edit Profile",
+        "sub_title": "Customer Information",
+        "menu": {
+          "edit_address": "Edit Address"
+        }
+      },
+      "edit_address": {
+        "title": "Edit Address",
+        "copy_address": "Copy \"{label}\" to ...",
+        "save_change": "Do you want to save the changes \"{label}\"?"
+      }
+    },
+    "opportunity_list": {
+      "title": "Opportunity",
+      "search": "Search",
+      "day_left": {
+        "top": "",
+        "bottom": "day(s) left"
+      }
+    },
+    "opportunity": {
+      "title": "Opportunity",
+      "sub_title": "Information",
+      "day_left": "{day} day(s) left",
+      "menu": {
+        "progress": "Progress",
+        "questionnaire": "Questionnaire",
+        "calendar": "Calendar",
+        "activity_log": "Activity Log",
+        "close_job": "Close Job",
+        "booking": "Booking"
+      },
+      "edit": {
+        "title": "Edit Information"
+      },
+      "progress": {
+        "title": "Opportunity",
+        "sub_title": "Progress"
+      },
+      "questionnaire": {
+        "title": "Questionnaire",
+        "no_data": "This opportunity doesn't provide the questionnaire."
+      },
+      "close_job": {
+        "title": "Opportunity",
+        "sub_title": "Close job"
+      },
+      "create": {
+        "title": "Opportunity"
+      }
+    },
+    "booking_list": {
+      "title": "Booking List",
+      "sub_title": "Booking List",
+      "cancel_booking": {
+        "title": "Confirm cancel booking?"
+      }
+    },
+    "booking_history": {
+      "title": "Booking History",
+      "sub_title": "Information"
+    },
+    "booking_detail": {
+      "title": "Booking Information",
+      "status": {
+        "success": {
+          "title": "Booking Success",
+          "sub_title": "This information will let us know more about you."
+        }
+      },
+      "form": {
+        "unit": "Unit Information",
+        "price": "Price Information",
+        "promotion": "Promotion",
+        "sale": "Sales & Counselors"
+      },
+      "menu": {
+        "booking_list": "Booking List",
+        "to_home": "Home",
+        "booking_form": "Booking Form",
+        "quotation": "Quotation",
+        "receipt": "Receipt",
+        "booking_again": "Book Again",
+        "edit_promotion": "Edit Promotion"
+      }
+    },
+    "booking_process": {
+      "title": "Booking Process",
+      "menu": {
+        "unit": "Unit Information",
+        "price": "Price Information",
+        "promotion": "Select Promotion",
+        "salesman": "Sales",
+        "payment": "Payment"
+      },
+      "unit": {
+        "unit_detail": "Unit Information",
+        "contact": "Customer Information",
+        "cancel_booking": "Cancel Booking",
+        "alert": {
+          "cancel_edit": "Confirm cancel edit booking?",
+          "cancel_booking": "Cancel Booking"
+        }
+      },
+      "price": {
+        "title": "Price Information",
+        "price_type": {
+          "title": "Price Type",
+          "unit_price": "Unit Price",
+          "contract_discount": "Contract Discount",
+          "contract_price": "Contract Price",
+          "price_sqm": "Price/sq.m."
+        },
+        "condition_type": {
+          "title": "Condition Type",
+          "book_contract": "Book + Contract",
+          "booking_price": "Booking Price",
+          "contract_price": "Contract Price",
+          "down_payment": "Down Payment",
+          "down_per_month": "Down Payment/Month",
+          "number_down_payment": "Number of down payment",
+          "transfer_price": "Transfer Price"
+        }
+      },
+      "promotion": {
+        "selected_promotions": {
+          "title": "Selected",
+          "unit": "promotions"
+        },
+        "discount": {
+          "label": "Promotion Price",
+          "contract": "Contract Discount",
+          "transfer": "Discount on Transfer date",
+          "ltv": "LTV Discount"
+        },
+        "promotion": {
+          "value": "Value",
+          "group": "Group",
+          "promotion_id": "Promotion ID",
+          "item_id": "Item ID",
+          "detail_id": "Detail ID",
+          "promotion_type": "Promotion Type",
+          "promotion_type_name": "Promotion Type Name",
+          "customer_type": "Customer Type",
+          "promotion_name": "Promotion Name",
+          "price": "Price",
+          "description": "Description",
+          "bullet": {
+            "document": "Show document",
+            "base_price": "Calculate Base Price",
+            "per_table": "Calculate per table"
+          }
+        }
+      },
+      "salesman": {
+        "title": "Sales & Recommender",
+        "sale_by": "Sale By",
+        "salesman": "Sales",
+        "assistant": "Assistant",
+        "recommender_type": "Recommender Type",
+        "recommender": "Recommender",
+        "confirm_booking": "Confirm Booking"
+      }
+    },
+    "booking_payment": {
+      "selected_payment": {
+        "title": "Select payment method",
+        "credit": "Cash / Credit",
+        "qr_code": "QR code",
+        "input_payment": "Specify payment amount",
+        "get_qr_code": "Get QR code"
+      },
+      "qr_code": {
+        "title": "ชำระผ่าน QR Code",
+        "sub_title": "Scan QR Code",
+        "account_name": "Account Name",
+        "ref_number": "Ref.",
+        "amount": "Amount"
+      }
+    },
+    "calendar": {
+      "title": "Calendar",
+      "add_activity": "Add activity"
+    },
+    "activity": {
+      "title": "Activity",
+      "description": "Description",
+      "add_activity": "Add activity",
+      "create": {
+        "title": "Create activity",
+        "sub_title": "Activity"
+      }
+    },
+    "brochure": {
+      "title": "E-Brochure",
+      "sub_title": "Brochure",
+      "preview": "View Documents",
+      "email": "Email",
+      "input": {
+        "email": {
+          "label": "Email",
+          "error": "Please specify Email to send E-Brochure."
+        }
+      },
+      "alert": {
+        "no_data": "This project doesn't provide the brochure.",
+        "success": "Send E-Brochure completed"
+      }
+    },
+    "scan_card": {
+      "alert": {
+        "address": "Address",
+        "try_again": "Try again"
+      }
+    },
+    "qr_code": {
+      "title": "QR Code"
+    },
+    "inbox": {
+      "title": "Notification"
+    }
+  }
+}
