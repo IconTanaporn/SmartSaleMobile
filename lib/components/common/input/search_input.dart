@@ -35,12 +35,12 @@ class _SearchInputState extends State<SearchInput> {
   Widget build(BuildContext context) {
     return InputText(
       required: false,
-      contentPadding: const EdgeInsets.fromLTRB(30, 10, 40, 10),
+      contentPadding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
       controller: widget.controller,
       hintText: widget.hintText,
       textInputAction: TextInputAction.search,
       suffixIcon: const Padding(
-        padding: EdgeInsets.only(right: 20),
+        padding: EdgeInsets.only(right: 10),
         child: Icon(
           Icons.search,
           color: AppColor.black2,

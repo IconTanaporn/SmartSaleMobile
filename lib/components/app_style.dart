@@ -6,7 +6,7 @@ class AppStyle {
   AppStyle._();
 
   static TextStyle styleText({
-    fontFamily = 'CustomFont',
+    fontFamily = 'DBHeaventRounded',
     double fontSize = FontSize.normal,
     FontWeight fontWeight = FontWeight.normal,
     Color color = Colors.black,

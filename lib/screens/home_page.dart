@@ -41,7 +41,11 @@ class HomePage extends StatelessWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: CustomText(Language.translate('screen.setting.title')),
+                title: CustomText(
+                  Language.translate('screen.setting.title'),
+                  fontSize: FontSize.title,
+                  fontWeight: FontWeight.w500,
+                ),
                 onTap: () {
                   // setState(() {
                   //   selectedPage = 'Settings';
@@ -52,6 +56,8 @@ class HomePage extends StatelessWidget {
                 leading: const Icon(Icons.logout),
                 title: CustomText(
                   Language.translate('screen.setting.logout.title'),
+                  fontSize: FontSize.title,
+                  fontWeight: FontWeight.w500,
                 ),
                 onTap: () async {
                   final value = await IconFrameworkUtils.showConfirmDialog(
@@ -79,7 +85,7 @@ class HomePage extends StatelessWidget {
                         children: [
                           CustomText(
                             'Version ${info?.version ?? ''}.${info?.buildNumber ?? ''}',
-                            fontSize: FontSize.px12,
+                            fontSize: FontSize.px14,
                           ),
                         ],
                       );
@@ -108,7 +114,7 @@ class HomePage extends StatelessWidget {
                       Language.translate('screen.project_list.title'),
                       color: AppColor.red,
                       fontSize: FontSize.normal,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Padding(

@@ -4,6 +4,7 @@ class FontSize {
   FontSize._();
 
   static const double px12 = 12;
+  static const double px14 = 14;
   static const double px16 = 16;
   static const double px18 = 18;
   static const double px20 = 20;

@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: IconFrameworkUtils.getWidth(0.7),
                       child: InputText(
                         contentPadding:
-                            const EdgeInsets.fromLTRB(30, 10, 40, 10),
+                            const EdgeInsets.fromLTRB(20, 10, 20, 10),
                         radius: 40,
                         borderColor: AppColor.grey,
                         controller: username,
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: IconFrameworkUtils.getWidth(0.7),
                       child: TextFieldObscure(
                         contentPadding:
-                            const EdgeInsets.fromLTRB(30, 10, 40, 10),
+                            const EdgeInsets.fromLTRB(20, 10, 0, 10),
                         controller: password,
                         hintText: Language.translate(
                           'screen.login.password',

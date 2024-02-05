@@ -173,7 +173,7 @@ class InputText extends StatelessWidget {
             ]
           : null,
       style: AppStyle.styleText(
-        fontSize: FontSize.title,
+        fontSize: FontSize.normal,
         color: AppColor.grey2,
       ),
       readOnly: readOnly,
