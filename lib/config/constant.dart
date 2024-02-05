@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class FontSize {
   FontSize._();
 
+  static const double px9 = 9;
   static const double px12 = 12;
   static const double px14 = 14;
   static const double px16 = 16;

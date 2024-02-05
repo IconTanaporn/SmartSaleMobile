@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 
 import '../utils/utils.dart';
@@ -47,10 +45,7 @@ class EncryptedPref {
   static Future saveAuth(String data) async {
     bool success = await _encrypted.setString(_auth, data);
     if (success) {
-      String id = jsonDecode(data)['bu_id'];
-      await saveBuId(id);
       IconFrameworkUtils.log(_runtimeType, 'saveUserLoginData', 'success');
-      // UserProperty.buildGlobalUserProperty();
     } else {
       IconFrameworkUtils.log(_runtimeType, 'saveUserLoginData', 'fail');
     }

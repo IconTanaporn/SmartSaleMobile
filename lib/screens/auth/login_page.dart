@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/route/router.dart';
 
 import '../../api/api_client.dart';
@@ -13,13 +13,13 @@ import '../../components/common/button/button.dart';
 import '../../components/common/input/input.dart';
 import '../../config/asset_path.dart';
 import '../../config/constant.dart';
-import '../../config/encrypted_preferences.dart';
 import '../../config/language.dart';
+import '../../providers/auth_provider.dart';
 import '../../utils/utils.dart';
 
 //ignore_for_file: public_member_api_docs
 @RoutePage()
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   final void Function(bool isLoggedIn)? onResult;
   final bool showBackButton;
   const LoginScreen({
@@ -29,10 +29,10 @@ class LoginScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final username = TextEditingController();
   final password = TextEditingController();
 
@@ -49,8 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       IconFrameworkUtils.startLoading();
       final data = await ApiController.login(username, password);
-      EncryptedPref.saveAuth(jsonEncode(data).toString());
-      // await ConfigFirebaseMessage.registerNotification();
+      ref.read(authControllerProvider).signIn(data);
       await IconFrameworkUtils.delayed();
       IconFrameworkUtils.stopLoading();
       context.router.replaceNamed('/');

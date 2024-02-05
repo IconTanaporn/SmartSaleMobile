@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/dissmiss_keyboard.dart';
 import 'package:smart_sale_mobile/config/constant.dart';
 import 'package:smart_sale_mobile/route/auth_guard.dart';
@@ -30,44 +30,46 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final authService = AuthService();
-
-  final _rootRouter = RootRoutes();
+  final rootRouter = RootRoutes();
 
   @override
   Widget build(BuildContext context) {
-    navigatorKey = _rootRouter.navigatorKey;
-    return DismissKeyboard(
-      child: MaterialApp.router(
-        routerConfig: _rootRouter.config(
-          deepLinkBuilder: (_) => const DeepLink([SplashRoute()]),
-          navigatorObservers: () => [MyObserver()],
-        ),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: AppColor.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          iconTheme: const IconThemeData(
-            color: AppColor.black2,
+    navigatorKey = rootRouter.navigatorKey;
+
+    return ProviderScope(
+      child: DismissKeyboard(
+        child: MaterialApp.router(
+          routerConfig: rootRouter.config(
+            deepLinkBuilder: (_) => const DeepLink([SplashRoute()]),
+            navigatorObservers: () => [MyObserver()],
           ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: AppColor.white,
-            iconTheme: IconThemeData(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: AppColor.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            iconTheme: const IconThemeData(
               color: AppColor.black2,
             ),
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColor.white,
+              iconTheme: IconThemeData(
+                color: AppColor.black2,
+              ),
+            ),
           ),
+          localizationsDelegates: [
+            Language.flutterI18nDelegate,
+            // DefaultMaterialLocalizations.delegate,
+            // DefaultCupertinoLocalizations.delegate,
+            // DefaultWidgetsLocalizations.delegate,
+            // GlobalMaterialLocalizations.delegate,
+            // GlobalCupertinoLocalizations.delegate,
+          ],
+          // supportedLocales: const [
+          //   Locale('en', 'US'),
+          //   Locale('th', 'TH'),
+          // ],
         ),
-        localizationsDelegates: [
-          Language.flutterI18nDelegate,
-          DefaultMaterialLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-          // GlobalMaterialLocalizations.delegate,
-          // GlobalCupertinoLocalizations.delegate,
-        ],
-        // supportedLocales: const [
-        //   Locale('en', 'US'),
-        //   Locale('th', 'TH'),
-        // ],
       ),
     );
   }

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../config/language.dart';
 import '../utils/utils.dart';
-// import 'package:smartsales/config/language.dart';
 // import 'package:smartsales/iconframework_lib/iconframework_utils.dart';
 
 class ApiException implements Exception {
@@ -134,9 +134,13 @@ class ApiClient {
   static const String _currentType = 'Api Client';
 
   static String _token = '';
+  static String _saleId = '';
+  static String _buId = '';
   static String get apiUrl => _apiUrl;
 
   static void setToken(token) => _token = token;
+  static void setSaleId(saleId) => _saleId = saleId;
+  static void setBuId(buId) => _buId = buId;
 
   static dynamic _getValue(
     http.Response response, {
@@ -212,10 +216,10 @@ class ApiClient {
     var fullBody = {
       'app_username': _appUsername,
       'app_password': _appPassword,
-      // 'sale_id': UserProperty.getUserPropertyByKey('sale_id'),
-      // 'user_id_login': UserProperty.getUserPropertyByKey('sale_id'),
-      // 'bu_id': UserProperty.currentBuId,
-      // 'lg': Language.currentLanguage,
+      'sale_id': _saleId,
+      'user_id_login': _saleId,
+      'bu_id': _buId,
+      'lg': Language.currentLanguage,
       ...(body ?? {}),
     };
 

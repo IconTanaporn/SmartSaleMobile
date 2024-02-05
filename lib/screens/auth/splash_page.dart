@@ -3,27 +3,28 @@ import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../api/api_client.dart';
 import '../../api/api_controller.dart';
 import '../../config/asset_path.dart';
-import '../../config/encrypted_preferences.dart';
 import '../../config/language.dart';
+import '../../providers/auth_provider.dart';
 import '../../utils/utils.dart';
 
 //ignore_for_file: public_member_api_docs
 @RoutePage()
-class SplashScreen extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   static const String screenId = '/splashScreen';
 
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashPage({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future initial() async {
     IconFrameworkUtils.fixDeviceOrientationToPortrait();
+
+    await ref.read(authControllerProvider).init();
 
     bool isInit = false;
     await setLanguage();
@@ -53,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await Language.setLanguage();
     } catch (e) {
       IconFrameworkUtils.log(
-        SplashScreen.screenId,
+        SplashPage.screenId,
         'setLanguage on error',
         e.toString(),
       );
@@ -62,7 +65,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> getToken() async {
     try {
-      final value = await EncryptedPref.getToken();
+      final String value = ref.read(authControllerProvider).user.token;
+
       if (value != '') {
         var token = jsonDecode(value);
         var formattedDate =
@@ -74,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
 
       final token = await ApiController.getToken();
-      EncryptedPref.saveToken(jsonEncode(token).toString());
+      ref.read(authControllerProvider).setToken(token);
       await IconFrameworkUtils.delayed();
       return true;
     } on ApiException catch (e) {
@@ -86,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
       return false;
     } catch (e) {
       IconFrameworkUtils.log(
-        SplashScreen.screenId,
+        SplashPage.screenId,
         'getToken on error',
         e.toString(),
       );
