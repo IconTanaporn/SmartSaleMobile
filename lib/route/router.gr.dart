@@ -35,6 +35,30 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    SettingBuRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingBuPage(),
+      );
+    },
+    SettingLanguageRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingLanguagePage(),
+      );
+    },
+    SettingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingPage(),
+      );
+    },
+    SettingProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SettingProfilePage(),
+      );
+    },
     SplashRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -112,6 +136,62 @@ class LoginRouteArgs {
   String toString() {
     return 'LoginRouteArgs{key: $key, onResult: $onResult, showBackButton: $showBackButton}';
   }
+}
+
+/// generated route for
+/// [SettingBuPage]
+class SettingBuRoute extends PageRouteInfo<void> {
+  const SettingBuRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingBuRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingBuRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingLanguagePage]
+class SettingLanguageRoute extends PageRouteInfo<void> {
+  const SettingLanguageRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingLanguageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingLanguageRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingPage]
+class SettingRoute extends PageRouteInfo<void> {
+  const SettingRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SettingProfilePage]
+class SettingProfileRoute extends PageRouteInfo<void> {
+  const SettingProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          SettingProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingProfileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

@@ -23,6 +23,7 @@ class AssetPath {
   static const iconSettingLanguage = '$_icons/setting_language.png';
   static const iconSettingProfile = '$_icons/setting_profile.png';
   static const iconSettingBu = '$_icons/setting_bu.png';
+  static const iconProfile = '$_icons/profile.png';
 
   static const iconInformation = '$_icons/information.png';
   static const iconWalkIn = '$_icons/walk_in.png';

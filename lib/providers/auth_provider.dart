@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/api/api_client.dart';
 
 import '../config/encrypted_preferences.dart';
-import '../route/auth_guard.dart';
 
 class User {
   String _token = '';
@@ -17,29 +16,23 @@ class User {
   String get buId => _buId;
   bool get isSignedIn => _saleId != '';
 
-  init(String token, String sale, String bu) {
-    _token = token;
-    _saleId = sale;
-    _buId = bu;
+  setToken(String value) {
+    _token = value;
   }
 
-  setToken(String token) {
-    _token = token;
+  setSaleId(String value) {
+    _saleId = value;
   }
 
-  signIn(String sale, String bu) {
-    _saleId = sale;
-    _buId = bu;
-  }
-
-  signOut() {
-    _saleId = '';
-    _buId = '';
+  setBuId(String value) {
+    _buId = value;
   }
 }
 
+User user = User();
+
 class AuthController extends ChangeNotifier {
-  User user = User();
+  User get auth => user;
 
   bool get isSignedIn => user.isSignedIn;
 
@@ -48,51 +41,63 @@ class AuthController extends ChangeNotifier {
     String auth = await EncryptedPref.getAuth();
     String buId = await EncryptedPref.getBuId();
 
-    var data = jsonDecode(auth);
-    String saleId = data['sale_id'].toString();
-    if (saleId != '') {
-      isAuthenticated = true;
-      ApiClient.setSaleId(saleId);
+    user.setToken(token);
+
+    if (auth.isNotEmpty) {
+      var data = jsonDecode(auth);
+      String saleId = data['sale_id'].toString();
+      if (saleId != '') {
+        ApiClient.setSaleId(saleId);
+        await user.setSaleId(saleId);
+      }
+      if (buId != '') {
+        ApiClient.setBuId(buId);
+        await user.setBuId(buId);
+      }
     }
-    if (buId != '') {
-      ApiClient.setBuId(buId);
-    }
+
     // await ConfigFirebaseMessage.registerNotification();
 
-    user.init(token, saleId, buId);
     notifyListeners();
   }
 
   Future<void> setToken(token) async {
-    EncryptedPref.saveToken(jsonEncode(token).toString());
-    user = user.setToken(jsonEncode(token).toString());
+    await EncryptedPref.saveToken(jsonEncode(token).toString());
+    await user.setToken(jsonEncode(token).toString());
+    notifyListeners();
+  }
+
+  Future<void> setBuId(String bu) async {
+    await EncryptedPref.saveBuId(bu);
+    await user.setBuId(bu);
+
     notifyListeners();
   }
 
   Future<void> signIn(data) async {
-    EncryptedPref.saveAuth(jsonEncode(data).toString());
+    await EncryptedPref.saveAuth(jsonEncode(data).toString());
 
-    String saleId = data['sale_id'].toString();
+    String saleId = data['sale_id'];
     String buId = data['bu_id'].toString();
     if (saleId != '') {
-      isAuthenticated = true;
       ApiClient.setSaleId(saleId);
+      await user.setSaleId(data['sale_id']);
     }
+
     if (buId != '') {
       ApiClient.setBuId(buId);
-      EncryptedPref.saveBuId(data['bu_id']);
+      await EncryptedPref.saveBuId(data['bu_id']);
+      await user.setBuId(data['bu_id']);
     }
     // await ConfigFirebaseMessage.registerNotification();
-    user = user.signIn(data['sale_id'], data['bu_id']);
     notifyListeners();
   }
 
   Future<void> signOut() async {
     // TODO: [Logout] clear data
-    isAuthenticated = false;
 
-    EncryptedPref.clearPreferences();
-    user = user.signOut();
+    await EncryptedPref.clearPreferences();
+    user = User();
     notifyListeners();
   }
 }

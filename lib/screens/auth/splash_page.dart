@@ -65,7 +65,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   Future<bool> getToken() async {
     try {
-      final String value = ref.read(authControllerProvider).user.token;
+      final String value = ref.read(authControllerProvider).auth.token;
 
       if (value != '') {
         var token = jsonDecode(value);

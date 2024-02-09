@@ -69,11 +69,11 @@ class ProjectCard extends StatelessWidget {
 }
 
 class Project {
-  String id = '';
-  String location = '';
-  String name = '';
-  String imgSource = '';
-  String startPrice = '';
+  final String id;
+  final String location;
+  final String name;
+  final String imgSource;
+  final String startPrice;
 
   Project({
     this.id = '',

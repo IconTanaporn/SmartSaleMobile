@@ -78,7 +78,9 @@ class HomePage extends ConsumerWidget {
                   fontSize: FontSize.title,
                   fontWeight: FontWeight.w500,
                 ),
-                onTap: () => {},
+                onTap: () {
+                  context.router.navigateNamed('/setting');
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),
@@ -177,6 +179,7 @@ class HomePage extends ConsumerWidget {
                           return ProjectCard(
                             project: project,
                             onTap: () {
+                              context.router.navigateNamed('/set');
                               // onSelectProject(project.id);
                             },
                           );

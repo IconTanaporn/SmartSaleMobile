@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smart_sale_mobile/route/router.dart';
 
-bool isAuthenticated = false;
+import '../providers/auth_provider.dart';
 
 class AuthGuard implements AutoRouteGuard {
   @override
   Future onNavigation(NavigationResolver resolver, StackRouter router) async {
-    if (isAuthenticated) {
+    if (user.isSignedIn) {
       resolver.next();
     } else {
       resolver.redirect(LoginRoute(onResult: (success) {
