@@ -7,9 +7,9 @@ class ProjectClient {
     return await ApiClient.post('project_load_forsale');
   }
 
-  static Future conceptDetail() async {
+  static Future conceptDetail(String id) async {
     return await ApiClient.post('concept_detail', checkNull: true, body: {
-      // 'project_id': UserProperty.getCurrentProjectId(),
+      'project_id': id,
     });
   }
 
@@ -64,9 +64,9 @@ class ProjectClient {
     });
   }
 
-  static Future qrCreateContact() async {
+  static Future qrCreateContact(String projectId) async {
     return await ApiClient.post('crm/genarate_link', body: {
-      // 'project_id': UserProperty.getCurrentProjectId(),
+      'project_id': projectId,
     });
   }
 }

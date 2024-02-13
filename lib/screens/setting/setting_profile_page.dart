@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../api/api_controller.dart';
 import '../../components/common/background/defualt_background.dart';
+import '../../components/common/loading/loading.dart';
 import '../../components/common/text/text.dart';
 import '../../config/asset_path.dart';
 import '../../config/constant.dart';
@@ -77,14 +77,14 @@ class SettingProfilePage extends ConsumerWidget {
       ),
       body: DefaultBackgroundImage(
         child: sale.when(
-          loading: () => const Center(
-            child: SpinKitCircle(
-              color: AppColor.red2,
-              size: 50,
-            ),
-          ),
+          loading: () => const Center(child: Loading()),
           error: (err, stack) => CustomText('Error: $err'),
-          data: (Sale data) {
+          data: (data) {
+            if (data.address == null) {
+              return CustomText(
+                Language.translate('common.no_data'),
+              );
+            }
             return SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -135,7 +135,7 @@ class SettingProfilePage extends ConsumerWidget {
                               data.mobile,
                             ),
                             dataRow(
-                              'screen.setting.profile.mobile',
+                              'screen.setting.profile.email',
                               data.email,
                             ),
                             dataRow(

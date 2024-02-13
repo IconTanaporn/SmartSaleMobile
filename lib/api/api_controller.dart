@@ -38,7 +38,7 @@ class ApiController {
   static Future saleBuList() => AuthClient.saleBuList();
 
   static Future projectList() => ProjectClient.projectList();
-  static Future conceptDetail() => ProjectClient.conceptDetail();
+  static Future conceptDetail(String id) => ProjectClient.conceptDetail(id);
   static Future facilitiesDetail() => ProjectClient.facilitiesDetail();
   static Future factSheetDetail() => ProjectClient.factSheetDetail();
   static Future brochureList() => ProjectClient.brochureList();
@@ -48,7 +48,7 @@ class ApiController {
   static Future modelTypeDetail(type) => ProjectClient.unitTypeDetail(type);
   static Future locationDetail() => ProjectClient.locationDetail();
   static Future galleryList() => ProjectClient.galleryList();
-  static Future qrCreateContact() => ProjectClient.qrCreateContact();
+  static Future qrCreateContact(id) => ProjectClient.qrCreateContact(id);
 
   static Future prefixList() => CustomerClient.prefixList();
   static Future nationalityList() => CustomerClient.nationalityList();

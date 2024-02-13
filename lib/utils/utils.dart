@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -138,9 +139,9 @@ class IconFrameworkUtils {
     return RegExp(r'^(\+)?(\d{5,15}$)').hasMatch(value);
   }
 
-  // static bool validateEmail(String value) {
-  //   return EmailValidator.validate(value);
-  // }
+  static bool validateEmail(String value) {
+    return EmailValidator.validate(value);
+  }
 
   static DateFormat apiDateFormat = DateFormat('yyyy-MM-dd');
   static DateFormat dateFormat = DateFormat('dd/MM/yyyy');

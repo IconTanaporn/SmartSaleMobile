@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/providers/auth_provider.dart';
 
 import '../../api/api_controller.dart';
@@ -58,14 +58,14 @@ class SettingBuPage extends ConsumerWidget {
       ),
       body: DefaultBackgroundImage(
         child: buList.when(
-          loading: () => const Center(
-            child: SpinKitCircle(
-              color: AppColor.red2,
-              size: 50,
-            ),
-          ),
+          loading: () => const Center(child: Loading()),
           error: (err, stack) => CustomText('Error: $err'),
           data: (data) {
+            if (data.isEmpty) {
+              return CustomText(
+                Language.translate('common.no_data'),
+              );
+            }
             return ListView.builder(
               shrinkWrap: true,
               itemCount: data.length,

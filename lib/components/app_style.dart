@@ -37,8 +37,7 @@ class AppStyle {
     String? errorText,
   }) {
     return InputDecoration(
-      contentPadding:
-          contentPadding ?? const EdgeInsets.fromLTRB(12, 12, 12, 12),
+      contentPadding: contentPadding ?? const EdgeInsets.fromLTRB(12, 1, 12, 1),
       suffix: isLoading ? const CircularProgressIndicator() : null,
       suffixIcon: suffixIcon,
       suffixText: suffixText,

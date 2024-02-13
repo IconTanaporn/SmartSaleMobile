@@ -330,7 +330,7 @@ class InputListTile extends StatelessWidget {
 
 class InputDropdown extends StatelessWidget {
   final Function(KeyModel)? onChanged;
-  final List<KeyModel> dataList;
+  final List<KeyModel> items;
   final KeyModel? value;
   final String? labelText;
   final String? hintText;
@@ -341,7 +341,7 @@ class InputDropdown extends StatelessWidget {
 
   const InputDropdown({
     Key? key,
-    required this.dataList,
+    this.items = const [],
     this.value,
     this.onChanged,
     this.labelText,
@@ -369,7 +369,7 @@ class InputDropdown extends StatelessWidget {
     return DropdownButtonFormField(
       isExpanded: true,
       decoration: AppStyle.inputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
+        contentPadding: const EdgeInsets.fromLTRB(12, 1, 12, 1),
         labelText:
             labelText != null ? '$labelText${(required ? ' *' : '')}' : null,
         isCollapsed: true,
@@ -378,7 +378,7 @@ class InputDropdown extends StatelessWidget {
       iconSize: 45,
       borderRadius: BorderRadius.circular(15.0),
       value: value,
-      items: dataList.map<DropdownMenuItem<KeyModel>>(
+      items: items.map<DropdownMenuItem<KeyModel>>(
         (KeyModel data) {
           return DropdownMenuItem<KeyModel>(
             value: data,
@@ -403,13 +403,12 @@ class InputDropdown extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: onValidate,
       icon: isLoading
-          ? const Loading()
+          ? const Loading(size: 25)
           : Image.asset(
               AssetPath.iconDropdown,
-              height: 40,
-              color: dataList.isNotEmpty && !disabled
-                  ? AppColor.red
-                  : AppColor.grey4,
+              height: 15,
+              color:
+                  items.isNotEmpty && !disabled ? AppColor.red : AppColor.grey4,
             ),
     );
   }

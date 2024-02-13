@@ -12,6 +12,15 @@ class MyObserver extends AutoRouterObserver {
         'New route pushed',
         route.settings.name.toString(),
       );
+      if (route.data != null) {
+        if (route.data!.pathParams.isNotEmpty) {
+          IconFrameworkUtils.log(
+            _tag,
+            'Params',
+            route.data!.pathParams.toString(),
+          );
+        }
+      }
       // GoogleAnalytics.logScreens(
       //   '/',
       //   'Splash',

@@ -42,7 +42,7 @@ class SettingPage extends ConsumerWidget {
                   color: (tabsRouter.activeIndex == 0)
                       ? AppColor.blue
                       : AppColor.grey2,
-                  width: 22,
+                  height: 20,
                 ),
               ),
               BottomNavigationBarItem(
@@ -52,7 +52,7 @@ class SettingPage extends ConsumerWidget {
                   color: (tabsRouter.activeIndex == 1)
                       ? AppColor.blue
                       : AppColor.grey2,
-                  width: 22,
+                  height: 20,
                 ),
               ),
               BottomNavigationBarItem(
@@ -62,7 +62,7 @@ class SettingPage extends ConsumerWidget {
                   color: (tabsRouter.activeIndex == 2)
                       ? AppColor.blue
                       : AppColor.grey2,
-                  width: 22,
+                  height: 20,
                 ),
               ),
             ],

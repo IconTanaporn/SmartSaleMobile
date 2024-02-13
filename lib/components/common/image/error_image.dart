@@ -33,9 +33,8 @@ class ErrorImage extends StatelessWidget {
           const Icon(
             Icons.error,
             color: AppColor.red,
-            size: 40,
+            size: 20,
           ),
-          const SizedBox(height: 8),
           CustomText(
             text,
             color: AppColor.white,
