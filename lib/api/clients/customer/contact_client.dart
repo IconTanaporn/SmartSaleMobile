@@ -3,12 +3,12 @@ import '../../api_client.dart';
 class ContactClient {
   ContactClient._();
 
-  static Future contactList(keyword, filter, page) async {
+  static Future contactList(search, filter, page, pageSize) async {
     return await ApiClient.post('crm/search', body: {
       'type': 'contacts',
       'current_page': page,
-      'page_size': 10,
-      'fullname': keyword,
+      'page_size': pageSize,
+      'fullname': search,
       'filter': filter,
     });
   }

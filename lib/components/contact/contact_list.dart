@@ -5,11 +5,11 @@ import '../../config/language.dart';
 import '../../utils/utils.dart';
 import '../common/text/text.dart';
 
-class ContactCard extends StatelessWidget {
-  final Contact contact;
+class CustomerCard extends StatelessWidget {
+  final Customer contact;
   final Function()? onTap;
 
-  const ContactCard({
+  const CustomerCard({
     Key? key,
     required this.contact,
     this.onTap,
@@ -148,7 +148,7 @@ class ContactCard extends StatelessWidget {
   }
 }
 
-class Contact {
+class Customer {
   final String id;
   final String name;
   final String mobile;
@@ -157,7 +157,7 @@ class Contact {
   final String lastUpdate;
   final int trackAmount;
 
-  Contact({
+  Customer({
     this.id = '',
     this.name = '',
     this.mobile = '',

@@ -6,12 +6,12 @@ import '../../utils/utils.dart';
 import '../common/text/text.dart';
 
 class OpportunityCard extends StatelessWidget {
-  final Opportunity contact;
+  final Opportunity opportunity;
   final Function()? onTap;
 
   const OpportunityCard({
     Key? key,
-    required this.contact,
+    required this.opportunity,
     this.onTap,
   }) : super(key: key);
 
@@ -49,7 +49,7 @@ class OpportunityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int days = contact.dayLeft();
+    int days = opportunity.dayLeft();
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -66,11 +66,11 @@ class OpportunityCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    contact.name,
+                    opportunity.name,
                     lineOfNumber: 3,
                   ),
                   CustomText(
-                    contact.lastUpdate,
+                    opportunity.lastUpdate,
                     color: AppColor.blue,
                   ),
                 ],
@@ -93,19 +93,19 @@ class OpportunityCard extends StatelessWidget {
                       rows: <DataRow>[
                         dataRow(
                           'module.contact.mobile',
-                          contact.mobile,
+                          opportunity.mobile,
                         ),
                         dataRow(
                           'module.contact.tracking_amount',
-                          '${contact.trackingAmount} ${Language.translate('common.unit.times')}',
+                          '${opportunity.trackingAmount} ${Language.translate('common.unit.times')}',
                         ),
                         dataRow(
                           'module.opportunity.project',
-                          contact.projectName,
+                          opportunity.projectName,
                         ),
                         dataRow(
                           'module.opportunity.status',
-                          contact.statusName,
+                          opportunity.statusName,
                         ),
                       ],
                     ),
@@ -114,7 +114,7 @@ class OpportunityCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: contact.dayLeftColor(days),
+                      color: opportunity.dayLeftColor(days),
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                     constraints: const BoxConstraints(

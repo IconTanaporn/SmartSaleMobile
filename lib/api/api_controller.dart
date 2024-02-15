@@ -55,8 +55,8 @@ class ApiController {
   static Future sourceListLead() => CustomerClient.sourceList('lead');
   static Future sourceListContact() => CustomerClient.sourceList('contact');
 
-  static Future contactList(keyword, filter, page) =>
-      ContactClient.contactList(keyword, filter, page);
+  static Future contactList(search, filter, page, pageSize) =>
+      ContactClient.contactList(search, filter, page, pageSize);
   static Future contactSearchFilter() => ContactClient.contactSearchFilter();
   static Future contactDetail() => ContactClient.contactDetail();
   static Future quickCreateContact(
@@ -70,8 +70,8 @@ class ApiController {
   static Future contactUpdate(updateData) =>
       ContactClient.contactUpdate(updateData);
 
-  static Future leadList(keyword, filter, page) =>
-      LeadClient.leadList(keyword, filter, page);
+  static Future leadList(search, filter, page, pageSize) =>
+      LeadClient.leadList(search, filter, page, pageSize);
   static Future leadSearchFilter() => LeadClient.leadSearchFilter();
   static Future leadDetail() => LeadClient.leadDetail();
   static Future leadQualifyList() => LeadClient.leadQualifyList();

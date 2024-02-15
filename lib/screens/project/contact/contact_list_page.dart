@@ -3,27 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
-import 'package:smart_sale_mobile/components/contact/contact_list.dart';
 import 'package:smart_sale_mobile/config/language.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../api/api_controller.dart';
 import '../../../components/common/background/defualt_background.dart';
 import '../../../components/common/input/search_input.dart';
 import '../../../components/common/loading/loading.dart';
 import '../../../components/common/refresh_indicator/refresh_scroll_view.dart';
+import '../../../components/common/shader_mask/fade_list_mask.dart';
+import '../../../components/contact/contact_list.dart';
+import '../../../utils/utils.dart';
+
+const int pageSize = 10;
 
 final searchProvider = StateProvider<String>((ref) => '');
 final filterProvider = StateProvider<String>((ref) => '');
 final pageProvider = StateProvider<int>((ref) => 0);
+final hasNextPageProvider = StateProvider<bool>((ref) => true);
+
+final filteredProvider = StateProvider<List<Customer>>((ref) => []);
 
 final contactListProvider = FutureProvider.autoDispose((ref) async {
-  final search = ref.watch(searchProvider);
-  final filter = ref.watch(filterProvider);
   final page = ref.watch(pageProvider);
 
-  List list = await ApiController.contactList(search, filter, page);
-  return list
-      .map((e) => Contact(
+  final filter = ref.read(filterProvider);
+  final search = ref.read(searchProvider);
+
+  List list = await ApiController.contactList(search, filter, page, pageSize);
+  if (list.length < pageSize) {
+    ref.read(hasNextPageProvider.notifier).state = false;
+  }
+  final contacts = list
+      .map((e) => Customer(
             id: e['id'],
             name: e['name'],
             status: e['status_name'],
@@ -32,21 +44,10 @@ final contactListProvider = FutureProvider.autoDispose((ref) async {
             lastUpdate: e['lastupdate'],
           ))
       .toList();
-});
 
-final filteredProvider = FutureProvider.autoDispose<List<Contact>>((ref) async {
-  List<Contact> list = ref.watch(contactListProvider).value ?? [];
-  final page = ref.read(pageProvider);
+  ref.read(filteredProvider.notifier).state.addAll(contacts);
 
-  List<Contact> filtered = [];
-
-  if (page != 0) {
-    filtered.addAll(ref.state.value ?? []);
-  }
-
-  filtered.addAll(list);
-
-  return filtered;
+  return contacts;
 });
 
 @RoutePage()
@@ -63,9 +64,24 @@ class ContactListPage extends ConsumerWidget {
   Widget build(context, ref) {
     final contactList = ref.watch(contactListProvider);
     final filteredList = ref.watch(filteredProvider);
+    final hasNextPage = ref.watch(hasNextPageProvider);
 
     onSelectContact(id) {
       context.router.pushNamed('/project/$projectId/contact/$id');
+    }
+
+    getNextPage() async {
+      if (!contactList.isLoading) {
+        await IconFrameworkUtils.delayed();
+        ref.read(pageProvider.notifier).update((state) => state + 1);
+      }
+    }
+
+    refresh() async {
+      ref.read(filteredProvider.notifier).state.clear();
+      ref.read(pageProvider.notifier).state = 0;
+      ref.read(hasNextPageProvider.notifier).state = true;
+      return ref.refresh(contactListProvider.future);
     }
 
     return Scaffold(
@@ -74,60 +90,78 @@ class ContactListPage extends ConsumerWidget {
         centerTitle: true,
       ),
       body: DefaultBackgroundImage(
-        child: RefreshScrollView(
-          onRefresh: () async {
-            ref.read(pageProvider.notifier).state = 0;
-            return ref.refresh(contactListProvider.future);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: SearchInput(
-                    controller: search,
-                    onChanged: (keyword) {
-                      ref.read(pageProvider.notifier).state = 0;
-                      ref.read(searchProvider.notifier).state = keyword;
-                    },
-                    hintText: Language.translate(
-                      'screen.contact_list.search',
-                    ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SearchInput(
+                  controller: search,
+                  onChanged: (keyword) {
+                    ref.read(searchProvider.notifier).state = keyword;
+                    refresh();
+                  },
+                  hintText: Language.translate(
+                    'screen.contact_list.search',
                   ),
                 ),
-                contactList.when(
-                  loading: () => const Center(child: Loading()),
-                  error: (err, stack) => CustomText('Error: $err'),
-                  data: (data) {
-                    List data = filteredList.value ?? [];
-                    if (data.isEmpty) {
-                      return CustomText(
-                        Language.translate('common.no_data'),
-                      );
-                    }
-                    return AlignedGridView.count(
+              ),
+              if (!contactList.isLoading && filteredList.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomText(Language.translate('common.no_data')),
+                ),
+              Expanded(
+                child: FadeListMask(
+                  child: RefreshScrollView(
+                    onRefresh: refresh,
+                    child: AlignedGridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: 1,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      itemCount: data.length,
+                      itemCount: filteredList.length + (hasNextPage ? 1 : 0),
                       itemBuilder: (context, i) {
-                        Contact contact = data[i];
-                        return ContactCard(
-                          contact: contact,
+                        List<Customer> data = filteredList;
+                        if (i >= data.length) {
+                          return contactList.when(
+                            skipLoadingOnRefresh: false,
+                            loading: () => const Center(
+                              child: Loading(),
+                            ),
+                            error: (err, stack) => IconButton(
+                              onPressed: () =>
+                                  ref.refresh(contactListProvider.future),
+                              icon: const Icon(Icons.refresh),
+                            ),
+                            data: (_) => VisibilityDetector(
+                              onVisibilityChanged: (VisibilityInfo info) {
+                                double visiblePercentage =
+                                    info.visibleFraction * 100;
+                                if (visiblePercentage == 100) {
+                                  getNextPage();
+                                }
+                              },
+                              key: const Key('loading'),
+                              child: const Loading(),
+                            ),
+                          );
+                        }
+                        Customer customer = data[i];
+                        return CustomerCard(
+                          contact: customer,
                           onTap: () {
-                            onSelectContact(contact.id);
+                            onSelectContact(customer.id);
                           },
                         );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

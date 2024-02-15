@@ -17,10 +17,13 @@ import '../../../utils/utils.dart';
 
 const int pageSize = 10;
 
-final searchProvider = StateProvider<String>((ref) => '');
-final filterProvider = StateProvider<String>((ref) => '');
-final pageProvider = StateProvider<int>((ref) => 0);
-final hasNextPageProvider = StateProvider<bool>((ref) => true);
+final searchProvider = StateProvider.autoDispose<String>((ref) => '');
+final filterProvider = StateProvider.autoDispose<String>((ref) => '');
+final pageProvider = StateProvider.autoDispose<int>((ref) => 0);
+final hasNextPageProvider = StateProvider.autoDispose<bool>((ref) => true);
+
+final filteredProvider =
+    StateProvider.autoDispose<List<Opportunity>>((ref) => []);
 
 final opportunityListProvider = FutureProvider.autoDispose
     .family<List<Opportunity>, String>((ref, projectId) async {
@@ -33,7 +36,7 @@ final opportunityListProvider = FutureProvider.autoDispose
   if (list.length < pageSize) {
     ref.read(hasNextPageProvider.notifier).state = false;
   }
-  return list
+  final opportunities = list
       .map((e) => Opportunity(
             id: e['id'],
             name: e['contact_name'],
@@ -46,23 +49,10 @@ final opportunityListProvider = FutureProvider.autoDispose
             projectName: e['project_name'],
           ))
       .toList();
-});
 
-final filteredProvider = FutureProvider.autoDispose
-    .family<List<Opportunity>, String>((ref, projectId) async {
-  List<Opportunity> list =
-      ref.watch(opportunityListProvider(projectId)).value ?? [];
-  final page = ref.read(pageProvider);
+  ref.read(filteredProvider.notifier).state.addAll(opportunities);
 
-  List<Opportunity> filtered = [];
-
-  if (page != 0) {
-    filtered.addAll(ref.state.value ?? []);
-  }
-
-  filtered.addAll(list);
-
-  return filtered;
+  return opportunities;
 });
 
 @RoutePage()
@@ -78,7 +68,7 @@ class OpportunityListPage extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     final opportunityList = ref.watch(opportunityListProvider(projectId));
-    final filteredList = ref.watch(filteredProvider(projectId));
+    final filteredList = ref.watch(filteredProvider);
     final hasNextPage = ref.watch(hasNextPageProvider);
 
     onSelectOpp(id) {
@@ -91,6 +81,7 @@ class OpportunityListPage extends ConsumerWidget {
     }
 
     refresh() async {
+      ref.read(filteredProvider.notifier).state.clear();
       ref.read(pageProvider.notifier).state = 0;
       ref.read(hasNextPageProvider.notifier).state = true;
       return ref.refresh(opportunityListProvider(projectId).future);
@@ -111,21 +102,19 @@ class OpportunityListPage extends ConsumerWidget {
                 child: SearchInput(
                   controller: search,
                   onChanged: (keyword) {
-                    ref.read(pageProvider.notifier).state = 0;
                     ref.read(searchProvider.notifier).state = keyword;
+                    refresh();
                   },
                   hintText: Language.translate(
                     'screen.opportunity_list.search',
                   ),
                 ),
               ),
-              Loading(
-                isLoading:
-                    opportunityList.value == null && opportunityList.isLoading,
-              ),
-              if (!opportunityList.isLoading &&
-                  (filteredList.value?.isEmpty ?? false))
-                CustomText(Language.translate('common.no_data')),
+              if (!opportunityList.isLoading && filteredList.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomText(Language.translate('common.no_data')),
+                ),
               Expanded(
                 child: FadeListMask(
                   child: RefreshScrollView(
@@ -136,26 +125,36 @@ class OpportunityListPage extends ConsumerWidget {
                       crossAxisCount: 1,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      itemCount: (filteredList.value?.length ?? 0) +
-                          ((!opportunityList.isLoading && hasNextPage) ? 1 : 0),
+                      itemCount: filteredList.length + (hasNextPage ? 1 : 0),
                       itemBuilder: (context, i) {
-                        List<Opportunity> data = filteredList.value ?? [];
+                        List<Opportunity> data = filteredList;
                         if (i >= data.length) {
-                          return VisibilityDetector(
-                            onVisibilityChanged: (VisibilityInfo info) {
-                              double visiblePercentage =
-                                  info.visibleFraction * 100;
-                              if (visiblePercentage == 100) {
-                                getNextPage();
-                              }
-                            },
-                            key: const Key('loading'),
-                            child: const Loading(),
+                          return opportunityList.when(
+                            skipLoadingOnRefresh: false,
+                            loading: () => const Center(
+                              child: Loading(),
+                            ),
+                            error: (err, stack) => IconButton(
+                              onPressed: () => ref.refresh(
+                                  opportunityListProvider(projectId).future),
+                              icon: const Icon(Icons.refresh),
+                            ),
+                            data: (_) => VisibilityDetector(
+                              onVisibilityChanged: (VisibilityInfo info) {
+                                double visiblePercentage =
+                                    info.visibleFraction * 100;
+                                if (visiblePercentage == 100) {
+                                  getNextPage();
+                                }
+                              },
+                              key: const Key('loading'),
+                              child: const Loading(),
+                            ),
                           );
                         }
                         Opportunity opp = data[i];
                         return OpportunityCard(
-                          contact: opp,
+                          opportunity: opp,
                           onTap: () {
                             onSelectOpp(opp.id);
                           },
