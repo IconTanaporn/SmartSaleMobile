@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../api/api_controller.dart';
+import '../../../components/common/loading/loading.dart';
 import '../../../config/asset_path.dart';
 import '../../../config/language.dart';
 import '../../../route/router.dart';
@@ -67,12 +68,18 @@ class WalkInTabPage extends ConsumerWidget {
                   tabsRouter.activeIndex == 0 ? toCreateContact : toWalkIn,
               icon: Image.asset(AssetPath.buttonNewContact),
             ),
-            if (tabsRouter.activeIndex == 0 && qrCreateContact.value != null)
-              IconButton(
-                onPressed: toQrCreateContact,
-                icon: Image.asset(
-                  AssetPath.buttonScanQr,
-                ),
+            if (tabsRouter.activeIndex == 0)
+              qrCreateContact.when(
+                loading: () => const Center(child: Loading(size: 25)),
+                error: (err, stack) => Container(),
+                data: (_) {
+                  return IconButton(
+                    onPressed: toQrCreateContact,
+                    icon: Image.asset(
+                      AssetPath.buttonScanQr,
+                    ),
+                  );
+                },
               ),
             if (tabsRouter.activeIndex != 0)
               IconButton(

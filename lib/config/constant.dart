@@ -4,6 +4,7 @@ class FontSize {
   FontSize._();
 
   static const double px9 = 9;
+  static const double px10 = 10;
   static const double px12 = 12;
   static const double px14 = 14;
   static const double px16 = 16;
@@ -49,7 +50,7 @@ class AppColor {
 class ButtonSize {
   ButtonSize._();
 
-  static const double small = 35;
-  static const double normal = 40;
+  static const double small = 25;
+  static const double normal = 35;
   static const double big = 45;
 }

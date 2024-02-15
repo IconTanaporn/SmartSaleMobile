@@ -53,7 +53,9 @@ class WalkInPage extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     onSave() {
-      //
+      if (_formKey.currentState?.validate() ?? false) {
+        // print(prefix?.name);
+      }
     }
 
     return Scaffold(

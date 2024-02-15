@@ -334,6 +334,7 @@
     "walk_in": {
       "title": "ลูกค้าใหม่",
       "sub_title": "ข้อมูลลูกค้า",
+      "address": "ข้อมูลที่อยู่",
       "source_type": {
         "title": "เลือกประเภทการ Walk In",
         "walk_in": "Walk In",

@@ -213,6 +213,21 @@ class ApiClient {
   }) async {
     String url = '$_apiUrl/$endpoint';
 
+    try {
+      http.Response urlResponse = await http.post(Uri.parse(url));
+      if (urlResponse.statusCode != 200 && urlResponse.statusCode != 401) {
+        throw ApiException(
+          'Status Code : ${urlResponse.statusCode}',
+          statusCode: urlResponse.statusCode,
+        );
+      }
+    } catch (e) {
+      throw ApiException(
+        e.toString(),
+        statusCode: 404,
+      );
+    }
+
     var fullBody = {
       'app_username': _appUsername,
       'app_password': _appPassword,

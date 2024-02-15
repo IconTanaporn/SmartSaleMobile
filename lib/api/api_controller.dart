@@ -111,8 +111,10 @@ class ApiController {
   static Future opportunityList() => OpportunityClient.opportunityList();
   static Future opportunityListByContact(page) =>
       OpportunityClient.opportunityListByContact(page);
-  static Future opportunitySearchList(keyword, filter, page) =>
-      OpportunityClient.opportunitySearchList(keyword, filter, page);
+  static Future opportunitySearchList(
+          projectId, keyword, filter, page, pageSize) =>
+      OpportunityClient.opportunitySearchList(
+          projectId, keyword, filter, page, pageSize);
   static Future opportunitySearchFilter() =>
       OpportunityClient.opportunitySearchFilter();
   static Future opportunityDetail() => OpportunityClient.opportunityDetail();

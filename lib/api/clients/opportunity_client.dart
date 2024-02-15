@@ -16,12 +16,13 @@ class OpportunityClient {
     });
   }
 
-  static Future opportunitySearchList(keyword, filter, page) async {
+  static Future opportunitySearchList(
+      projectId, keyword, filter, page, pageSize) async {
     return await ApiClient.post('crm/search', body: {
       'type': 'opportunity',
-      // 'project_id': appConstant.projectId,
+      'project_id': projectId,
       'current_page': page,
-      'page_size': 10,
+      'page_size': pageSize,
       'fullname': keyword,
       'filter': filter,
     });

@@ -173,7 +173,7 @@ class InputText extends StatelessWidget {
             ]
           : null,
       style: AppStyle.styleText(
-        fontSize: FontSize.normal,
+        fontSize: FontSize.title,
         color: AppColor.grey2,
       ),
       readOnly: readOnly,
@@ -377,7 +377,7 @@ class InputDropdown extends StatelessWidget {
       ),
       iconSize: 45,
       borderRadius: BorderRadius.circular(15.0),
-      value: value,
+      value: items.contains(value) ? value : null,
       items: items.map<DropdownMenuItem<KeyModel>>(
         (KeyModel data) {
           return DropdownMenuItem<KeyModel>(

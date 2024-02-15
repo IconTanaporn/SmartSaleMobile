@@ -334,6 +334,7 @@
     "walk_in": {
       "title": "Walk-In",
       "sub_title": "Customer Information",
+      "address": "Address Information",
       "source_type": {
         "title": "Select type",
         "walk_in": "Walk In",

@@ -148,7 +148,7 @@ class QRPage extends ConsumerWidget {
         if (!hideLink)
           CustomText(
             url,
-            lineOfNumber: 2,
+            lineOfNumber: 3,
             textAlign: TextAlign.center,
           ),
       ],
