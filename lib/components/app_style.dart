@@ -41,6 +41,8 @@ class AppStyle {
       suffix: isLoading ? const CircularProgressIndicator() : null,
       suffixIcon: suffixIcon,
       suffixText: suffixText,
+      // floatingLabelAlignment: FloatingLabelAlignment.start,
+      floatingLabelBehavior: FloatingLabelBehavior.always,
       labelText: labelText,
       labelStyle: styleText(
         fontSize: FontSize.title,

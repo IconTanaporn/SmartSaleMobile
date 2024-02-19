@@ -15,9 +15,12 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? SpinKitCircle(
-            color: AppColor.red2,
-            size: size,
+        ? Padding(
+            padding: const EdgeInsets.all(2),
+            child: SpinKitCircle(
+              color: AppColor.red2,
+              size: size,
+            ),
           )
         : Container();
   }

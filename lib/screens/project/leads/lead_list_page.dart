@@ -12,7 +12,7 @@ import '../../../components/common/input/search_input.dart';
 import '../../../components/common/loading/loading.dart';
 import '../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../components/common/shader_mask/fade_list_mask.dart';
-import '../../../components/contact/contact_list.dart';
+import '../../../components/customer/customer_list.dart';
 import '../../../utils/utils.dart';
 
 const int pageSize = 10;
@@ -24,17 +24,17 @@ final hasNextPageProvider = StateProvider<bool>((ref) => true);
 
 final filteredProvider = StateProvider<List<Customer>>((ref) => []);
 
-final contactListProvider = FutureProvider.autoDispose((ref) async {
+final leadListProvider = FutureProvider.autoDispose((ref) async {
   final page = ref.watch(pageProvider);
 
-  final filter = ref.read(filterProvider);
   final search = ref.read(searchProvider);
+  final filter = ref.read(filterProvider);
 
-  List list = await ApiController.contactList(search, filter, page, pageSize);
+  List list = await ApiController.leadList(search, filter, page, pageSize);
   if (list.length < pageSize) {
     ref.read(hasNextPageProvider.notifier).state = false;
   }
-  final contacts = list
+  final leads = list
       .map((e) => Customer(
             id: e['id'],
             name: e['name'],
@@ -45,14 +45,14 @@ final contactListProvider = FutureProvider.autoDispose((ref) async {
           ))
       .toList();
 
-  ref.read(filteredProvider.notifier).state.addAll(contacts);
+  ref.read(filteredProvider.notifier).state.addAll(leads);
 
-  return contacts;
+  return leads;
 });
 
 @RoutePage()
-class ContactListPage extends ConsumerWidget {
-  ContactListPage({
+class LeadListPage extends ConsumerWidget {
+  LeadListPage({
     @PathParam.inherit('id') required this.projectId,
     super.key,
   });
@@ -62,16 +62,16 @@ class ContactListPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final contactList = ref.watch(contactListProvider);
+    final leadList = ref.watch(leadListProvider);
     final filteredList = ref.watch(filteredProvider);
     final hasNextPage = ref.watch(hasNextPageProvider);
 
-    onSelectContact(id) {
-      context.router.pushNamed('/project/$projectId/contact/$id');
+    onSelectLead(id) {
+      context.router.pushNamed('/project/$projectId/lead/$id');
     }
 
     getNextPage() async {
-      if (!contactList.isLoading) {
+      if (!leadList.isLoading) {
         await IconFrameworkUtils.delayed();
         ref.read(pageProvider.notifier).update((state) => state + 1);
       }
@@ -81,12 +81,12 @@ class ContactListPage extends ConsumerWidget {
       ref.read(filteredProvider.notifier).state.clear();
       ref.read(pageProvider.notifier).state = 0;
       ref.read(hasNextPageProvider.notifier).state = true;
-      return ref.refresh(contactListProvider.future);
+      return ref.refresh(leadListProvider.future);
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Language.translate('screen.contact_list.title')),
+        title: Text(Language.translate('screen.lead_list.title')),
         centerTitle: true,
       ),
       body: DefaultBackgroundImage(
@@ -103,11 +103,11 @@ class ContactListPage extends ConsumerWidget {
                     refresh();
                   },
                   hintText: Language.translate(
-                    'screen.contact_list.search',
+                    'screen.lead_list.search',
                   ),
                 ),
               ),
-              if (!contactList.isLoading && filteredList.isEmpty)
+              if (!leadList.isLoading && filteredList.isEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomText(Language.translate('common.no_data')),
@@ -126,14 +126,14 @@ class ContactListPage extends ConsumerWidget {
                       itemBuilder: (context, i) {
                         List<Customer> data = filteredList;
                         if (i >= data.length) {
-                          return contactList.when(
+                          return leadList.when(
                             skipLoadingOnRefresh: false,
                             loading: () => const Center(
                               child: Loading(),
                             ),
                             error: (err, stack) => IconButton(
                               onPressed: () =>
-                                  ref.refresh(contactListProvider.future),
+                                  ref.refresh(leadListProvider.future),
                               icon: const Icon(Icons.refresh),
                             ),
                             data: (_) => VisibilityDetector(
@@ -153,7 +153,7 @@ class ContactListPage extends ConsumerWidget {
                         return CustomerCard(
                           contact: customer,
                           onTap: () {
-                            onSelectContact(customer.id);
+                            onSelectLead(customer.id);
                           },
                         );
                       },

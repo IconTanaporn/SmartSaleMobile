@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../config/constant.dart';
 import '../../config/language.dart';
 import '../../utils/utils.dart';
+import '../common/table/description.dart';
 import '../common/text/text.dart';
 
 class OpportunityCard extends StatelessWidget {
@@ -14,38 +15,6 @@ class OpportunityCard extends StatelessWidget {
     required this.opportunity,
     this.onTap,
   }) : super(key: key);
-
-  dataRow(String label, String value) => DataRow(
-        cells: <DataCell>[
-          DataCell(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(
-                Language.translate(label),
-                color: AppColor.blue,
-                fontSize: FontSize.px14,
-              ),
-              const SizedBox(width: 10),
-              const CustomText(
-                ':',
-                color: AppColor.blue,
-                fontSize: FontSize.px14,
-              ),
-            ],
-          )),
-          DataCell(Container(
-            constraints: BoxConstraints(
-              maxWidth: IconFrameworkUtils.getWidth(0.6),
-              maxHeight: double.infinity,
-            ),
-            child: CustomText(
-              value == '' ? '-' : value,
-              fontSize: FontSize.px14,
-              lineOfNumber: 2,
-            ),
-          )),
-        ],
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -78,35 +47,16 @@ class OpportunityCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Theme(
-                    data: Theme.of(context)
-                        .copyWith(dividerColor: AppColor.transparent),
-                    child: DataTable(
-                      horizontalMargin: 0,
-                      headingRowHeight: 0,
-                      dividerThickness: 0,
-                      dataRowHeight: FontSize.normal * 1.5,
-                      columns: <DataColumn>[
-                        DataColumn(label: Container()),
-                        DataColumn(label: Container()),
-                      ],
-                      rows: <DataRow>[
-                        dataRow(
-                          'module.contact.mobile',
-                          opportunity.mobile,
-                        ),
-                        dataRow(
+                  Flexible(
+                    child: Descriptions(
+                      rows: [
+                        ['module.contact.mobile', opportunity.mobile],
+                        [
                           'module.contact.tracking_amount',
                           '${opportunity.trackingAmount} ${Language.translate('common.unit.times')}',
-                        ),
-                        dataRow(
-                          'module.opportunity.project',
-                          opportunity.projectName,
-                        ),
-                        dataRow(
-                          'module.opportunity.status',
-                          opportunity.statusName,
-                        ),
+                        ],
+                        ['module.opportunity.project', opportunity.projectName],
+                        ['module.opportunity.status', opportunity.statusName]
                       ],
                     ),
                   ),

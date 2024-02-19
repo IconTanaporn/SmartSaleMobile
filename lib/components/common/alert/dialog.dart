@@ -108,7 +108,6 @@ class CustomConfirmDialog extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 8),
               child: CustomText(
                 title,
-                fontSize: FontSize.title,
                 fontWeight: FontWeight.bold,
                 textAlign: TextAlign.center,
               ),

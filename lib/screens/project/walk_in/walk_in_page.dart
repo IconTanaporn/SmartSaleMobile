@@ -1,14 +1,72 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_sale_mobile/api/api_controller.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/config/language.dart';
 
+import '../../../api/api_client.dart';
 import '../../../components/common/background/defualt_background.dart';
 import '../../../components/common/input/input.dart';
+import '../../../components/customer/walk_in/contacts_dialog.dart';
 import '../../../config/constant.dart';
+import '../../../route/router.dart';
 import '../../../utils/utils.dart';
+
+class CreateContactInput {
+  final String firstname, lastname, mobile, email, source;
+
+  CreateContactInput(
+    this.firstname,
+    this.lastname,
+    this.mobile,
+    this.email,
+    this.source,
+  );
+}
+
+class CreateContactResponse {
+  final String? customerId, oppId;
+  final List? dup;
+
+  CreateContactResponse({this.customerId, this.oppId, this.dup});
+}
+
+final createContactProvider = FutureProvider.autoDispose
+    .family<CreateContactResponse?, CreateContactInput>((ref, input) async {
+  try {
+    IconFrameworkUtils.startLoading();
+    final data = await ApiController.quickCreateContact(input.firstname,
+        input.lastname, input.mobile, input.email, input.source);
+    IconFrameworkUtils.stopLoading();
+
+    return CreateContactResponse(
+      customerId: data['id'],
+      oppId: data['opp_id'],
+    );
+  } on ApiException catch (e) {
+    IconFrameworkUtils.stopLoading();
+
+    if (e.isDuplicate()) {
+      return CreateContactResponse(
+        dup: e.body,
+      );
+    } else {
+      await IconFrameworkUtils.showAlertDialog(
+        title: Language.translate('common.alert.save_fail'),
+        description: e.message,
+      );
+    }
+  }
+});
+
+final questionnaireProvider = FutureProvider.autoDispose
+    .family<dynamic, CreateContactResponse>((ref, input) async {
+  final data = await ApiController.questionnaire(
+      contactId: input.customerId, oppId: input.oppId);
+  return data['questionnaire_url'];
+});
 
 @RoutePage()
 class WalkInPage extends ConsumerWidget {
@@ -52,9 +110,74 @@ class WalkInPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    onSave() {
+    Future onSave() async {
       if (_formKey.currentState?.validate() ?? false) {
-        // print(prefix?.name);
+        final firstname = _firstname.text.trim();
+        final lastname = _lastname.text.trim();
+        final mobile = _mobile.text.trim();
+        final email = _email.text.trim();
+
+        // final source = await selectSourceType();
+        String source = 'walkin';
+        if (source != AlertDialogValue.cancel) {
+          final CreateContactResponse? response =
+              await ref.watch(createContactProvider(CreateContactInput(
+            firstname,
+            lastname,
+            mobile,
+            email,
+            source,
+          )).future);
+
+          if (response?.customerId != null) {
+            final url =
+                await ref.watch(questionnaireProvider(response!).future);
+
+            if (url != null) {
+              await context.router.push(QRRoute(
+                url: url,
+                title: Language.translate('module.project.questionnaire.title'),
+                detail: '$firstname $lastname',
+              ));
+            }
+
+            context.navigateNamedTo(
+              '/project/$projectId/contact/${response.customerId}',
+            );
+          }
+
+          if (response?.dup != null) {
+            final value = await showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return DupContactsDialog(
+                  list: response!.dup!
+                      .map((e) => DupContact(
+                            e['id'] ?? '',
+                            e['name'] ?? '',
+                            mobile: e['mobile'] ?? '',
+                            email: e['email'] ?? '',
+                            citizenId: e['citizen_id'] ?? '',
+                            passportId: e['passport_id'] ?? '',
+                          ))
+                      .toList(),
+                );
+              },
+            );
+
+            if (value != AlertDialogValue.cancel) {
+              DupContact dupContact = value;
+              context.router
+                  .pushNamed('/project/$projectId/contact/${dupContact.id}');
+            }
+          }
+        }
+      } else {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.alert'),
+          description: Language.translate('common.input.alert.check_validate'),
+        );
       }
     }
 

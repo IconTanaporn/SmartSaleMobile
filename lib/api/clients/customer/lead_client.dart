@@ -19,9 +19,9 @@ class LeadClient {
     });
   }
 
-  static Future leadDetail() async {
+  static Future leadDetail(id) async {
     return await ApiClient.post('crm/lead_loadByID', checkNull: true, body: {
-      // 'lead_id': UserProperty.getCustomerId(),
+      'lead_id': id,
     });
   }
 

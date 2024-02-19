@@ -9,8 +9,7 @@ import '../../config/constant.dart';
 import '../../config/language.dart';
 import '../../route/router.dart';
 
-final projectProvider =
-    FutureProvider.autoDispose.family<dynamic, String>((ref, id) async {
+final projectProvider = FutureProvider.family<dynamic, String>((ref, id) async {
   var data = await ApiController.conceptDetail(id);
   return data;
 });

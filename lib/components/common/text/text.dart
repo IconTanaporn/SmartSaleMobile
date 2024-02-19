@@ -40,6 +40,7 @@ class CustomText extends StatelessWidget {
         height: lineHeight,
       ),
       textAlign: textAlign,
+      softWrap: true,
     );
   }
 }

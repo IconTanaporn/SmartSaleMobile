@@ -103,6 +103,7 @@
       "we_chat": "WeChat",
       "tracking_amount": "การติดตาม",
       "source": "แหล่งที่มา",
+      "status": "สถานะ",
       "address": "ที่อยู่",
       "gender_value": {
         "male": "ชาย",
@@ -396,6 +397,8 @@
       "title": "โอกาสการขาย",
       "sub_title": "ข้อมูล",
       "day_left": "เหลือ {day} วัน",
+      "start": "Start",
+      "exp": "Exp",
       "menu": {
         "progress": "ความคืบหน้า",
         "questionnaire": "แบบสอบถาม",

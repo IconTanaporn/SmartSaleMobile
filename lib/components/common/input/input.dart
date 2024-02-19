@@ -1,10 +1,11 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../config/asset_path.dart';
 import '../../../config/constant.dart';
 import '../../../config/language.dart';
-import '../../../models/key_model.dart';
+import '../../../models/common/key_model.dart';
 import '../../../utils/utils.dart';
 import '../../app_style.dart';
 import '../loading/loading.dart';
@@ -333,7 +334,6 @@ class InputDropdown extends StatelessWidget {
   final List<KeyModel> items;
   final KeyModel? value;
   final String? labelText;
-  final String? hintText;
   final Color? fillColor;
   final bool disabled;
   final bool isLoading;
@@ -345,7 +345,6 @@ class InputDropdown extends StatelessWidget {
     this.value,
     this.onChanged,
     this.labelText,
-    this.hintText,
     this.fillColor,
     this.disabled = false,
     this.isLoading = false,
@@ -366,50 +365,78 @@ class InputDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      isExpanded: true,
-      decoration: AppStyle.inputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(12, 1, 12, 1),
-        labelText:
-            labelText != null ? '$labelText${(required ? ' *' : '')}' : null,
-        isCollapsed: true,
-        fillColor: disabled ? AppColor.grey5 : fillColor,
-      ),
-      iconSize: 45,
-      borderRadius: BorderRadius.circular(15.0),
-      value: items.contains(value) ? value : null,
-      items: items.map<DropdownMenuItem<KeyModel>>(
-        (KeyModel data) {
-          return DropdownMenuItem<KeyModel>(
-            value: data,
-            child: CustomText(
-              data.name,
-              lineOfNumber: 1,
-              fontSize: FontSize.title,
-              color: AppColor.grey2,
+    return DropdownSearch<KeyModel>(
+      selectedItem: items.contains(value) ? value : null,
+      items: items,
+      itemAsString: (data) => data.name,
+      popupProps: PopupProps.menu(
+        showSearchBox: true,
+        menuProps: MenuProps(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        searchFieldProps: TextFieldProps(
+          decoration: AppStyle.inputDecoration(
+            contentPadding: const EdgeInsets.fromLTRB(12, 1, 12, 1),
+            labelText: labelText,
+            fillColor: fillColor,
+          ),
+        ),
+        containerBuilder: (ctx, child) {
+          return Container(
+            padding: const EdgeInsets.only(top: 4),
+            child: child,
+          );
+        },
+        itemBuilder: (ctx, data, _) {
+          bool isSelected = data.id == value?.id;
+          return Container(
+            decoration: BoxDecoration(
+              color: isSelected ? AppColor.grey5 : null,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: DropdownMenuItem(
+              value: data,
+              child: CustomText(
+                data.name,
+                lineOfNumber: 1,
+                fontSize: FontSize.title,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isSelected ? AppColor.red : AppColor.grey2,
+              ),
             ),
           );
         },
-      ).toList(),
+      ),
+      dropdownButtonProps: DropdownButtonProps(
+        icon: isLoading
+            ? const Loading(size: 25)
+            : Image.asset(
+                AssetPath.iconDropdown,
+                height: 15,
+                color: items.isNotEmpty && !disabled
+                    ? AppColor.red
+                    : AppColor.grey4,
+              ),
+      ),
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        baseStyle: AppStyle.styleText(
+          fontSize: FontSize.title,
+          color: AppColor.grey2,
+        ),
+        dropdownSearchDecoration: AppStyle.inputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(12, 1, 12, 1),
+          labelText:
+              labelText != null ? '$labelText${(required ? ' *' : '')}' : null,
+          fillColor: disabled ? AppColor.grey5 : fillColor,
+        ),
+      ),
       onChanged: disabled
           ? null
           : (KeyModel? keyData) =>
               {if (keyData != null && keyData != value) onChanged!(keyData)},
-      hint: CustomText(
-        hintText ?? '',
-        color: Colors.grey,
-        fontSize: FontSize.title,
-      ),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autoValidateMode: AutovalidateMode.onUserInteraction,
       validator: onValidate,
-      icon: isLoading
-          ? const Loading(size: 25)
-          : Image.asset(
-              AssetPath.iconDropdown,
-              height: 15,
-              color:
-                  items.isNotEmpty && !disabled ? AppColor.red : AppColor.grey4,
-            ),
+      enabled: items.isNotEmpty,
     );
   }
 }

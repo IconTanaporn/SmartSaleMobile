@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_sale_mobile/config/constant.dart';
 
 import '../../../utils/utils.dart';
 
@@ -24,10 +23,7 @@ class RefreshScrollView extends StatelessWidget {
             constraints: BoxConstraints(
               minHeight: IconFrameworkUtils.getHeight(0.95),
             ),
-            child: Material(
-              color: AppColor.transparent,
-              child: child,
-            ),
+            child: child,
           ),
         ),
       ),

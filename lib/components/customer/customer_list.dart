@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/constant.dart';
 import '../../config/language.dart';
-import '../../utils/utils.dart';
+import '../common/table/description.dart';
 import '../common/text/text.dart';
 
 class CustomerCard extends StatelessWidget {
@@ -14,38 +14,6 @@ class CustomerCard extends StatelessWidget {
     required this.contact,
     this.onTap,
   }) : super(key: key);
-
-  dataRow(String label, String value) => DataRow(
-        cells: <DataCell>[
-          DataCell(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(
-                Language.translate(label),
-                color: AppColor.blue,
-                fontSize: FontSize.px14,
-              ),
-              const SizedBox(width: 10),
-              const CustomText(
-                ':',
-                color: AppColor.blue,
-                fontSize: FontSize.px14,
-              ),
-            ],
-          )),
-          DataCell(Container(
-            constraints: BoxConstraints(
-              maxWidth: IconFrameworkUtils.getWidth(0.6),
-              maxHeight: double.infinity,
-            ),
-            child: CustomText(
-              value == '' ? '-' : value,
-              fontSize: FontSize.px14,
-              lineOfNumber: 2,
-            ),
-          )),
-        ],
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -112,33 +80,16 @@ class CustomerCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: AppColor.transparent),
-                child: DataTable(
-                  horizontalMargin: 0,
-                  headingRowHeight: 0,
-                  dividerThickness: 0,
-                  dataRowHeight: FontSize.normal * 1.5,
-                  columns: <DataColumn>[
-                    DataColumn(label: Container()),
-                    DataColumn(label: Container()),
+              Descriptions(
+                colors: const [AppColor.blue, AppColor.black2],
+                rows: [
+                  ['module.contact.mobile', contact.mobile],
+                  [
+                    'module.contact.tracking_amount',
+                    '${contact.trackAmount} ${Language.translate('common.unit.times')}'
                   ],
-                  rows: <DataRow>[
-                    dataRow(
-                      'module.contact.mobile',
-                      contact.mobile,
-                    ),
-                    dataRow(
-                      'module.contact.tracking_amount',
-                      '${contact.trackAmount} ${Language.translate('common.unit.times')}',
-                    ),
-                    dataRow(
-                      'module.contact.source',
-                      contact.source,
-                    ),
-                  ],
-                ),
+                  ['module.contact.source', contact.source],
+                ],
               ),
             ],
           ),

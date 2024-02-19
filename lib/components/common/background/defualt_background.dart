@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:smart_sale_mobile/config/constant.dart';
 
 import '../../../config/asset_path.dart';
 
@@ -21,7 +22,7 @@ class DefaultBackgroundImage extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: child,
+      child: Material(color: AppColor.transparent, child: child),
     );
   }
 }

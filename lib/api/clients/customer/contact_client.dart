@@ -19,9 +19,9 @@ class ContactClient {
     });
   }
 
-  static Future contactDetail() async {
+  static Future contactDetail(id) async {
     return await ApiClient.post('crm/contact_loadByID', checkNull: true, body: {
-      // 'customer_id': UserProperty.getCustomerId(),
+      'customer_id': id,
     });
   }
 

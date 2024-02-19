@@ -39,7 +39,7 @@ class ApiException implements Exception {
 /// * [ApiConfig.authPass]
 class ApiConfig {
   ApiConfig._();
-  static const String baseUrl = _ananda;
+  static const String baseUrl = _afdQas;
 
   /// ### [[Standard]]
   static const String _std = 'https://std-test.iconrem.com/smartsale';

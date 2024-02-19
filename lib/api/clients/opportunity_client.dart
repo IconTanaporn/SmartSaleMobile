@@ -1,3 +1,4 @@
+import '../../providers/auth_provider.dart';
 import '../api_client.dart';
 
 class OpportunityClient {
@@ -7,11 +8,11 @@ class OpportunityClient {
     return await ApiClient.post('crm/optprojectlist');
   }
 
-  static Future opportunityListByContact(page) async {
+  static Future opportunityListByContact(id) async {
     return await ApiClient.post('crm/opportunity_load_by_contact', body: {
-      // 'bu_id': UserProperty.getUserPropertyByKey('bu_id'),
-      // 'contact_id': UserProperty.getCustomerId(),
-      'current_page': page,
+      'bu_id': user.buId,
+      'contact_id': id,
+      'current_page': 0,
       'page_size': '10'
     });
   }
@@ -34,11 +35,11 @@ class OpportunityClient {
     });
   }
 
-  static Future opportunityDetail() async {
+  static Future opportunityDetail(id) async {
     return await ApiClient.post('crm/opportunity_load_by_id',
         checkNull: true,
         body: {
-          // 'opportunity_id': appConstant.oppId,
+          'opportunity_id': id,
         });
   }
 

@@ -58,7 +58,7 @@ class ApiController {
   static Future contactList(search, filter, page, pageSize) =>
       ContactClient.contactList(search, filter, page, pageSize);
   static Future contactSearchFilter() => ContactClient.contactSearchFilter();
-  static Future contactDetail() => ContactClient.contactDetail();
+  static Future contactDetail(id) => ContactClient.contactDetail(id);
   static Future quickCreateContact(
           firstname, lastname, mobile, email, source) =>
       ContactClient.quickCreateContact(
@@ -73,7 +73,7 @@ class ApiController {
   static Future leadList(search, filter, page, pageSize) =>
       LeadClient.leadList(search, filter, page, pageSize);
   static Future leadSearchFilter() => LeadClient.leadSearchFilter();
-  static Future leadDetail() => LeadClient.leadDetail();
+  static Future leadDetail(id) => LeadClient.leadDetail(id);
   static Future leadQualifyList() => LeadClient.leadQualifyList();
   static Future leadQualifyUpdate(statusId, comment) =>
       LeadClient.leadQualifyUpdate(statusId, comment);
@@ -109,15 +109,16 @@ class ApiController {
       ActivityClient.createActivityByType(stage, type, refId);
 
   static Future opportunityList() => OpportunityClient.opportunityList();
-  static Future opportunityListByContact(page) =>
-      OpportunityClient.opportunityListByContact(page);
+  static Future opportunityListByContact(id) =>
+      OpportunityClient.opportunityListByContact(id);
   static Future opportunitySearchList(
           projectId, keyword, filter, page, pageSize) =>
       OpportunityClient.opportunitySearchList(
           projectId, keyword, filter, page, pageSize);
   static Future opportunitySearchFilter() =>
       OpportunityClient.opportunitySearchFilter();
-  static Future opportunityDetail() => OpportunityClient.opportunityDetail();
+  static Future opportunityDetail(id) =>
+      OpportunityClient.opportunityDetail(id);
   static Future opportunityCreate(projectId, budget, comment) =>
       OpportunityClient.opportunityCreate(projectId, budget, comment);
   static Future opportunityUpdate(data, budget, comment) =>

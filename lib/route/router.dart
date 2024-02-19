@@ -5,9 +5,12 @@ import 'package:smart_sale_mobile/screens/setting/setting_page.dart';
 import '../screens/auth/login_page.dart';
 import '../screens/auth/splash_page.dart';
 import '../screens/home_page.dart';
-import '../screens/project/contact/contact_list_page.dart';
-import '../screens/project/lead/lead_list_page.dart';
-import '../screens/project/opportunity/opportunity_list_page.dart';
+import '../screens/project/contacts/contact/contact_page.dart';
+import '../screens/project/contacts/contact_list_page.dart';
+import '../screens/project/leads/lead/lead_page.dart';
+import '../screens/project/leads/lead_list_page.dart';
+import '../screens/project/opportunities/opportunity/opportunity_page.dart';
+import '../screens/project/opportunities/opportunity_list_page.dart';
 import '../screens/project/project_page.dart';
 import '../screens/project/walk_in/create_contact_page.dart';
 import '../screens/project/walk_in/walk_in_page.dart';
@@ -48,6 +51,21 @@ class RootRoutes extends _$RootRoutes {
             AutoRoute(page: SettingProfileRoute.page, path: 'profile'),
             RedirectRoute(path: '*', redirectTo: 'language'),
           ],
+          guards: [AuthGuard()],
+        ),
+        AutoRoute(
+          page: ContactRoute.page,
+          path: '/project/:projectId/contact/:id',
+          guards: [AuthGuard()],
+        ),
+        AutoRoute(
+          page: LeadRoute.page,
+          path: '/project/:projectId/lead/:id',
+          guards: [AuthGuard()],
+        ),
+        AutoRoute(
+          page: OpportunityRoute.page,
+          path: '/project/:projectId/opportunity/:id',
           guards: [AuthGuard()],
         ),
         AutoRoute(

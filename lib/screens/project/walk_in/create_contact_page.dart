@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/config/language.dart';
-import 'package:smart_sale_mobile/models/key_model.dart';
+import 'package:smart_sale_mobile/models/common/key_model.dart';
 
 import '../../../api/api_controller.dart';
 import '../../../components/common/background/defualt_background.dart';
@@ -22,7 +22,7 @@ final isThaiProvider = FutureProvider.autoDispose((ref) async {
 
 final genderProvider = StateProvider<KeyModel?>((ref) => null);
 
-final genderListProvider = FutureProvider.autoDispose((ref) async {
+final genderListProvider = FutureProvider((ref) async {
   await IconFrameworkUtils.delayed();
 
   return [
@@ -34,21 +34,21 @@ final genderListProvider = FutureProvider.autoDispose((ref) async {
 
 final prefixProvider = StateProvider<KeyModel?>((ref) => null);
 
-final prefixListProvider = FutureProvider.autoDispose((ref) async {
+final prefixListProvider = FutureProvider((ref) async {
   List list = await ApiController.prefixList();
   return list.map((e) => KeyModel(id: e['id'], name: e['name'])).toList();
 });
 
 final nationalityProvider = StateProvider<KeyModel?>((ref) => null);
 
-final nationalityListProvider = FutureProvider.autoDispose((ref) async {
+final nationalityListProvider = FutureProvider((ref) async {
   List list = await ApiController.nationalityList();
   return list.map((e) => KeyModel(id: e['id'], name: e['name'])).toList();
 });
 
 final provinceProvider = StateProvider<KeyModel?>((ref) => null);
 
-final provinceListProvider = FutureProvider.autoDispose((ref) async {
+final provinceListProvider = FutureProvider((ref) async {
   List list = await ApiController.provinceList();
   return list.map((e) => KeyModel(id: e['id'], name: e['name'])).toList();
 });
@@ -80,8 +80,8 @@ class SubDistract extends KeyModel {
 final subDistrictProvider = StateProvider<SubDistract?>((ref) => null);
 
 final subDistrictListProvider = FutureProvider.autoDispose((ref) async {
-  final province = ref.watch(provinceProvider);
   final district = ref.watch(districtProvider);
+  final province = ref.read(provinceProvider);
 
   List list = [];
 
@@ -99,7 +99,7 @@ final zipcodeProvider = StateProvider<String>((ref) => '');
 
 final zipcodeListProvider = FutureProvider.autoDispose((ref) async {
   final zipcode = ref.watch(zipcodeProvider);
-  final provinceList = ref.watch(provinceListProvider).value ?? [];
+  final provinceList = ref.read(provinceListProvider).value ?? [];
 
   if (zipcode.length == 5) {
     List list = await ApiController.provinceByPostCode(zipcode);
@@ -117,15 +117,17 @@ final zipcodeListProvider = FutureProvider.autoDispose((ref) async {
 
 final zipcodeListProvider2 = FutureProvider.autoDispose((ref) async {
   final list = ref.watch(zipcodeListProvider).value ?? [];
-  final districtList = ref.watch(districtListProvider).value ?? [];
-  final subDistrictList = ref.watch(subDistrictListProvider).value ?? [];
 
   if (list.isNotEmpty) {
     dynamic data = list.first;
-    await IconFrameworkUtils.delayed(milliseconds: 100);
 
+    await IconFrameworkUtils.delayed(milliseconds: 100);
+    final districtList = ref.watch(districtListProvider).value ?? [];
     ref.read(districtProvider.notifier).state =
         districtList.firstWhere((o) => o.id == data['district_id']);
+
+    await IconFrameworkUtils.delayed(milliseconds: 100);
+    final subDistrictList = ref.watch(subDistrictListProvider).value ?? [];
     ref.read(subDistrictProvider.notifier).state =
         subDistrictList.firstWhere((o) => o.id == data['sub_district_id']);
   }

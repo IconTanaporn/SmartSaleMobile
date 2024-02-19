@@ -27,6 +27,22 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    ContactRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ContactRouteArgs>(
+          orElse: () => ContactRouteArgs(
+                  contactId: pathParams.getString(
+                'id',
+                '',
+              )));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ContactPage(
+          contactId: args.contactId,
+          key: args.key,
+        ),
+      );
+    },
     ContactTab.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -65,6 +81,22 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    LeadRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<LeadRouteArgs>(
+          orElse: () => LeadRouteArgs(
+                  contactId: pathParams.getString(
+                'id',
+                '',
+              )));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LeadPage(
+          contactId: args.contactId,
+          key: args.key,
+        ),
+      );
+    },
     LeadTab.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -91,6 +123,22 @@ abstract class _$RootRoutes extends RootStackRouter {
         routeData: routeData,
         child: OpportunityListPage(
           projectId: pathParams.getString('id'),
+          key: args.key,
+        ),
+      );
+    },
+    OpportunityRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<OpportunityRouteArgs>(
+          orElse: () => OpportunityRouteArgs(
+                  contactId: pathParams.getString(
+                'id',
+                '',
+              )));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: OpportunityPage(
+          contactId: args.contactId,
           key: args.key,
         ),
       );
@@ -207,6 +255,45 @@ class ContactListRouteArgs {
 }
 
 /// generated route for
+/// [ContactPage]
+class ContactRoute extends PageRouteInfo<ContactRouteArgs> {
+  ContactRoute({
+    String contactId = '',
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ContactRoute.name,
+          args: ContactRouteArgs(
+            contactId: contactId,
+            key: key,
+          ),
+          rawPathParams: {'id': contactId},
+          initialChildren: children,
+        );
+
+  static const String name = 'ContactRoute';
+
+  static const PageInfo<ContactRouteArgs> page =
+      PageInfo<ContactRouteArgs>(name);
+}
+
+class ContactRouteArgs {
+  const ContactRouteArgs({
+    this.contactId = '',
+    this.key,
+  });
+
+  final String contactId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ContactRouteArgs{contactId: $contactId, key: $key}';
+  }
+}
+
+/// generated route for
 /// [ContactTabPage]
 class ContactTab extends PageRouteInfo<void> {
   const ContactTab({List<PageRouteInfo>? children})
@@ -307,6 +394,44 @@ class LeadListRouteArgs {
 }
 
 /// generated route for
+/// [LeadPage]
+class LeadRoute extends PageRouteInfo<LeadRouteArgs> {
+  LeadRoute({
+    String contactId = '',
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          LeadRoute.name,
+          args: LeadRouteArgs(
+            contactId: contactId,
+            key: key,
+          ),
+          rawPathParams: {'id': contactId},
+          initialChildren: children,
+        );
+
+  static const String name = 'LeadRoute';
+
+  static const PageInfo<LeadRouteArgs> page = PageInfo<LeadRouteArgs>(name);
+}
+
+class LeadRouteArgs {
+  const LeadRouteArgs({
+    this.contactId = '',
+    this.key,
+  });
+
+  final String contactId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LeadRouteArgs{contactId: $contactId, key: $key}';
+  }
+}
+
+/// generated route for
 /// [LeadTabPage]
 class LeadTab extends PageRouteInfo<void> {
   const LeadTab({List<PageRouteInfo>? children})
@@ -388,6 +513,45 @@ class OpportunityListRouteArgs {
   @override
   String toString() {
     return 'OpportunityListRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [OpportunityPage]
+class OpportunityRoute extends PageRouteInfo<OpportunityRouteArgs> {
+  OpportunityRoute({
+    String contactId = '',
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          OpportunityRoute.name,
+          args: OpportunityRouteArgs(
+            contactId: contactId,
+            key: key,
+          ),
+          rawPathParams: {'id': contactId},
+          initialChildren: children,
+        );
+
+  static const String name = 'OpportunityRoute';
+
+  static const PageInfo<OpportunityRouteArgs> page =
+      PageInfo<OpportunityRouteArgs>(name);
+}
+
+class OpportunityRouteArgs {
+  const OpportunityRouteArgs({
+    this.contactId = '',
+    this.key,
+  });
+
+  final String contactId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'OpportunityRouteArgs{contactId: $contactId, key: $key}';
   }
 }
 
