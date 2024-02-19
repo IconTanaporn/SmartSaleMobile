@@ -23,8 +23,6 @@ class OpportunityProfile extends StatelessWidget {
           horizontal: BorderSide(color: AppColor.grey5),
         ),
       ),
-      // child: SingleChildScrollView(
-      //   scrollDirection: Axis.horizontal,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Descriptions(fontSize: FontSize.normal, colon: '', rows: [
@@ -39,7 +37,6 @@ class OpportunityProfile extends StatelessWidget {
           ['module.opportunity.comment', opp.comment],
         ]),
       ),
-      // ),
     );
   }
 }

@@ -232,7 +232,7 @@ class InputTextArea extends StatelessWidget {
     this.radius,
     this.fillColor,
     this.obscureText = false,
-    this.minLines = 6,
+    this.minLines = 4,
     this.helperText,
     this.errorText,
     this.validator,
@@ -260,6 +260,7 @@ class InputTextArea extends StatelessWidget {
       controller: controller,
       initialValue: initialValue,
       decoration: AppStyle.inputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(12, 12, 12, 1),
         labelText:
             labelText != null ? '$labelText${(required ? ' *' : '')}' : null,
         hintText: hintText,

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_sale_mobile/screens/project/opportunities/opportunity/opportunity_questionnaire_page.dart';
 import 'package:smart_sale_mobile/screens/setting/setting_page.dart';
 
 import '../screens/auth/login_page.dart';
@@ -9,7 +10,11 @@ import '../screens/project/contacts/contact/contact_page.dart';
 import '../screens/project/contacts/contact_list_page.dart';
 import '../screens/project/leads/lead/lead_page.dart';
 import '../screens/project/leads/lead_list_page.dart';
+import '../screens/project/opportunities/opportunity/edit_opportunity_page.dart';
+import '../screens/project/opportunities/opportunity/opportunity_close_job_page.dart';
 import '../screens/project/opportunities/opportunity/opportunity_page.dart';
+import '../screens/project/opportunities/opportunity/opportunity_progress_page.dart';
+import '../screens/project/opportunities/opportunity/opportunity_tab.dart';
 import '../screens/project/opportunities/opportunity_list_page.dart';
 import '../screens/project/project_page.dart';
 import '../screens/project/walk_in/create_contact_page.dart';
@@ -64,8 +69,22 @@ class RootRoutes extends _$RootRoutes {
           guards: [AuthGuard()],
         ),
         AutoRoute(
-          page: OpportunityRoute.page,
+          page: EditOpportunityRoute.page,
+          path: '/project/:projectId/opportunity/:id/edit',
+          guards: [AuthGuard()],
+        ),
+        AutoRoute(
+          page: OpportunityTap.page,
           path: '/project/:projectId/opportunity/:id',
+          children: [
+            AutoRoute(page: OpportunityRoute.page, path: ''),
+            AutoRoute(page: OpportunityProgressRoute.page, path: 'progress'),
+            AutoRoute(page: OpportunityCloseJobRoute.page, path: 'close_job'),
+            AutoRoute(
+              page: OpportunityQuestionnaireRoute.page,
+              path: 'questionnaire',
+            ),
+          ],
           guards: [AuthGuard()],
         ),
         AutoRoute(
@@ -92,19 +111,4 @@ class RootRoutes extends _$RootRoutes {
         AutoRoute(page: QRRoute.page, path: '/qr'),
         RedirectRoute(path: '*', redirectTo: '/'),
       ];
-}
-
-@RoutePage(name: 'ContactTab')
-class ContactTabPage extends AutoRouter {
-  const ContactTabPage({super.key});
-}
-
-@RoutePage(name: 'LeadTab')
-class LeadTabPage extends AutoRouter {
-  const LeadTabPage({super.key});
-}
-
-@RoutePage(name: 'OpportunityTab')
-class OpportunityTabPage extends AutoRouter {
-  const OpportunityTabPage({super.key});
 }

@@ -69,9 +69,9 @@ class OpportunityClient {
     });
   }
 
-  static Future opportunityProcessList() async {
+  static Future opportunityProcessList(id) async {
     return await ApiClient.post('crm/saleProcess_loadAll', body: {
-      // 'opportunity_id': UserProperty.getOpportunityPropertyByKey('id'),
+      'opportunity_id': id,
     });
   }
 

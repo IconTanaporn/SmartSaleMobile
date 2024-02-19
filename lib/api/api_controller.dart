@@ -125,8 +125,8 @@ class ApiController {
       OpportunityClient.opportunityUpdate(data, budget, comment);
   static Future opportunityQuestionnaire(oppId) =>
       OpportunityClient.opportunityQuestionnaire(oppId);
-  static Future opportunityProcessList() =>
-      OpportunityClient.opportunityProcessList();
+  static Future opportunityProcessList(oppId) =>
+      OpportunityClient.opportunityProcessList(oppId);
   static Future opportunityProcessUpdate(processId) =>
       OpportunityClient.opportunityProcessUpdate(processId);
   static Future closeJobStatusList() => OpportunityClient.closeJobStatusList();

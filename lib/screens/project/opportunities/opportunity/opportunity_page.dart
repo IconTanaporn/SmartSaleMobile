@@ -5,53 +5,43 @@ import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/components/common/table/description.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/opportunity/opportunity_detail.dart';
-import 'package:smart_sale_mobile/models/opportunity.dart';
-import 'package:smart_sale_mobile/utils/utils.dart';
 
-import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
-
-final opportunityProvider = FutureProvider.autoDispose
-    .family<OpportunityDetail, String>((ref, id) async {
-  var data = await ApiController.opportunityDetail(id);
-  return OpportunityDetail(
-    oppId: IconFrameworkUtils.getValue(data, 'id'),
-    oppName: IconFrameworkUtils.getValue(data, 'name'),
-    comment: IconFrameworkUtils.getValue(data, 'comment'),
-    budget: IconFrameworkUtils.getValue(data, 'budget'),
-    projectId: IconFrameworkUtils.getValue(data, 'project_id'),
-    projectName: IconFrameworkUtils.getValue(data, 'project_name'),
-    status: IconFrameworkUtils.getValue(data, 'status'),
-    createDate: IconFrameworkUtils.getValue(data, 'createdate'),
-    expDate: IconFrameworkUtils.getValue(data, 'expdate'),
-    contactName: IconFrameworkUtils.getValue(data, 'contact_name'),
-    mobile: IconFrameworkUtils.getValue(data, 'mobile'),
-  );
-});
+import 'opportunity_tab.dart';
 
 @RoutePage()
 class OpportunityPage extends ConsumerWidget {
   const OpportunityPage({
-    @PathParam('id') this.contactId = '',
+    @PathParam.inherit('id') this.oppId = '',
+    @PathParam.inherit('projectId') this.projectId = '',
     super.key,
   });
 
-  final String contactId;
+  final String oppId;
+  final String projectId;
 
   @override
   Widget build(context, ref) {
-    final opportunity = ref.watch(opportunityProvider(contactId));
+    final opportunity = ref.watch(opportunityProvider(oppId));
 
     onRefresh() async {
-      return ref.refresh(opportunityProvider(contactId));
+      return ref.refresh(opportunityProvider(oppId));
     }
 
     toEditOpp() {
+      context.router.pushNamed('/project/$projectId/opportunity/$oppId/edit');
       //
+    }
+
+    Future toContactDetail() async {
+      String contactId = opportunity.value?.contactId ?? '';
+      if (contactId != '') {
+        context.router.replaceNamed('/project/$projectId/contact/$contactId');
+      }
     }
 
     return Scaffold(
@@ -59,6 +49,12 @@ class OpportunityPage extends ConsumerWidget {
         title: Text(
           Language.translate('screen.opportunity.title'),
         ),
+        actions: [
+          IconButton(
+            onPressed: toContactDetail,
+            icon: Image.asset(AssetPath.buttonContact),
+          ),
+        ],
         centerTitle: true,
       ),
       body: DefaultBackgroundImage(

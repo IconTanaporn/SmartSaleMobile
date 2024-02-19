@@ -1,0 +1,93 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_sale_mobile/components/common/button/button.dart';
+
+import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/input/input.dart';
+import '../../../../config/language.dart';
+import '../../../../utils/utils.dart';
+import 'opportunity_tab.dart';
+
+@RoutePage()
+class EditOpportunityPage extends ConsumerWidget {
+  EditOpportunityPage({
+    @PathParam.inherit('id') this.oppId = '',
+    super.key,
+  });
+
+  final String oppId;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(context, ref) {
+    final opportunity = ref.watch(opportunityProvider(oppId));
+    final TextEditingController budget = TextEditingController(
+      text: opportunity.value?.budget ?? '',
+    );
+    final TextEditingController comment = TextEditingController(
+      text: opportunity.value?.comment ?? '',
+    );
+
+    onSave() {
+      //
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          Language.translate('screen.opportunity.edit.title'),
+        ),
+        centerTitle: true,
+      ),
+      body: DefaultBackgroundImage(
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    InputText(
+                      labelText:
+                          Language.translate('module.opportunity.project'),
+                      initialValue: opportunity.value?.projectName ?? '',
+                      disabled: true,
+                    ),
+                    const SizedBox(height: 15),
+                    InputText(
+                      labelText:
+                          Language.translate('module.opportunity.budget'),
+                      controller: budget,
+                      keyboardType: TextInputType.number,
+                      required: false,
+                    ),
+                    const SizedBox(height: 15),
+                    InputTextArea(
+                      controller: comment,
+                      labelText:
+                          Language.translate('module.opportunity.comment'),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: SizedBox(
+                        width: IconFrameworkUtils.getWidth(0.6),
+                        child: CustomButton(
+                          onClick: onSave,
+                          text: Language.translate('common.save'),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

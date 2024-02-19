@@ -39,14 +39,12 @@ abstract class _$RootRoutes extends RootStackRouter {
         routeData: routeData,
         child: ContactPage(
           contactId: args.contactId,
+          projectId: pathParams.getString(
+            'projectId',
+            '',
+          ),
           key: args.key,
         ),
-      );
-    },
-    ContactTab.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const ContactTabPage(),
       );
     },
     CreateContactRoute.name: (routeData) {
@@ -57,6 +55,21 @@ abstract class _$RootRoutes extends RootStackRouter {
         routeData: routeData,
         child: CreateContactPage(
           projectId: pathParams.getString('id'),
+          key: args.key,
+        ),
+      );
+    },
+    EditOpportunityRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditOpportunityRouteArgs>(
+          orElse: () => EditOpportunityRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EditOpportunityPage(
+          oppId: pathParams.getString(
+            'id',
+            '',
+          ),
           key: args.key,
         ),
       );
@@ -97,12 +110,6 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
-    LeadTab.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const LeadTabPage(),
-      );
-    },
     LoginRoute.name: (routeData) {
       final args = routeData.argsAs<LoginRouteArgs>(
           orElse: () => const LoginRouteArgs());
@@ -112,6 +119,21 @@ abstract class _$RootRoutes extends RootStackRouter {
           key: args.key,
           onResult: args.onResult,
           showBackButton: args.showBackButton,
+        ),
+      );
+    },
+    OpportunityCloseJobRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<OpportunityCloseJobRouteArgs>(
+          orElse: () => OpportunityCloseJobRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: OpportunityCloseJobPage(
+          oppId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
         ),
       );
     },
@@ -130,23 +152,56 @@ abstract class _$RootRoutes extends RootStackRouter {
     OpportunityRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<OpportunityRouteArgs>(
-          orElse: () => OpportunityRouteArgs(
-                  contactId: pathParams.getString(
-                'id',
-                '',
-              )));
+          orElse: () => OpportunityRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: OpportunityPage(
-          contactId: args.contactId,
+          oppId: pathParams.getString(
+            'id',
+            '',
+          ),
+          projectId: pathParams.getString(
+            'projectId',
+            '',
+          ),
           key: args.key,
         ),
       );
     },
-    OpportunityTab.name: (routeData) {
+    OpportunityProgressRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<OpportunityProgressRouteArgs>(
+          orElse: () => OpportunityProgressRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const OpportunityTabPage(),
+        child: OpportunityProgressPage(
+          oppId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
+    OpportunityQuestionnaireRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<OpportunityQuestionnaireRouteArgs>(
+          orElse: () => OpportunityQuestionnaireRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: OpportunityQuestionnairePage(
+          oppId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
+    OpportunityTap.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OpportunityTapPage(),
       );
     },
     ProjectRoute.name: (routeData) {
@@ -294,20 +349,6 @@ class ContactRouteArgs {
 }
 
 /// generated route for
-/// [ContactTabPage]
-class ContactTab extends PageRouteInfo<void> {
-  const ContactTab({List<PageRouteInfo>? children})
-      : super(
-          ContactTab.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ContactTab';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [CreateContactPage]
 class CreateContactRoute extends PageRouteInfo<CreateContactRouteArgs> {
   CreateContactRoute({
@@ -333,6 +374,35 @@ class CreateContactRouteArgs {
   @override
   String toString() {
     return 'CreateContactRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [EditOpportunityPage]
+class EditOpportunityRoute extends PageRouteInfo<EditOpportunityRouteArgs> {
+  EditOpportunityRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EditOpportunityRoute.name,
+          args: EditOpportunityRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditOpportunityRoute';
+
+  static const PageInfo<EditOpportunityRouteArgs> page =
+      PageInfo<EditOpportunityRouteArgs>(name);
+}
+
+class EditOpportunityRouteArgs {
+  const EditOpportunityRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'EditOpportunityRouteArgs{key: $key}';
   }
 }
 
@@ -432,20 +502,6 @@ class LeadRouteArgs {
 }
 
 /// generated route for
-/// [LeadTabPage]
-class LeadTab extends PageRouteInfo<void> {
-  const LeadTab({List<PageRouteInfo>? children})
-      : super(
-          LeadTab.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'LeadTab';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
 /// [LoginScreen]
 class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
   LoginRoute({
@@ -488,6 +544,36 @@ class LoginRouteArgs {
 }
 
 /// generated route for
+/// [OpportunityCloseJobPage]
+class OpportunityCloseJobRoute
+    extends PageRouteInfo<OpportunityCloseJobRouteArgs> {
+  OpportunityCloseJobRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          OpportunityCloseJobRoute.name,
+          args: OpportunityCloseJobRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'OpportunityCloseJobRoute';
+
+  static const PageInfo<OpportunityCloseJobRouteArgs> page =
+      PageInfo<OpportunityCloseJobRouteArgs>(name);
+}
+
+class OpportunityCloseJobRouteArgs {
+  const OpportunityCloseJobRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'OpportunityCloseJobRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
 /// [OpportunityListPage]
 class OpportunityListRoute extends PageRouteInfo<OpportunityListRouteArgs> {
   OpportunityListRoute({
@@ -520,16 +606,11 @@ class OpportunityListRouteArgs {
 /// [OpportunityPage]
 class OpportunityRoute extends PageRouteInfo<OpportunityRouteArgs> {
   OpportunityRoute({
-    String contactId = '',
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           OpportunityRoute.name,
-          args: OpportunityRouteArgs(
-            contactId: contactId,
-            key: key,
-          ),
-          rawPathParams: {'id': contactId},
+          args: OpportunityRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -540,31 +621,86 @@ class OpportunityRoute extends PageRouteInfo<OpportunityRouteArgs> {
 }
 
 class OpportunityRouteArgs {
-  const OpportunityRouteArgs({
-    this.contactId = '',
-    this.key,
-  });
-
-  final String contactId;
+  const OpportunityRouteArgs({this.key});
 
   final Key? key;
 
   @override
   String toString() {
-    return 'OpportunityRouteArgs{contactId: $contactId, key: $key}';
+    return 'OpportunityRouteArgs{key: $key}';
   }
 }
 
 /// generated route for
-/// [OpportunityTabPage]
-class OpportunityTab extends PageRouteInfo<void> {
-  const OpportunityTab({List<PageRouteInfo>? children})
-      : super(
-          OpportunityTab.name,
+/// [OpportunityProgressPage]
+class OpportunityProgressRoute
+    extends PageRouteInfo<OpportunityProgressRouteArgs> {
+  OpportunityProgressRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          OpportunityProgressRoute.name,
+          args: OpportunityProgressRouteArgs(key: key),
           initialChildren: children,
         );
 
-  static const String name = 'OpportunityTab';
+  static const String name = 'OpportunityProgressRoute';
+
+  static const PageInfo<OpportunityProgressRouteArgs> page =
+      PageInfo<OpportunityProgressRouteArgs>(name);
+}
+
+class OpportunityProgressRouteArgs {
+  const OpportunityProgressRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'OpportunityProgressRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [OpportunityQuestionnairePage]
+class OpportunityQuestionnaireRoute
+    extends PageRouteInfo<OpportunityQuestionnaireRouteArgs> {
+  OpportunityQuestionnaireRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          OpportunityQuestionnaireRoute.name,
+          args: OpportunityQuestionnaireRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'OpportunityQuestionnaireRoute';
+
+  static const PageInfo<OpportunityQuestionnaireRouteArgs> page =
+      PageInfo<OpportunityQuestionnaireRouteArgs>(name);
+}
+
+class OpportunityQuestionnaireRouteArgs {
+  const OpportunityQuestionnaireRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'OpportunityQuestionnaireRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [OpportunityTapPage]
+class OpportunityTap extends PageRouteInfo<void> {
+  const OpportunityTap({List<PageRouteInfo>? children})
+      : super(
+          OpportunityTap.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OpportunityTap';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -404,14 +404,14 @@
         "questionnaire": "แบบสอบถาม",
         "calendar": "ปฏิทิน",
         "activity_log": "ประวัติกิจกรรม",
-        "close_job": "ปิดงาน",
+        "close_job": "ปิดการขาย",
         "booking": "จอง"
       },
       "edit": {
         "title": "แก้ไขโอกาสการขาย"
       },
       "progress": {
-        "title": "โอกาสการขาย",
+        "title": "ความคืบหน้า",
         "sub_title": "ความคืบหน้า"
       },
       "questionnaire": {
@@ -419,8 +419,8 @@
         "no_data": "ไม่มีแบบสอบถามสำหรับโอกาสการขายนี้"
       },
       "close_job": {
-        "title": "โอกาสการขาย",
-        "sub_title": "ปิดงาน"
+        "title": "ปิดการขาย",
+        "sub_title": "ปิดการขาย"
       },
       "create": {
         "title": "โอกาสการขาย"

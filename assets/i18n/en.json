@@ -411,7 +411,7 @@
         "title": "Edit Information"
       },
       "progress": {
-        "title": "Opportunity",
+        "title": "Progress",
         "sub_title": "Progress"
       },
       "questionnaire": {
@@ -419,7 +419,7 @@
         "no_data": "This opportunity doesn't provide the questionnaire."
       },
       "close_job": {
-        "title": "Opportunity",
+        "title": "Close job",
         "sub_title": "Close job"
       },
       "create": {

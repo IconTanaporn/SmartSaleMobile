@@ -46,13 +46,13 @@ class LeadProfile extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              vertical: 4,
+                              vertical: 2,
                               horizontal: 16,
                             ),
                             child: CustomText(
                               lead.status,
                               color: AppColor.white,
-                              fontSize: FontSize.px10,
+                              fontSize: FontSize.px12,
                             ),
                           ),
                         ),

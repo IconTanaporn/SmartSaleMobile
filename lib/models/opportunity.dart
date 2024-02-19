@@ -13,6 +13,7 @@ class OpportunityDetail {
       status,
       createDate,
       expDate,
+      contactId,
       contactName,
       mobile;
 
@@ -26,6 +27,7 @@ class OpportunityDetail {
     this.status = '',
     this.createDate = '',
     this.expDate = '',
+    this.contactId = '',
     this.contactName = '',
     this.mobile = '',
   });

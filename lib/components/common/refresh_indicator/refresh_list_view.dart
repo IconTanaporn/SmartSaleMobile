@@ -11,7 +11,7 @@ class RefreshListView extends StatelessWidget {
   const RefreshListView({
     Key? key,
     required this.onRefresh,
-    required this.isEmpty,
+    this.isEmpty = false,
     required this.child,
   }) : super(key: key);
 
@@ -23,8 +23,13 @@ class RefreshListView extends StatelessWidget {
           ? child
           : ListView(
               children: [
-                CustomText(
-                  Language.translate('common.no_data'),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: CustomText(
+                      Language.translate('common.no_data'),
+                    ),
+                  ),
                 )
               ],
             ),

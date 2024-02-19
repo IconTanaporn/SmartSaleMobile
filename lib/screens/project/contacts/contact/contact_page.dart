@@ -77,10 +77,12 @@ final oppListProvider = FutureProvider.autoDispose
 class ContactPage extends ConsumerWidget {
   const ContactPage({
     @PathParam('id') this.contactId = '',
+    @PathParam.inherit('projectId') this.projectId = '',
     super.key,
   });
 
   final String contactId;
+  final String projectId;
 
   @override
   Widget build(context, ref) {
@@ -96,21 +98,8 @@ class ContactPage extends ConsumerWidget {
       ref.read(expandProvider.notifier).update((state) => !state);
     }
 
-    Future onClickOpportunity(index) async {
-      // var prevOppId = appConstant.oppId;
-      // var prevOppListScreen = appConstant.oppListScreen;
-      //
-      // setState(() {
-      //   appConstant.oppId = opportunityList[index].id;
-      //   appConstant.oppListScreen = false;
-      // });
-      // await Navigator.of(context).pushNamed(OpportunityDetailScreen.screenId);
-      // setState(() {
-      //   appConstant.oppId = prevOppId;
-      //   appConstant.oppListScreen = prevOppListScreen;
-      // });
-      // await IconFrameworkUtils.delayedWithLoading(context);
-      // fetchOpportunityByContact();
+    Future onClickOpportunity(id) async {
+      context.router.pushNamed('/project/$projectId/opportunity/$id');
     }
 
     toEditContact() {
@@ -291,7 +280,7 @@ class ContactPage extends ConsumerWidget {
                           margin: const EdgeInsets.only(bottom: 16),
                           child: ContactOpportunityCard(
                             opportunity: data[index],
-                            onClick: () => onClickOpportunity(index),
+                            onClick: () => onClickOpportunity(data[index].id),
                           ),
                         );
                       },
