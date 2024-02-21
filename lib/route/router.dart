@@ -8,7 +8,11 @@ import '../screens/auth/splash_page.dart';
 import '../screens/home_page.dart';
 import '../screens/project/contacts/contact/contact_page.dart';
 import '../screens/project/contacts/contact_list_page.dart';
+import '../screens/project/leads/lead/activity_log_page.dart';
+import '../screens/project/leads/lead/brochure_page.dart';
+import '../screens/project/leads/lead/calendar_page.dart';
 import '../screens/project/leads/lead/lead_page.dart';
+import '../screens/project/leads/lead/lead_tab.dart';
 import '../screens/project/leads/lead_list_page.dart';
 import '../screens/project/opportunities/opportunity/edit_opportunity_page.dart';
 import '../screens/project/opportunities/opportunity/opportunity_close_job_page.dart';
@@ -64,8 +68,14 @@ class RootRoutes extends _$RootRoutes {
           guards: [AuthGuard()],
         ),
         AutoRoute(
-          page: LeadRoute.page,
+          page: LeadTab.page,
           path: '/project/:projectId/lead/:id',
+          children: [
+            AutoRoute(page: LeadRoute.page, path: ''),
+            AutoRoute(page: CalendarRoute.page, path: 'calendar'),
+            AutoRoute(page: ActivityLogRoute.page, path: 'activities'),
+            AutoRoute(page: BrochureRoute.page, path: 'brochure'),
+          ],
           guards: [AuthGuard()],
         ),
         AutoRoute(

@@ -41,7 +41,8 @@ class ApiController {
   static Future conceptDetail(String id) => ProjectClient.conceptDetail(id);
   static Future facilitiesDetail() => ProjectClient.facilitiesDetail();
   static Future factSheetDetail() => ProjectClient.factSheetDetail();
-  static Future brochureList() => ProjectClient.brochureList();
+  static Future brochureList(projectId) =>
+      ProjectClient.brochureList(projectId);
   static Future brochureSend(id, email) =>
       ProjectClient.brochureSend(id, email);
   static Future modelTypeList() => ProjectClient.unitTypeList();

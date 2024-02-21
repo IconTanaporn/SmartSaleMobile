@@ -25,16 +25,11 @@ class FadeListMask extends StatelessWidget {
             Colors.transparent,
             Colors.purple
           ],
-          stops: [0, top ? 0.06 : 0, bottom ? 0.95 : 1, 1],
+          stops: [0, top ? 0.05 : 0, bottom ? 0.95 : 1, 1],
         ).createShader(rect);
       },
       blendMode: BlendMode.dstOut,
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          Expanded(child: child),
-        ],
-      ),
+      child: child,
     );
   }
 }

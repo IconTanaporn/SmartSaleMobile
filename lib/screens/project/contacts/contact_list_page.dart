@@ -26,6 +26,9 @@ final filteredProvider = StateProvider<List<Customer>>((ref) => []);
 
 final contactListProvider = FutureProvider.autoDispose((ref) async {
   final page = ref.watch(pageProvider);
+  if (page == 0) {
+    ref.read(filteredProvider.notifier).state.clear();
+  }
 
   final filter = ref.read(filterProvider);
   final search = ref.read(searchProvider);
@@ -78,7 +81,6 @@ class ContactListPage extends ConsumerWidget {
     }
 
     refresh() async {
-      ref.read(filteredProvider.notifier).state.clear();
       ref.read(pageProvider.notifier).state = 0;
       ref.read(hasNextPageProvider.notifier).state = true;
       return ref.refresh(contactListProvider.future);
@@ -122,6 +124,7 @@ class ContactListPage extends ConsumerWidget {
                       crossAxisCount: 1,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
+                      padding: const EdgeInsets.only(top: 10),
                       itemCount: filteredList.length + (hasNextPage ? 1 : 0),
                       itemBuilder: (context, i) {
                         List<Customer> data = filteredList;

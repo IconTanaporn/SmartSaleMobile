@@ -4,32 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/customer/lead/lead_profile.dart';
-import 'package:smart_sale_mobile/utils/utils.dart';
 
-import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
-import '../../../../models/lead.dart';
-
-final leadProvider =
-    FutureProvider.autoDispose.family<LeadDetail, String>((ref, id) async {
-  var data = await ApiController.leadDetail(id);
-  return LeadDetail(
-    id: id,
-    prefix: IconFrameworkUtils.getValue(data, 'prefix_name'),
-    trackingAmount: IconFrameworkUtils.getValue(data, 'tracking_amount'),
-    firstName: IconFrameworkUtils.getValue(data, 'firstname'),
-    lastName: IconFrameworkUtils.getValue(data, 'lastname'),
-    mobile: IconFrameworkUtils.getValue(data, 'mobile'),
-    email: IconFrameworkUtils.getValue(data, 'email'),
-    lineId: IconFrameworkUtils.getValue(data, 'line_id'),
-    source: IconFrameworkUtils.getValue(data, 'source_name'),
-    status: IconFrameworkUtils.getValue(data, 'status_name'),
-  );
-});
+import 'lead_tab.dart';
 
 @RoutePage()
 class LeadPage extends ConsumerWidget {

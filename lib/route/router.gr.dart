@@ -15,6 +15,55 @@ abstract class _$RootRoutes extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ActivityLogRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ActivityLogRouteArgs>(
+          orElse: () => ActivityLogRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ActivityLogPage(
+          referenceId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
+    BrochureRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<BrochureRouteArgs>(
+          orElse: () => BrochureRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BrochurePage(
+          referenceId: pathParams.getString(
+            'id',
+            '',
+          ),
+          projectId: pathParams.getString(
+            'projectId',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
+    CalendarRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<CalendarRouteArgs>(
+          orElse: () => CalendarRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CalendarPage(
+          referenceId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
     ContactListRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ContactListRouteArgs>(
@@ -108,6 +157,12 @@ abstract class _$RootRoutes extends RootStackRouter {
           contactId: args.contactId,
           key: args.key,
         ),
+      );
+    },
+    LeadTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LeadTapPage(),
       );
     },
     LoginRoute.name: (routeData) {
@@ -278,6 +333,93 @@ abstract class _$RootRoutes extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [ActivityLogPage]
+class ActivityLogRoute extends PageRouteInfo<ActivityLogRouteArgs> {
+  ActivityLogRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ActivityLogRoute.name,
+          args: ActivityLogRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'ActivityLogRoute';
+
+  static const PageInfo<ActivityLogRouteArgs> page =
+      PageInfo<ActivityLogRouteArgs>(name);
+}
+
+class ActivityLogRouteArgs {
+  const ActivityLogRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ActivityLogRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [BrochurePage]
+class BrochureRoute extends PageRouteInfo<BrochureRouteArgs> {
+  BrochureRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          BrochureRoute.name,
+          args: BrochureRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'BrochureRoute';
+
+  static const PageInfo<BrochureRouteArgs> page =
+      PageInfo<BrochureRouteArgs>(name);
+}
+
+class BrochureRouteArgs {
+  const BrochureRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'BrochureRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [CalendarPage]
+class CalendarRoute extends PageRouteInfo<CalendarRouteArgs> {
+  CalendarRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CalendarRoute.name,
+          args: CalendarRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'CalendarRoute';
+
+  static const PageInfo<CalendarRouteArgs> page =
+      PageInfo<CalendarRouteArgs>(name);
+}
+
+class CalendarRouteArgs {
+  const CalendarRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CalendarRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -499,6 +641,20 @@ class LeadRouteArgs {
   String toString() {
     return 'LeadRouteArgs{contactId: $contactId, key: $key}';
   }
+}
+
+/// generated route for
+/// [LeadTapPage]
+class LeadTab extends PageRouteInfo<void> {
+  const LeadTab({List<PageRouteInfo>? children})
+      : super(
+          LeadTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LeadTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

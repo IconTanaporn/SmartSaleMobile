@@ -25,9 +25,9 @@ class ProjectClient {
     });
   }
 
-  static Future brochureList() async {
+  static Future brochureList(projectId) async {
     return await ApiClient.post('brochure', body: {
-      // 'project_id': UserProperty.getCurrentProjectId(),
+      'project_id': projectId,
     });
   }
 

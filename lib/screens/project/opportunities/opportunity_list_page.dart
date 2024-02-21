@@ -27,9 +27,13 @@ final filteredProvider =
 
 final opportunityListProvider = FutureProvider.autoDispose
     .family<List<Opportunity>, String>((ref, projectId) async {
+  final page = ref.watch(pageProvider);
+  if (page == 0) {
+    ref.read(filteredProvider.notifier).state.clear();
+  }
+
   final search = ref.watch(searchProvider);
   final filter = ref.watch(filterProvider);
-  final page = ref.watch(pageProvider);
 
   List list = await ApiController.opportunitySearchList(
       projectId, search, filter, page, pageSize);
@@ -81,7 +85,6 @@ class OpportunityListPage extends ConsumerWidget {
     }
 
     refresh() async {
-      ref.read(filteredProvider.notifier).state.clear();
       ref.read(pageProvider.notifier).state = 0;
       ref.read(hasNextPageProvider.notifier).state = true;
       return ref.refresh(opportunityListProvider(projectId).future);
@@ -125,6 +128,7 @@ class OpportunityListPage extends ConsumerWidget {
                       crossAxisCount: 1,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
+                      padding: const EdgeInsets.only(top: 10),
                       itemCount: filteredList.length + (hasNextPage ? 1 : 0),
                       itemBuilder: (context, i) {
                         List<Opportunity> data = filteredList;
