@@ -3,11 +3,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 
+import '../../../../api/api_client.dart';
+import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/input/input.dart';
 import '../../../../config/language.dart';
 import '../../../../utils/utils.dart';
 import 'opportunity_tab.dart';
+
+class UpdateData {
+  final String id, budget, comment;
+  UpdateData({
+    this.id = '',
+    this.budget = '',
+    this.comment = '',
+  });
+}
+
+final _updateProvider = FutureProvider.autoDispose
+    .family<bool, UpdateData>((ref, updateData) async {
+  final data = ref.read(opportunityProvider(updateData.id)).value;
+
+  IconFrameworkUtils.startLoading();
+  try {
+    await ApiController.opportunityUpdate(
+      updateData.id,
+      data?.oppName,
+      data?.projectId,
+      data?.contactId,
+      updateData.budget,
+      updateData.comment,
+    );
+    IconFrameworkUtils.stopLoading();
+    await IconFrameworkUtils.showAlertDialog(
+      title: Language.translate('common.alert.save_complete'),
+    );
+    final newValue = ref.refresh(opportunityProvider(updateData.id));
+    return true;
+  } on ApiException catch (e) {
+    IconFrameworkUtils.stopLoading();
+    IconFrameworkUtils.showAlertDialog(
+      title: Language.translate('common.alert.fail'),
+      description: e.message,
+    );
+    IconFrameworkUtils.log(
+      'Edit Opportunity',
+      'Update Provider',
+      e.message,
+    );
+  }
+  return false;
+});
 
 @RoutePage()
 class EditOpportunityPage extends ConsumerWidget {
@@ -29,8 +75,16 @@ class EditOpportunityPage extends ConsumerWidget {
       text: opportunity.value?.comment ?? '',
     );
 
-    onSave() {
-      //
+    onSave() async {
+      final isSuccess = await ref.read(_updateProvider(UpdateData(
+        id: oppId,
+        budget: budget.text,
+        comment: comment.text,
+      )).future);
+
+      if (isSuccess) {
+        context.router.pop();
+      }
     }
 
     return Scaffold(

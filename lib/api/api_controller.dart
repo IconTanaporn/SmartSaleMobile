@@ -121,8 +121,10 @@ class ApiController {
       OpportunityClient.opportunityDetail(id);
   static Future opportunityCreate(projectId, budget, comment) =>
       OpportunityClient.opportunityCreate(projectId, budget, comment);
-  static Future opportunityUpdate(data, budget, comment) =>
-      OpportunityClient.opportunityUpdate(data, budget, comment);
+  static Future opportunityUpdate(
+          id, name, projectId, contactId, budget, comment) =>
+      OpportunityClient.opportunityUpdate(
+          id, name, projectId, contactId, budget, comment);
   static Future opportunityQuestionnaire(oppId) =>
       OpportunityClient.opportunityQuestionnaire(oppId);
   static Future opportunityProcessList(oppId) =>

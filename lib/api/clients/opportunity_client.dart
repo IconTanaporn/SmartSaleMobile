@@ -53,9 +53,13 @@ class OpportunityClient {
     });
   }
 
-  static Future opportunityUpdate(Map data, budget, comment) async {
+  static Future opportunityUpdate(
+      id, name, projectId, contactId, budget, comment) async {
     return await ApiClient.post('crm/opportunity_update', body: {
-      ...data,
+      'id': id,
+      'name': name,
+      'project_id': projectId,
+      'contact_id': contactId,
       'budget': budget,
       'comment': comment,
     });
