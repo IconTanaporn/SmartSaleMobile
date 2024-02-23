@@ -150,6 +150,21 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    EditLeadRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditLeadRouteArgs>(
+          orElse: () => EditLeadRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EditLeadPage(
+          leadId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
     EditOpportunityRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<EditOpportunityRouteArgs>(
@@ -189,13 +204,19 @@ abstract class _$RootRoutes extends RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<LeadRouteArgs>(
           orElse: () => LeadRouteArgs(
-                  contactId: pathParams.getString(
-                'id',
-                '',
-              )));
+                projectId: pathParams.getString(
+                  'projectId',
+                  '',
+                ),
+                contactId: pathParams.getString(
+                  'id',
+                  '',
+                ),
+              ));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: LeadPage(
+          projectId: args.projectId,
           contactId: args.contactId,
           key: args.key,
         ),
@@ -652,6 +673,35 @@ class CreateContactRouteArgs {
 }
 
 /// generated route for
+/// [EditLeadPage]
+class EditLeadRoute extends PageRouteInfo<EditLeadRouteArgs> {
+  EditLeadRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EditLeadRoute.name,
+          args: EditLeadRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditLeadRoute';
+
+  static const PageInfo<EditLeadRouteArgs> page =
+      PageInfo<EditLeadRouteArgs>(name);
+}
+
+class EditLeadRouteArgs {
+  const EditLeadRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'EditLeadRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
 /// [EditOpportunityPage]
 class EditOpportunityRoute extends PageRouteInfo<EditOpportunityRouteArgs> {
   EditOpportunityRoute({
@@ -741,16 +791,21 @@ class LeadListRouteArgs {
 /// [LeadPage]
 class LeadRoute extends PageRouteInfo<LeadRouteArgs> {
   LeadRoute({
+    String projectId = '',
     String contactId = '',
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           LeadRoute.name,
           args: LeadRouteArgs(
+            projectId: projectId,
             contactId: contactId,
             key: key,
           ),
-          rawPathParams: {'id': contactId},
+          rawPathParams: {
+            'projectId': projectId,
+            'id': contactId,
+          },
           initialChildren: children,
         );
 
@@ -761,9 +816,12 @@ class LeadRoute extends PageRouteInfo<LeadRouteArgs> {
 
 class LeadRouteArgs {
   const LeadRouteArgs({
+    this.projectId = '',
     this.contactId = '',
     this.key,
   });
+
+  final String projectId;
 
   final String contactId;
 
@@ -771,7 +829,7 @@ class LeadRouteArgs {
 
   @override
   String toString() {
-    return 'LeadRouteArgs{contactId: $contactId, key: $key}';
+    return 'LeadRouteArgs{projectId: $projectId, contactId: $contactId, key: $key}';
   }
 }
 

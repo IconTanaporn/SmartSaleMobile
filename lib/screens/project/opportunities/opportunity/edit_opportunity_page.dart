@@ -36,9 +36,9 @@ final _updateProvider = FutureProvider.autoDispose
     );
     IconFrameworkUtils.stopLoading();
     await IconFrameworkUtils.showAlertDialog(
-      title: Language.translate('common.alert.save_complete'),
+      title: Language.translate('common.alert.success'),
+      detail: Language.translate('common.alert.save_complete'),
     );
-    final newValue = ref.refresh(opportunityProvider(updateData.id));
     return true;
   } on ApiException catch (e) {
     IconFrameworkUtils.stopLoading();
@@ -76,14 +76,22 @@ class EditOpportunityPage extends ConsumerWidget {
     );
 
     onSave() async {
-      final isSuccess = await ref.read(_updateProvider(UpdateData(
-        id: oppId,
-        budget: budget.text,
-        comment: comment.text,
-      )).future);
+      if (_formKey.currentState!.validate()) {
+        final isSuccess = await ref.read(_updateProvider(UpdateData(
+          id: oppId,
+          budget: budget.text,
+          comment: comment.text,
+        )).future);
 
-      if (isSuccess) {
-        context.router.pop();
+        if (isSuccess) {
+          context.router.pop();
+          return ref.refresh(opportunityProvider(oppId));
+        }
+      } else {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.alert'),
+          detail: Language.translate('common.input.alert.check_validate'),
+        );
       }
     }
 

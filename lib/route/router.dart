@@ -14,6 +14,7 @@ import '../screens/project/leads/lead/activity_page.dart';
 import '../screens/project/leads/lead/add_activity_page.dart';
 import '../screens/project/leads/lead/brochure_page.dart';
 import '../screens/project/leads/lead/calendar_page.dart';
+import '../screens/project/leads/lead/edit_lead_page.dart';
 import '../screens/project/leads/lead/lead_page.dart';
 import '../screens/project/leads/lead/lead_tab.dart';
 import '../screens/project/leads/lead_list_page.dart';
@@ -122,6 +123,11 @@ class RootRoutes extends _$RootRoutes {
     AutoRoute(
       page: ActivityRoute.page,
       path: '/project/:projectId/:stage/:refId/activity/:id',
+      guards: [AuthGuard()],
+    ),
+    AutoRoute(
+      page: EditLeadRoute.page,
+      path: '/project/:projectId/lead/:id/edit',
       guards: [AuthGuard()],
     ),
   ];

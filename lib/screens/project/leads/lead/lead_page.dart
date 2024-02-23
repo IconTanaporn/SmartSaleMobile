@@ -38,11 +38,12 @@ final leadDetailProvider =
 @RoutePage()
 class LeadPage extends ConsumerWidget {
   const LeadPage({
+    @PathParam('projectId') this.projectId = '',
     @PathParam('id') this.contactId = '',
     super.key,
   });
 
-  final String contactId;
+  final String projectId, contactId;
 
   @override
   Widget build(context, ref) {
@@ -53,7 +54,7 @@ class LeadPage extends ConsumerWidget {
     }
 
     toEditLead() {
-      //
+      context.router.pushNamed('/project/$projectId/lead/$contactId/edit');
     }
 
     return Scaffold(
