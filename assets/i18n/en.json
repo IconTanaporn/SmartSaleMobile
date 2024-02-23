@@ -570,9 +570,10 @@
     },
     "brochure": {
       "title": "E-Brochure",
-      "sub_title": "Brochure",
+      "sub_title": "Select Brochure",
       "preview": "View Documents",
       "email": "Email",
+      "send_email": "Send email",
       "input": {
         "email": {
           "label": "Email",

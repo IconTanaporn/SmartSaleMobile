@@ -12,6 +12,7 @@ import '../../../../components/common/text/text.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../route/router.dart';
+import '../../../../utils/utils.dart';
 
 class Brochure {
   final String id, name, project, url;
@@ -19,7 +20,8 @@ class Brochure {
   Brochure(this.id, this.name, this.project, this.url);
 }
 
-final selectedProvider = StateProvider.autoDispose<Brochure?>((ref) => null);
+final selectedBrochureProvider =
+    StateProvider.autoDispose<List<Brochure>>((ref) => []);
 
 final brochureListProvider = FutureProvider.autoDispose
     .family<List<Brochure>, String>((ref, projectId) async {
@@ -33,12 +35,14 @@ final brochureListProvider = FutureProvider.autoDispose
           ))
       .toList();
 
-  ref.read(selectedProvider.notifier).state = brochures.first;
+  ref.read(selectedBrochureProvider.notifier).state = [brochures.first];
   return brochures;
 });
 
 @RoutePage()
 class BrochurePage extends ConsumerWidget {
+  static const int brochureMax = 1;
+
   const BrochurePage({
     @PathParam.inherit('id') this.referenceId = '',
     @PathParam.inherit('projectId') this.projectId = '',
@@ -51,14 +55,24 @@ class BrochurePage extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     final brochureList = ref.watch(brochureListProvider(projectId));
-    final selected = ref.watch(selectedProvider);
+    final selected = ref.watch(selectedBrochureProvider);
 
     onRefresh() async {
       return ref.refresh(brochureListProvider(projectId));
     }
 
-    onSelect(Brochure data) {
-      ref.read(selectedProvider.notifier).state = data;
+    onSelect(Brochure data, bool? select) {
+      if (select == true) {
+        if (selected.length >= brochureMax) {
+          selected.remove(selected.first);
+        }
+        selected.add(data);
+      } else {
+        selected.remove(data);
+      }
+
+      /// to refresh screen
+      ref.read(selectedBrochureProvider.notifier).state = [...selected];
     }
 
     toPreviewBrochure(Brochure data) {
@@ -67,6 +81,11 @@ class BrochurePage extends ConsumerWidget {
         title: data.project,
         detail: data.name,
       ));
+    }
+
+    onSend() {
+      context.router
+          .pushNamed('/project/$projectId/lead/$referenceId/brochure/send');
     }
 
     return Scaffold(
@@ -107,41 +126,73 @@ class BrochurePage extends ConsumerWidget {
                       icon: const Icon(Icons.refresh),
                     ),
                     data: (data) {
-                      return ListView.builder(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        itemCount: data.length,
+                      return ListView.separated(
+                        separatorBuilder: (context, i) =>
+                            const SizedBox(height: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        itemCount: data.length + 1,
                         itemBuilder: (context, i) {
+                          if (i >= data.length) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 30),
+                                  width: IconFrameworkUtils.getWidth(0.45),
+                                  child: CustomButton(
+                                    onClick: onSend,
+                                    text: Language.translate(
+                                        'screen.brochure.send_email'),
+                                    disable: selected.isEmpty,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+
                           final item = data[i];
-                          final bool isSelected = selected?.id == item.id;
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: CheckboxListTile(
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: isSelected,
-                              selected: isSelected,
-                              activeColor: AppColor.red,
-                              tileColor: AppColor.white,
-                              selectedTileColor: AppColor.red.withOpacity(0.2),
-                              title: CustomText(item.name),
-                              secondary: CustomButton(
-                                onClick: () => toPreviewBrochure(item),
-                                text: Language.translate(
-                                    'screen.brochure.preview'),
-                                radius: 10,
-                                backgroundColor: AppColor.blue,
-                                borderColor: AppColor.blue,
-                                height: ButtonSize.small,
-                                fontSize: FontSize.px14,
-                              ),
-                              onChanged: (val) {
-                                onSelect(item);
-                              },
+                          final bool isSelected = selected.contains(item);
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: AppColor.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: AppColor.grey5),
+                            ),
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Material(
+                              color: isSelected
+                                  ? AppColor.red.withOpacity(0.2)
+                                  : AppColor.white,
                               shape: RoundedRectangleBorder(
-                                side: const BorderSide(color: AppColor.grey5),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              checkboxShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
+                              child: CheckboxListTile(
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                value: isSelected,
+                                selected: isSelected,
+                                activeColor: AppColor.red,
+                                title: CustomText(item.name),
+                                secondary: CustomButton(
+                                  onClick: () => toPreviewBrochure(item),
+                                  text: Language.translate(
+                                      'screen.brochure.preview'),
+                                  radius: 10,
+                                  backgroundColor: AppColor.blue,
+                                  borderColor: AppColor.blue,
+                                  height: ButtonSize.small,
+                                  fontSize: FontSize.px14,
+                                ),
+                                onChanged: (val) {
+                                  onSelect(item, val);
+                                },
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                checkboxShape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                               ),
                             ),
                           );

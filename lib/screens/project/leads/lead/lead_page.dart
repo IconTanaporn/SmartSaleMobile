@@ -5,12 +5,35 @@ import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/customer/lead/lead_profile.dart';
 
+import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
-import 'lead_tab.dart';
+import '../../../../models/lead.dart';
+import '../../../../utils/utils.dart';
+
+final leadProvider = StateProvider.autoDispose((ref) => LeadDetail());
+
+final leadDetailProvider =
+    FutureProvider.autoDispose.family<LeadDetail, String>((ref, id) async {
+  final data = await ApiController.leadDetail(id);
+  final lead = LeadDetail(
+    id: id,
+    prefix: IconFrameworkUtils.getValue(data, 'prefix_name'),
+    trackingAmount: IconFrameworkUtils.getValue(data, 'tracking_amount'),
+    firstName: IconFrameworkUtils.getValue(data, 'firstname'),
+    lastName: IconFrameworkUtils.getValue(data, 'lastname'),
+    mobile: IconFrameworkUtils.getValue(data, 'mobile'),
+    email: IconFrameworkUtils.getValue(data, 'email'),
+    lineId: IconFrameworkUtils.getValue(data, 'line_id'),
+    source: IconFrameworkUtils.getValue(data, 'source_name'),
+    status: IconFrameworkUtils.getValue(data, 'status_name'),
+  );
+  ref.read(leadProvider.notifier).state = lead;
+  return lead;
+});
 
 @RoutePage()
 class LeadPage extends ConsumerWidget {
@@ -23,10 +46,10 @@ class LeadPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final lead = ref.watch(leadProvider(contactId));
+    final lead = ref.watch(leadDetailProvider(contactId));
 
     onRefresh() async {
-      return ref.refresh(leadProvider(contactId));
+      return ref.refresh(leadDetailProvider(contactId));
     }
 
     toEditLead() {

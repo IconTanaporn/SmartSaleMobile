@@ -4,41 +4,40 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/app_style.dart';
 import 'package:smart_sale_mobile/route/router.dart';
 
-import '../../../../api/api_controller.dart';
+import '../../../../components/customer/contact_customer_dialog.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
-import '../../../../models/lead.dart';
 import '../../../../utils/utils.dart';
-
-final leadProvider =
-    FutureProvider.autoDispose.family<LeadDetail, String>((ref, id) async {
-  var data = await ApiController.leadDetail(id);
-  return LeadDetail(
-    id: id,
-    prefix: IconFrameworkUtils.getValue(data, 'prefix_name'),
-    trackingAmount: IconFrameworkUtils.getValue(data, 'tracking_amount'),
-    firstName: IconFrameworkUtils.getValue(data, 'firstname'),
-    lastName: IconFrameworkUtils.getValue(data, 'lastname'),
-    mobile: IconFrameworkUtils.getValue(data, 'mobile'),
-    email: IconFrameworkUtils.getValue(data, 'email'),
-    lineId: IconFrameworkUtils.getValue(data, 'line_id'),
-    source: IconFrameworkUtils.getValue(data, 'source_name'),
-    status: IconFrameworkUtils.getValue(data, 'status_name'),
-  );
-});
+import 'lead_page.dart';
 
 @RoutePage(name: 'LeadTab')
 class LeadTapPage extends ConsumerWidget {
-  const LeadTapPage({
-    // @PathParam('id') this.leadId = '',
-    super.key,
-  });
+  const LeadTapPage({super.key});
 
-  // final String leadId;
+  toEditLead() {}
 
   @override
   Widget build(context, ref) {
+    final lead = ref.watch(leadProvider);
+
+    onContactCustomer() async {
+      await showDialog(
+        context: navigatorKey.currentContext!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ContactCustomerDialog(
+            line: lead.lineId,
+            email: lead.email,
+            tel: lead.mobile,
+            stage: 'lead',
+            refId: lead.id,
+            onEmpty: toEditLead,
+          );
+        },
+      );
+    }
+
     return AutoTabsScaffold(
       routes: [
         LeadRoute(),
@@ -52,7 +51,7 @@ class LeadTapPage extends ConsumerWidget {
           currentIndex: tabsRouter.activeIndex,
           onTap: (i) {
             if (i == 4) {
-              IconFrameworkUtils.showAlertDialog(title: 'Contact Customer');
+              onContactCustomer();
             } else {
               tabsRouter.setActiveIndex(i);
             }
@@ -104,14 +103,15 @@ class LeadTapPage extends ConsumerWidget {
                 height: 20,
               ),
             ),
-            BottomNavigationBarItem(
-              label: Language.translate('screen.lead.menu.contact_customer'),
-              icon: Image.asset(
-                AssetPath.iconContactCustomer,
-                color: AppColor.grey2,
-                height: 20,
+            if (lead.id != '')
+              BottomNavigationBarItem(
+                label: Language.translate('screen.lead.menu.contact_customer'),
+                icon: Image.asset(
+                  AssetPath.iconContactCustomer,
+                  color: AppColor.grey2,
+                  height: 20,
+                ),
               ),
-            ),
           ],
         );
       },

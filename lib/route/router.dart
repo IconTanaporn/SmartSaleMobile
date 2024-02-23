@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_sale_mobile/screens/project/leads/lead/send_brochure_page.dart';
 import 'package:smart_sale_mobile/screens/project/opportunities/opportunity/opportunity_questionnaire_page.dart';
 import 'package:smart_sale_mobile/screens/setting/setting_page.dart';
 
@@ -41,6 +42,86 @@ part 'router.gr.dart';
 /// - flutter packages pub run build_runner clean
 @AutoRouterConfig()
 class RootRoutes extends _$RootRoutes {
+  final AutoRoute _settingTab = AutoRoute(
+    page: SettingRoute.page,
+    path: '/setting',
+    children: [
+      AutoRoute(page: SettingLanguageRoute.page, path: 'language'),
+      AutoRoute(page: SettingBuRoute.page, path: 'bu'),
+      AutoRoute(page: SettingProfileRoute.page, path: 'profile'),
+      RedirectRoute(path: '*', redirectTo: 'language'),
+    ],
+    guards: [AuthGuard()],
+  );
+  final AutoRoute _projectTab = AutoRoute(
+    page: ProjectRoute.page,
+    path: '/project/:id',
+    children: [
+      AutoRoute(
+        page: WalkInTab.page,
+        path: 'walk_in',
+        maintainState: true,
+        children: [
+          AutoRoute(page: WalkInRoute.page, path: ''),
+          AutoRoute(page: CreateContactRoute.page, path: 'full'),
+          // RedirectRoute(path: '*', redirectTo: ''),
+        ],
+      ),
+      AutoRoute(page: ContactListRoute.page, path: 'contact'),
+      AutoRoute(page: LeadListRoute.page, path: 'lead'),
+      AutoRoute(page: OpportunityListRoute.page, path: 'opportunity'),
+      RedirectRoute(path: '*', redirectTo: 'walk_in'),
+    ],
+    guards: [AuthGuard()],
+  );
+
+  final AutoRoute _contactTab = AutoRoute(
+    page: ContactRoute.page,
+    path: '/project/:projectId/contact/:id',
+    guards: [AuthGuard()],
+  );
+  final AutoRoute _leadTab = AutoRoute(
+    page: LeadTab.page,
+    path: '/project/:projectId/lead/:id',
+    children: [
+      AutoRoute(page: LeadRoute.page, path: ''),
+      AutoRoute(page: CalendarRoute.page, path: 'calendar'),
+      AutoRoute(page: ActivityLogRoute.page, path: 'activities'),
+      AutoRoute(page: BrochureRoute.page, path: 'brochure'),
+    ],
+    guards: [AuthGuard()],
+  );
+  final AutoRoute _opportunityTab = AutoRoute(
+    page: OpportunityTap.page,
+    path: '/project/:projectId/opportunity/:id',
+    children: [
+      AutoRoute(page: OpportunityRoute.page, path: ''),
+      AutoRoute(page: OpportunityProgressRoute.page, path: 'progress'),
+      AutoRoute(page: OpportunityCloseJobRoute.page, path: 'close_job'),
+      AutoRoute(
+        page: OpportunityQuestionnaireRoute.page,
+        path: 'questionnaire',
+      ),
+    ],
+    guards: [AuthGuard()],
+  );
+
+  final List<AutoRoute> _leadRoutes = [
+    AutoRoute(
+      page: SendBrochureRoute.page,
+      path: '/project/:projectId/:stage/:id/brochure/send',
+      guards: [AuthGuard()],
+    ),
+  ];
+
+  final List<AutoRoute> _opportunityRoutes = [
+    AutoRoute(
+      page: EditOpportunityRoute.page,
+      path: '/project/:projectId/opportunity/:id/edit',
+      guards: [AuthGuard()],
+    ),
+  ];
+
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
@@ -51,73 +132,13 @@ class RootRoutes extends _$RootRoutes {
         ),
         AutoRoute(page: LoginRoute.page, path: '/login'),
         AutoRoute(page: HomeRoute.page, path: '/', guards: [AuthGuard()]),
-        AutoRoute(
-          page: SettingRoute.page,
-          path: '/setting',
-          children: [
-            AutoRoute(page: SettingLanguageRoute.page, path: 'language'),
-            AutoRoute(page: SettingBuRoute.page, path: 'bu'),
-            AutoRoute(page: SettingProfileRoute.page, path: 'profile'),
-            RedirectRoute(path: '*', redirectTo: 'language'),
-          ],
-          guards: [AuthGuard()],
-        ),
-        AutoRoute(
-          page: ContactRoute.page,
-          path: '/project/:projectId/contact/:id',
-          guards: [AuthGuard()],
-        ),
-        AutoRoute(
-          page: LeadTab.page,
-          path: '/project/:projectId/lead/:id',
-          children: [
-            AutoRoute(page: LeadRoute.page, path: ''),
-            AutoRoute(page: CalendarRoute.page, path: 'calendar'),
-            AutoRoute(page: ActivityLogRoute.page, path: 'activities'),
-            AutoRoute(page: BrochureRoute.page, path: 'brochure'),
-          ],
-          guards: [AuthGuard()],
-        ),
-        AutoRoute(
-          page: EditOpportunityRoute.page,
-          path: '/project/:projectId/opportunity/:id/edit',
-          guards: [AuthGuard()],
-        ),
-        AutoRoute(
-          page: OpportunityTap.page,
-          path: '/project/:projectId/opportunity/:id',
-          children: [
-            AutoRoute(page: OpportunityRoute.page, path: ''),
-            AutoRoute(page: OpportunityProgressRoute.page, path: 'progress'),
-            AutoRoute(page: OpportunityCloseJobRoute.page, path: 'close_job'),
-            AutoRoute(
-              page: OpportunityQuestionnaireRoute.page,
-              path: 'questionnaire',
-            ),
-          ],
-          guards: [AuthGuard()],
-        ),
-        AutoRoute(
-          page: ProjectRoute.page,
-          path: '/project/:id',
-          children: [
-            AutoRoute(
-              page: WalkInTab.page,
-              path: 'walk_in',
-              maintainState: true,
-              children: [
-                AutoRoute(page: WalkInRoute.page, path: ''),
-                AutoRoute(page: CreateContactRoute.page, path: 'full'),
-                // RedirectRoute(path: '*', redirectTo: ''),
-              ],
-            ),
-            AutoRoute(page: ContactListRoute.page, path: 'contact'),
-            AutoRoute(page: LeadListRoute.page, path: 'lead'),
-            AutoRoute(page: OpportunityListRoute.page, path: 'opportunity'),
-            RedirectRoute(path: '*', redirectTo: 'walk_in'),
-          ],
-          guards: [AuthGuard()],
-        ),
+        _settingTab,
+        _contactTab,
+        ..._leadRoutes,
+        _leadTab,
+        ..._opportunityRoutes,
+        _opportunityTab,
+        _projectTab,
         AutoRoute(page: QRRoute.page, path: '/qr'),
         RedirectRoute(path: '*', redirectTo: '/'),
       ];

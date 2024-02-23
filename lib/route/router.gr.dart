@@ -278,6 +278,29 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    SendBrochureRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<SendBrochureRouteArgs>(
+          orElse: () => SendBrochureRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: SendBrochurePage(
+          referenceId: pathParams.getString(
+            'id',
+            '',
+          ),
+          stage: pathParams.getString(
+            'stage',
+            '',
+          ),
+          projectId: pathParams.getString(
+            'projectId',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
     SettingBuRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -919,6 +942,35 @@ class QRRouteArgs {
   @override
   String toString() {
     return 'QRRouteArgs{url: $url, title: $title, detail: $detail, key: $key}';
+  }
+}
+
+/// generated route for
+/// [SendBrochurePage]
+class SendBrochureRoute extends PageRouteInfo<SendBrochureRouteArgs> {
+  SendBrochureRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          SendBrochureRoute.name,
+          args: SendBrochureRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'SendBrochureRoute';
+
+  static const PageInfo<SendBrochureRouteArgs> page =
+      PageInfo<SendBrochureRouteArgs>(name);
+}
+
+class SendBrochureRouteArgs {
+  const SendBrochureRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SendBrochureRouteArgs{key: $key}';
   }
 }
 

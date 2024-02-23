@@ -44,7 +44,7 @@ final _updateProvider = FutureProvider.autoDispose
     IconFrameworkUtils.stopLoading();
     IconFrameworkUtils.showAlertDialog(
       title: Language.translate('common.alert.fail'),
-      description: e.message,
+      detail: e.message,
     );
     IconFrameworkUtils.log(
       'Edit Opportunity',

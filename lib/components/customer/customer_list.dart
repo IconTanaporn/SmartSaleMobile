@@ -7,12 +7,13 @@ import '../common/text/text.dart';
 
 class CustomerCard extends StatelessWidget {
   final Customer contact;
-  final Function()? onTap;
+  final Function()? onTap, onLongPress;
 
   const CustomerCard({
     Key? key,
     required this.contact,
     this.onTap,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
@@ -23,6 +24,7 @@ class CustomerCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Column(
@@ -103,6 +105,7 @@ class Customer {
   final String id;
   final String name;
   final String mobile;
+  final String email;
   final String source;
   final String status;
   final String lastUpdate;
@@ -112,6 +115,7 @@ class Customer {
     this.id = '',
     this.name = '',
     this.mobile = '',
+    this.email = '',
     this.source = '',
     this.status = '',
     this.lastUpdate = '',

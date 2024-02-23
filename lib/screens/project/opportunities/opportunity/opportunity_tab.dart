@@ -32,12 +32,7 @@ final opportunityProvider = FutureProvider.autoDispose
 
 @RoutePage(name: 'OpportunityTap')
 class OpportunityTapPage extends ConsumerWidget {
-  const OpportunityTapPage({
-    // @PathParam('id') this.oppId = '',
-    super.key,
-  });
-
-  // final String oppId;
+  const OpportunityTapPage({super.key});
 
   @override
   Widget build(context, ref) {

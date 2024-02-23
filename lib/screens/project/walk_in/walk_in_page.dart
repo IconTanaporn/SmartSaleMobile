@@ -55,7 +55,7 @@ final createContactProvider = FutureProvider.autoDispose
     } else {
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('common.alert.save_fail'),
-        description: e.message,
+        detail: e.message,
       );
     }
   }
@@ -176,7 +176,7 @@ class WalkInPage extends ConsumerWidget {
       } else {
         await IconFrameworkUtils.showAlertDialog(
           title: Language.translate('common.alert.alert'),
-          description: Language.translate('common.input.alert.check_validate'),
+          detail: Language.translate('common.input.alert.check_validate'),
         );
       }
     }

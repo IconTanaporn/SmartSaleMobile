@@ -23,7 +23,7 @@ class CustomAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(32)),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -98,7 +98,7 @@ class CustomConfirmDialog extends StatelessWidget {
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(32)),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -242,7 +242,7 @@ class _CustomAlertConfirmCheckboxState
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(32.0)),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,

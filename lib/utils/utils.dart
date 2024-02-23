@@ -254,7 +254,7 @@ class IconFrameworkUtils {
 
   static Future showAlertDialog({
     String title = '',
-    String description = '',
+    String detail = '',
     String? cancelText,
   }) async {
     await showDialog(
@@ -266,7 +266,7 @@ class IconFrameworkUtils {
             Navigator.of(context).pop(AlertDialogValue.dialog);
           },
           title: title,
-          detail: description,
+          detail: detail,
           nextText: cancelText ?? Language.translate('common.confirm'),
         );
       },

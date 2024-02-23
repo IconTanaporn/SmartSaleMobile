@@ -58,6 +58,7 @@ dependencies:
   dropdown_search: ^5.0.6
   collection: ^1.17.0
   flutter_localization: ^0.1.14
+  flutter_email_sender: ^6.0.2
 
 dev_dependencies:
   flutter_test:

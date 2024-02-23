@@ -57,7 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       IconFrameworkUtils.stopLoading();
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('screen.login.alert.login_fail'),
-        description: e.message,
+        detail: e.message,
       );
     } catch (e) {
       IconFrameworkUtils.stopLoading();
@@ -68,7 +68,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('screen.login.alert.login_fail'),
-        description: Language.translate(
+        detail: Language.translate(
           'screen.login.alert.check_input',
           translationParams: {
             'label': '${Language.translate(
@@ -86,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (username.text.trim() == '') {
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('screen.login.alert.login_fail'),
-        description: Language.translate(
+        detail: Language.translate(
           'screen.login.alert.check_input',
           translationParams: {
             'label': Language.translate('screen.login.username'),
@@ -100,7 +100,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         title: Language.translate(
           'screen.login.alert.login_fail',
         ),
-        description: Language.translate(
+        detail: Language.translate(
           'screen.login.alert.check_input',
           translationParams: {
             'label': Language.translate(

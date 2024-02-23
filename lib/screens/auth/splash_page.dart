@@ -84,7 +84,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     } on ApiException catch (e) {
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('common.alert.fail'),
-        description: e.message,
+        detail: e.message,
         cancelText: Language.translate('common.alert.try_again'),
       );
       return false;
@@ -96,7 +96,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       );
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('common.alert.fail'),
-        description: 'Cannot get token.',
+        detail: 'Cannot get token.',
         cancelText: Language.translate('common.alert.try_again'),
       );
       return false;
@@ -128,7 +128,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     }
     await IconFrameworkUtils.showAlertDialog(
       title: Language.translate('common.alert.fail'),
-      description: 'Cannot initial data.',
+      detail: 'Cannot initial data.',
       cancelText: Language.translate('common.alert.try_again'),
     );
     return false;

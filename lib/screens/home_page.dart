@@ -60,6 +60,10 @@ class HomePage extends ConsumerWidget {
     final projectList = ref.watch(projectListProvider);
     final filteredList = ref.watch(filteredProject);
 
+    onRefresh() {
+      return ref.refresh(projectListProvider.future);
+    }
+
     onSelectProject(id) {
       context.router.navigateNamed('/project/$id');
     }
@@ -131,7 +135,7 @@ class HomePage extends ConsumerWidget {
       ),
       body: DefaultBackgroundImage(
         child: RefreshScrollView(
-          onRefresh: () => ref.refresh(projectListProvider.future),
+          onRefresh: onRefresh,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Column(

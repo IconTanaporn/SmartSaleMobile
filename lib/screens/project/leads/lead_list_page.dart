@@ -12,6 +12,7 @@ import '../../../components/common/input/search_input.dart';
 import '../../../components/common/loading/loading.dart';
 import '../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../components/common/shader_mask/fade_list_mask.dart';
+import '../../../components/customer/contact_customer_dialog.dart';
 import '../../../components/customer/customer_list.dart';
 import '../../../utils/utils.dart';
 
@@ -43,6 +44,7 @@ final leadListProvider = FutureProvider.autoDispose((ref) async {
             name: e['name'],
             status: e['status_name'],
             mobile: e['mobile'],
+            email: e['email'],
             trackAmount: e['tracking_amount'],
             lastUpdate: e['lastupdate'],
           ))
@@ -69,8 +71,23 @@ class LeadListPage extends ConsumerWidget {
     final filteredList = ref.watch(filteredProvider);
     final hasNextPage = ref.watch(hasNextPageProvider);
 
-    onSelectLead(id) {
+    onSelectLead(String id) {
       context.router.pushNamed('/project/$projectId/lead/$id');
+    }
+
+    Future onContactCustomer(Customer lead) async {
+      await showDialog(
+        context: navigatorKey.currentContext!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ContactCustomerDialog(
+            email: lead.email,
+            tel: lead.mobile,
+            stage: 'lead',
+            refId: lead.id,
+          );
+        },
+      );
     }
 
     getNextPage() async {
@@ -157,6 +174,9 @@ class LeadListPage extends ConsumerWidget {
                           contact: customer,
                           onTap: () {
                             onSelectLead(customer.id);
+                          },
+                          onLongPress: () {
+                            onContactCustomer(customer);
                           },
                         );
                       },
