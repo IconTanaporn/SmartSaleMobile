@@ -10,6 +10,8 @@ import '../screens/home_page.dart';
 import '../screens/project/contacts/contact/contact_page.dart';
 import '../screens/project/contacts/contact_list_page.dart';
 import '../screens/project/leads/lead/activity_log_page.dart';
+import '../screens/project/leads/lead/activity_page.dart';
+import '../screens/project/leads/lead/add_activity_page.dart';
 import '../screens/project/leads/lead/brochure_page.dart';
 import '../screens/project/leads/lead/calendar_page.dart';
 import '../screens/project/leads/lead/lead_page.dart';
@@ -112,6 +114,16 @@ class RootRoutes extends _$RootRoutes {
       path: '/project/:projectId/:stage/:id/brochure/send',
       guards: [AuthGuard()],
     ),
+    AutoRoute(
+      page: AddActivityRoute.page,
+      path: '/project/:projectId/:stage/:refId/activity/add/:timestamp',
+      guards: [AuthGuard()],
+    ),
+    AutoRoute(
+      page: ActivityRoute.page,
+      path: '/project/:projectId/:stage/:refId/activity/:id',
+      guards: [AuthGuard()],
+    ),
   ];
 
   final List<AutoRoute> _opportunityRoutes = [
@@ -133,8 +145,8 @@ class RootRoutes extends _$RootRoutes {
         AutoRoute(page: LoginRoute.page, path: '/login'),
         AutoRoute(page: HomeRoute.page, path: '/', guards: [AuthGuard()]),
         _settingTab,
-        _contactTab,
         ..._leadRoutes,
+        _contactTab,
         _leadTab,
         ..._opportunityRoutes,
         _opportunityTab,

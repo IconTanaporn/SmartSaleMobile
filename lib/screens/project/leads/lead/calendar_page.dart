@@ -42,7 +42,7 @@ class Activity {
 final monthProvider = StateProvider.autoDispose((ref) => DateTime.now());
 final dayProvider = StateProvider.autoDispose((ref) => DateTime.now());
 
-final activityListProvider = FutureProvider.autoDispose
+final calendarProvider = FutureProvider.autoDispose
     .family<Map<String, List<Activity>>, String>((ref, id) async {
   final formatDate = IconFrameworkUtils.apiDateFormat;
 
@@ -57,7 +57,7 @@ final activityListProvider = FutureProvider.autoDispose
   String endDate = formatDate.format(
     lastDayOfMonth.add(const Duration(days: 7)),
   );
-  List list = await ApiController.calendar('lead', id, startDate, endDate);
+  List list = await ApiController.calendar('l', id, startDate, endDate);
 
   final activities = list
       .map((e) => Activity(
@@ -82,18 +82,20 @@ class CalendarPage extends ConsumerWidget {
 
   const CalendarPage({
     @PathParam.inherit('id') this.referenceId = '',
+    @PathParam.inherit('projectId') this.projectId = '',
     super.key,
   });
 
   final String referenceId;
+  final String projectId;
 
   @override
   Widget build(context, ref) {
-    final activities = ref.watch(activityListProvider(referenceId));
+    final activities = ref.watch(calendarProvider(referenceId));
     final selectedDay = ref.watch(dayProvider);
 
     onRefresh() async {
-      return ref.refresh(activityListProvider(referenceId));
+      return ref.refresh(calendarProvider(referenceId));
     }
 
     void onDaySelected(DateTime selectDay, DateTime focusDay) {
@@ -115,8 +117,22 @@ class CalendarPage extends ConsumerWidget {
     }
 
     toAddActivity() {
-      print(selectedDay);
-      //
+      var now = DateTime.now();
+      final dateTime = DateTime(
+        selectedDay.year,
+        selectedDay.month,
+        selectedDay.day,
+        now.hour,
+        now.minute,
+      );
+
+      String timestamp = dateTime.millisecondsSinceEpoch.toString();
+
+      // TODO: calendar stage (l,c,o)
+      String stage = 'lead';
+      context.router.pushNamed(
+        '/project/$projectId/$stage/$referenceId/activity/add/$timestamp',
+      );
     }
 
     return Scaffold(

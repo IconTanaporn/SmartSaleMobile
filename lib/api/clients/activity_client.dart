@@ -20,11 +20,11 @@ class ActivityClient {
     });
   }
 
-  static Future customerActivity(customerId) async {
+  static Future customerActivity(customerId, page, pageSize) async {
     return await ApiClient.post('crm/log_load_by_customer', body: {
       'customer_id': customerId,
-      'current_page': '0',
-      'page_size': '200'
+      'current_page': page,
+      'page_size': pageSize,
     });
   }
 
@@ -42,13 +42,13 @@ class ActivityClient {
   }
 
   static Future createActivity(
-      type, refId, eventId, subEventId, date, time, detail) async {
+      projectId, type, refId, eventId, subEventId, date, time, detail) async {
     return await ApiClient.post('crm/activity_create', body: {
       'reference_id': refId,
       'event_id': eventId,
       'subevent_id': subEventId,
       'stage': type,
-      // 'project_id': UserProperty.getCurrentProjectId(),
+      'project_id': projectId,
       'date': date,
       'time': time,
       'description': detail,

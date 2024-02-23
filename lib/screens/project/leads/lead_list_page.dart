@@ -97,7 +97,7 @@ class LeadListPage extends ConsumerWidget {
       }
     }
 
-    refresh() async {
+    onRefresh() async {
       ref.read(pageProvider.notifier).state = 0;
       ref.read(hasNextPageProvider.notifier).state = true;
       return ref.refresh(leadListProvider.future);
@@ -119,7 +119,7 @@ class LeadListPage extends ConsumerWidget {
                   controller: search,
                   onChanged: (keyword) {
                     ref.read(searchProvider.notifier).state = keyword;
-                    refresh();
+                    onRefresh();
                   },
                   hintText: Language.translate(
                     'screen.lead_list.search',
@@ -134,7 +134,7 @@ class LeadListPage extends ConsumerWidget {
               Expanded(
                 child: FadeListMask(
                   child: RefreshScrollView(
-                    onRefresh: refresh,
+                    onRefresh: onRefresh,
                     child: AlignedGridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

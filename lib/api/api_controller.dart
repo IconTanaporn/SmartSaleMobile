@@ -98,14 +98,14 @@ class ApiController {
       ActivityClient.calendar(stage, refId, startDate, endDate);
   static Future opportunityActivity(opportunityId) =>
       ActivityClient.opportunityActivity(opportunityId);
-  static Future customerActivity(customerId) =>
-      ActivityClient.customerActivity(customerId);
+  static Future customerActivity(customerId, page, pageSize) =>
+      ActivityClient.customerActivity(customerId, page, pageSize);
   static Future eventList() => ActivityClient.eventList();
   static Future subEventList(eventId) => ActivityClient.subEventList(eventId);
   static Future createActivity(
-          type, refId, eventId, subEventId, date, time, detail) =>
+          projectId, type, refId, eventId, subEventId, date, time, detail) =>
       ActivityClient.createActivity(
-          type, refId, eventId, subEventId, date, time, detail);
+          projectId, type, refId, eventId, subEventId, date, time, detail);
   static Future createActivityByType(stage, type, refId) =>
       ActivityClient.createActivityByType(stage, type, refId);
 

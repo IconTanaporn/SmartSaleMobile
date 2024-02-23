@@ -30,6 +30,44 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    ActivityRoute.name: (routeData) {
+      final args = routeData.argsAs<ActivityRouteArgs>(
+          orElse: () => const ActivityRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ActivityPage(
+          activity: args.activity,
+          key: args.key,
+        ),
+      );
+    },
+    AddActivityRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<AddActivityRouteArgs>(
+          orElse: () => AddActivityRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: AddActivityPage(
+          projectId: pathParams.getString(
+            'projectId',
+            '',
+          ),
+          referenceId: pathParams.getString(
+            'refId',
+            '',
+          ),
+          stage: pathParams.getString(
+            'stage',
+            '',
+          ),
+          timestamp: pathParams.getString(
+            'timestamp',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
     BrochureRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<BrochureRouteArgs>(
@@ -58,6 +96,10 @@ abstract class _$RootRoutes extends RootStackRouter {
         child: CalendarPage(
           referenceId: pathParams.getString(
             'id',
+            '',
+          ),
+          projectId: pathParams.getString(
+            'projectId',
             '',
           ),
           key: args.key,
@@ -384,6 +426,73 @@ class ActivityLogRouteArgs {
   @override
   String toString() {
     return 'ActivityLogRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [ActivityPage]
+class ActivityRoute extends PageRouteInfo<ActivityRouteArgs> {
+  ActivityRoute({
+    dynamic activity,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ActivityRoute.name,
+          args: ActivityRouteArgs(
+            activity: activity,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ActivityRoute';
+
+  static const PageInfo<ActivityRouteArgs> page =
+      PageInfo<ActivityRouteArgs>(name);
+}
+
+class ActivityRouteArgs {
+  const ActivityRouteArgs({
+    this.activity,
+    this.key,
+  });
+
+  final dynamic activity;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ActivityRouteArgs{activity: $activity, key: $key}';
+  }
+}
+
+/// generated route for
+/// [AddActivityPage]
+class AddActivityRoute extends PageRouteInfo<AddActivityRouteArgs> {
+  AddActivityRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          AddActivityRoute.name,
+          args: AddActivityRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'AddActivityRoute';
+
+  static const PageInfo<AddActivityRouteArgs> page =
+      PageInfo<AddActivityRouteArgs>(name);
+}
+
+class AddActivityRouteArgs {
+  const AddActivityRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AddActivityRouteArgs{key: $key}';
   }
 }
 
