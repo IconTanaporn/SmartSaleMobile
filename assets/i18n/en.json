@@ -408,7 +408,8 @@
         "booking": "Booking"
       },
       "edit": {
-        "title": "Edit Information"
+        "title": "Edit Information",
+        "sub_title": "Opportunity Information"
       },
       "progress": {
         "title": "Progress",
@@ -423,7 +424,8 @@
         "sub_title": "Close job"
       },
       "create": {
-        "title": "Opportunity"
+        "title": "Opportunity",
+        "sub_title": "Project Information"
       }
     },
     "booking_list": {

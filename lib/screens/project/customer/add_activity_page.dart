@@ -5,16 +5,16 @@ import 'package:intl/intl.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/models/common/key_model.dart';
 
-import '../../../../api/api_client.dart';
-import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
-import '../../../../components/common/input/input.dart';
-import '../../../../components/common/show_picker.dart';
-import '../../../../components/common/text/text.dart';
-import '../../../../config/constant.dart';
-import '../../../../config/language.dart';
-import '../../../../utils/utils.dart';
-import 'calendar_page.dart';
+import '../../../api/api_client.dart';
+import '../../../api/api_controller.dart';
+import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/input/input.dart';
+import '../../../components/common/show_picker.dart';
+import '../../../components/common/text/text.dart';
+import '../../../config/constant.dart';
+import '../../../config/language.dart';
+import '../../../utils/utils.dart';
+import '../leads/lead/calendar_page.dart';
 
 final dateTimeProvider = StateProvider<DateTime>((ref) => DateTime.now());
 final eventProvider = StateProvider<KeyModel?>((ref) => null);
@@ -196,13 +196,13 @@ class AddActivityPage extends ConsumerWidget {
                   ),
                   onTap: showDatePicker,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 InputListTile(
                   controller: hour,
                   labelText: Language.translate('module.activity.time'),
                   onTap: showTimePicker,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 InputDropdown(
                   labelText: Language.translate('module.activity.event'),
                   value: event,
@@ -210,7 +210,7 @@ class AddActivityPage extends ConsumerWidget {
                   isLoading: eventList.isLoading,
                   onChanged: (v) => ref.read(eventProvider.notifier).state = v,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 InputDropdown(
                   labelText: Language.translate('module.activity.sub_event'),
                   value: subEvent,
@@ -220,7 +220,7 @@ class AddActivityPage extends ConsumerWidget {
                       ref.read(subEventProvider.notifier).state = v,
                   // hintText: '-',
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 InputTextArea(
                   controller: description,
                   labelText: Language.translate('module.activity.description'),

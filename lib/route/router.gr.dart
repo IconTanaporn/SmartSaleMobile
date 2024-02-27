@@ -68,6 +68,25 @@ abstract class _$RootRoutes extends RootStackRouter {
         ),
       );
     },
+    AddOpportunityRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<AddOpportunityRouteArgs>(
+          orElse: () => AddOpportunityRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: AddOpportunityPage(
+          projectId: pathParams.getString(
+            'projectId',
+            '',
+          ),
+          contactId: pathParams.getString(
+            'id',
+            '',
+          ),
+          key: args.key,
+        ),
+      );
+    },
     BrochureRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<BrochureRouteArgs>(
@@ -83,6 +102,7 @@ abstract class _$RootRoutes extends RootStackRouter {
             'projectId',
             '',
           ),
+          stage: args.stage,
           key: args.key,
         ),
       );
@@ -136,6 +156,12 @@ abstract class _$RootRoutes extends RootStackRouter {
           ),
           key: args.key,
         ),
+      );
+    },
+    ContactTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ContactTapPage(),
       );
     },
     CreateContactRoute.name: (routeData) {
@@ -518,14 +544,47 @@ class AddActivityRouteArgs {
 }
 
 /// generated route for
+/// [AddOpportunityPage]
+class AddOpportunityRoute extends PageRouteInfo<AddOpportunityRouteArgs> {
+  AddOpportunityRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          AddOpportunityRoute.name,
+          args: AddOpportunityRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'AddOpportunityRoute';
+
+  static const PageInfo<AddOpportunityRouteArgs> page =
+      PageInfo<AddOpportunityRouteArgs>(name);
+}
+
+class AddOpportunityRouteArgs {
+  const AddOpportunityRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AddOpportunityRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
 /// [BrochurePage]
 class BrochureRoute extends PageRouteInfo<BrochureRouteArgs> {
   BrochureRoute({
+    String stage = '',
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           BrochureRoute.name,
-          args: BrochureRouteArgs(key: key),
+          args: BrochureRouteArgs(
+            stage: stage,
+            key: key,
+          ),
           initialChildren: children,
         );
 
@@ -536,13 +595,18 @@ class BrochureRoute extends PageRouteInfo<BrochureRouteArgs> {
 }
 
 class BrochureRouteArgs {
-  const BrochureRouteArgs({this.key});
+  const BrochureRouteArgs({
+    this.stage = '',
+    this.key,
+  });
+
+  final String stage;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'BrochureRouteArgs{key: $key}';
+    return 'BrochureRouteArgs{stage: $stage, key: $key}';
   }
 }
 
@@ -641,6 +705,20 @@ class ContactRouteArgs {
   String toString() {
     return 'ContactRouteArgs{contactId: $contactId, key: $key}';
   }
+}
+
+/// generated route for
+/// [ContactTapPage]
+class ContactTab extends PageRouteInfo<void> {
+  const ContactTab({List<PageRouteInfo>? children})
+      : super(
+          ContactTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ContactTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

@@ -54,7 +54,7 @@ class LeadPage extends ConsumerWidget {
     }
 
     toEditLead() {
-      context.router.pushNamed('/project/$projectId/lead/$contactId/edit');
+      context.router.pushNamed('/lead/$contactId/edit');
     }
 
     return Scaffold(

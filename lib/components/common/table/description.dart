@@ -100,9 +100,9 @@ class Descriptions extends StatelessWidget {
     // );
     return Column(
       children: rows.map((e) {
-        String label = e.first;
-        var value = e.last;
-        bool isString = e.last is String;
+        final String label = e.first;
+        final value = e.last;
+        final bool isString = value is String;
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
@@ -132,7 +132,7 @@ class Descriptions extends StatelessWidget {
                 flex: 5,
                 child: isString
                     ? CustomText(
-                        value == '' ? '-' : value,
+                        value == '' ? '-' : value.trim(),
                         fontSize: FontSize.px14,
                         // lineOfNumber: 2,
                       )

@@ -54,7 +54,7 @@ class ContactClient {
 
   static Future questionnaire({contactId, oppId}) async {
     return await ApiClient.post('crm/questionnair_default', body: {
-      // 'customer_id': contactId ?? UserProperty.getCustomerId(),
+      'customer_id': contactId ?? '',
       'opp_id': oppId ?? '',
     });
   }

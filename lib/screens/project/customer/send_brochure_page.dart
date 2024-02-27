@@ -2,16 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/api/api_client.dart';
+import 'package:smart_sale_mobile/screens/project/contacts/contact/contact_page.dart';
 import 'package:smart_sale_mobile/screens/project/leads/lead/lead_page.dart';
 
-import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
-import '../../../../components/common/button/button.dart';
-import '../../../../components/common/input/input.dart';
-import '../../../../components/common/text/text.dart';
-import '../../../../config/constant.dart';
-import '../../../../config/language.dart';
-import '../../../../utils/utils.dart';
+import '../../../api/api_controller.dart';
+import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/button/button.dart';
+import '../../../components/common/input/input.dart';
+import '../../../components/common/text/text.dart';
+import '../../../config/constant.dart';
+import '../../../config/language.dart';
+import '../../../utils/utils.dart';
 import 'brochure_page.dart';
 
 class SendBrochure {
@@ -59,7 +60,8 @@ class SendBrochurePage extends ConsumerWidget {
   Widget build(context, ref) {
     final selected = ref.watch(selectedBrochureProvider);
 
-    final customer = ref.watch(stage == 'lead' ? leadProvider : leadProvider);
+    final customer =
+        ref.watch(stage == 'lead' ? leadProvider : contactProvider);
 
     final TextEditingController email = TextEditingController(
       text: customer.email,

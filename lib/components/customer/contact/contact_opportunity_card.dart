@@ -12,12 +12,14 @@ import '../../opportunity/opportunity_list.dart';
 
 class ContactOpportunityCard extends StatelessWidget {
   final ContactOpportunity opportunity;
-  final void Function()? onClick;
+  final void Function()? onClick, onClickEdit, onClickDelete;
 
   const ContactOpportunityCard({
     Key? key,
     required this.opportunity,
     this.onClick,
+    this.onClickEdit,
+    this.onClickDelete,
   }) : super(key: key);
 
   @override
@@ -35,32 +37,14 @@ class ContactOpportunityCard extends StatelessWidget {
                 Expanded(
                   child: SlidableButton(
                     iconPath: AssetPath.iconEdit,
-                    onPressed: () {
-                      // if (onClick != null) {
-                      //   onClick!();
-                      // }
-                      // Navigator.of(context)
-                      //     .pushNamed(OpportunityEditScreen.screenId)
-                      //     .then((_) {
-                      //   Navigator.of(context).pop();
-                      // });
-                    },
+                    onPressed: onClickEdit,
                   ),
                 ),
                 Expanded(
                   child: SlidableButton(
                     color: AppColor.red,
                     iconPath: AssetPath.iconDelete,
-                    onPressed: () {
-                      // if (onClick != null) {
-                      //   onClick!();
-                      // }
-                      // Navigator.of(context)
-                      //     .pushNamed(OpportunityCloseJobScreen.screenId)
-                      //     .then((_) {
-                      //   Navigator.of(context).pop();
-                      // });
-                    },
+                    onPressed: onClickDelete,
                   ),
                 ),
               ],
@@ -116,14 +100,14 @@ class ContactOpportunityCard extends StatelessWidget {
                       ),
                       if (canEdit)
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             color: Opportunity().dayLeftColor(dayLeft),
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
+                                const BorderRadius.all(Radius.circular(10)),
                           ),
                           constraints: const BoxConstraints(
-                            minWidth: 60,
+                            minWidth: 55,
                           ),
                           child: Column(
                             children: [

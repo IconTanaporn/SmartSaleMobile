@@ -9,7 +9,8 @@ import '../../common/shader_mask/fade_list_mask.dart';
 import '../../common/table/description.dart';
 import '../../common/text/text.dart';
 
-final contactProvider = StateProvider.autoDispose<DupContact?>((ref) => null);
+final dupContactProvider =
+    StateProvider.autoDispose<DupContact?>((ref) => null);
 
 class DupContactsDialog extends ConsumerWidget {
   final List<DupContact> list;
@@ -21,10 +22,10 @@ class DupContactsDialog extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final contact = ref.watch(contactProvider);
+    final contact = ref.watch(dupContactProvider);
 
     void onSelect(DupContact value) {
-      ref.read(contactProvider.notifier).state = value;
+      ref.read(dupContactProvider.notifier).state = value;
     }
 
     return CustomConfirmDialog(

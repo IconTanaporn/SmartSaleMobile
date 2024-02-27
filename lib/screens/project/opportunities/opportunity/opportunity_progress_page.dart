@@ -157,6 +157,10 @@ class OpportunityProgressPage extends ConsumerWidget {
                             return Column(
                               children: [
                                 CheckboxListTile(
+                                  visualDensity: const VisualDensity(
+                                    horizontal: -2,
+                                    vertical: -2,
+                                  ),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
                                   value: item.isCheck || selectedIndex >= i,

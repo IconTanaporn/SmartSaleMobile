@@ -1,19 +1,14 @@
+import 'package:smart_sale_mobile/models/lead.dart';
+
 enum ContactType { thai, corporation, foreigner }
 
 enum ContactAddressType { thailand, aboard }
 
-class ContactDetail {
-  final String id;
-  final String prefix;
-  final String firstName;
-  final String lastName;
+class ContactDetail extends LeadDetail {
   final String citizenId;
   final String passportId;
-  final String mobile;
   final String nationality;
   final String birthday;
-  final String email;
-  final String lineId;
   final String weChat;
   final String zipCode;
   final String province;
@@ -26,8 +21,6 @@ class ContactDetail {
   final String address;
   final String country;
   final String city;
-  final String source;
-  final String trackingAmount;
 
   ContactType _getType() {
     String n = nationality.toLowerCase();
@@ -52,19 +45,19 @@ class ContactDetail {
   ContactAddressType get addressType => _getAddressType();
 
   ContactDetail({
-    this.id = '',
-    this.prefix = '',
-    this.firstName = '',
-    this.lastName = '',
+    super.id = '',
+    super.prefix = '',
+    super.firstName = '',
+    super.lastName = '',
     this.citizenId = '',
     this.passportId = '',
-    this.mobile = '',
+    super.mobile = '',
     this.nationality = '',
     this.birthday = '',
-    this.email = '',
-    this.lineId = '',
+    super.email = '',
+    super.lineId = '',
     this.weChat = '',
-    this.trackingAmount = '',
+    super.trackingAmount = '',
     this.address = '',
     this.zipCode = '',
     this.country = '',
@@ -76,6 +69,6 @@ class ContactDetail {
     this.village = '',
     this.soi = '',
     this.road = '',
-    this.source = '',
+    super.source = '',
   });
 }

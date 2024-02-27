@@ -259,7 +259,7 @@ class CreateContactPage extends ConsumerWidget {
                           ref.read(genderProvider.notifier).state = value,
                       isLoading: genderList.isLoading,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputDropdown(
                       labelText: Language.translate('module.contact.prefix'),
                       value: prefix,
@@ -268,19 +268,19 @@ class CreateContactPage extends ConsumerWidget {
                           ref.read(prefixProvider.notifier).state = value,
                       isLoading: prefixList.isLoading,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _firstname,
                       labelText: Language.translate('module.contact.firstname'),
                       validator: (value) => validate('firstname', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _lastname,
                       labelText: Language.translate('module.contact.lastname'),
                       validator: (value) => validate('lastname', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputDropdown(
                       labelText:
                           Language.translate('module.contact.nationality'),
@@ -290,7 +290,7 @@ class CreateContactPage extends ConsumerWidget {
                           ref.read(nationalityProvider.notifier).state = value,
                       isLoading: nationalityList.isLoading,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     if (isThai)
                       InputText(
                         controller: _citizenId,
@@ -305,7 +305,7 @@ class CreateContactPage extends ConsumerWidget {
                             Language.translate('module.contact.passport_id'),
                         validator: (value) => validate('passport_id', value),
                       ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputListTile(
                       controller: _birthday,
                       labelText: Language.translate('module.contact.birthday'),
@@ -315,7 +315,7 @@ class CreateContactPage extends ConsumerWidget {
                       ),
                       // onTap: onSelectedBirthday,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: true, signed: true),
@@ -323,20 +323,20 @@ class CreateContactPage extends ConsumerWidget {
                       labelText: Language.translate('module.contact.mobile'),
                       validator: (value) => validate('mobile', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       keyboardType: TextInputType.emailAddress,
                       controller: _email,
                       labelText: Language.translate('module.contact.email'),
                       validator: (value) => validate('email', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _lineId,
                       labelText: Language.translate('module.contact.line'),
                       required: false,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _weChat,
                       labelText: Language.translate('module.contact.we_chat'),
@@ -359,25 +359,25 @@ class CreateContactPage extends ConsumerWidget {
                       labelText:
                           Language.translate('module.address.address_no'),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _village,
                       labelText: Language.translate('module.address.village'),
                       required: false,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _soi,
                       labelText: Language.translate('module.address.soi'),
                       required: false,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _road,
                       labelText: Language.translate('module.address.road'),
                       required: false,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _zipcode,
                       labelText: Language.translate('module.address.zipcode'),
@@ -385,7 +385,7 @@ class CreateContactPage extends ConsumerWidget {
                         ref.read(zipcodeProvider.notifier).state = value;
                       },
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputDropdown(
                       labelText: Language.translate('module.address.province'),
                       value: province,
@@ -394,7 +394,7 @@ class CreateContactPage extends ConsumerWidget {
                           ref.read(provinceProvider.notifier).state = value,
                       isLoading: provinceList.isLoading,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputDropdown(
                       labelText: Language.translate('module.address.district'),
                       value: district,
@@ -403,7 +403,7 @@ class CreateContactPage extends ConsumerWidget {
                           ref.read(districtProvider.notifier).state = value,
                       isLoading: districtList.isLoading,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputDropdown(
                       labelText:
                           Language.translate('module.address.sub_district'),

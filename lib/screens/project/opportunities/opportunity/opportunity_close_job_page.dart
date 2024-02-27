@@ -55,6 +55,7 @@ class OpportunityCloseJobPage extends ConsumerWidget {
 
   final String oppId;
   final TextEditingController _comment = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(context, ref) {
@@ -63,20 +64,36 @@ class OpportunityCloseJobPage extends ConsumerWidget {
     final status = ref.watch(statusProvider);
     final reason = ref.watch(reasonProvider);
 
-    onRefresh() async {
-      // return ref.refresh(progressProvider(oppId));
-    }
-
-    setStatus(v) {
-      ref.read(statusProvider.notifier).state = v;
+    onRefresh() {
+      return ref.refresh(statusListProvider);
     }
 
     setReason(v) {
       ref.read(reasonProvider.notifier).state = v;
     }
 
-    onSave() {
-      //
+    onSave() async {
+      if (_formKey.currentState!.validate()) {
+        bool isSuccess = false;
+        // final isSuccess = await ref.read(_updateProvider(UpdateData(
+        //   id: oppId,
+        //   budget: budget.text,
+        //   comment: comment.text,
+        // )).future);
+
+        if (isSuccess) {
+          // context.router.pop();
+          // if (opportunity.value?.contactId != '') {
+          //   ref.refresh(oppListProvider(opportunity.value!.contactId));
+          // }
+          // return ref.refresh(opportunityProvider(oppId));
+        }
+      } else {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.alert'),
+          detail: Language.translate('common.input.alert.check_validate'),
+        );
+      }
     }
 
     return Scaffold(
@@ -89,29 +106,40 @@ class OpportunityCloseJobPage extends ConsumerWidget {
       body: DefaultBackgroundImage(
         child: SingleChildScrollView(
           child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      CustomText(
-                        '${Language.translate('module.opportunity.status')} :',
-                        color: AppColor.blue,
-                        fontSize: FontSize.title,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFEB5757).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(15),
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        CustomText(
+                          '${Language.translate('module.opportunity.status')} :',
+                          color: AppColor.blue,
+                          fontSize: FontSize.title,
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: (status.name == '')
-                            ? const Loading(size: 10)
-                            : Row(
+                        const SizedBox(width: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEB5757).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: statusList.when(
+                            error: (err, stack) => IconButton(
+                              onPressed: onRefresh,
+                              icon: const Icon(Icons.refresh),
+                            ),
+                            loading: () => const Loading(size: 10),
+                            data: (data) {
+                              if (status.name == '') {
+                                return const Loading(size: 10);
+                              }
+
+                              return Row(
                                 children: [
                                   Image.asset(
                                     AssetPath.iconCloseJob,
@@ -126,34 +154,37 @@ class OpportunityCloseJobPage extends ConsumerWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ],
-                              ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 25),
-                  InputDropdown(
-                    labelText: Language.translate(
-                        'module.opportunity.close_job.reason'),
-                    value: reason,
-                    items: reasonList.value ?? [],
-                    onChanged: setReason,
-                    isLoading: reasonList.isLoading,
-                  ),
-                  const SizedBox(height: 15),
-                  InputTextArea(
-                    controller: _comment,
-                    labelText: Language.translate('module.opportunity.comment'),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: IconFrameworkUtils.getWidth(0.6),
-                    child: CustomButton(
-                      onClick: onSave,
-                      text: Language.translate('common.save'),
-                      // disable: !validate(),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 25),
+                    InputDropdown(
+                      labelText: Language.translate(
+                          'module.opportunity.close_job.reason'),
+                      value: reason,
+                      items: reasonList.value ?? [],
+                      onChanged: setReason,
+                      isLoading: reasonList.isLoading,
+                    ),
+                    const SizedBox(height: 15),
+                    InputTextArea(
+                      controller: _comment,
+                      labelText:
+                          Language.translate('module.opportunity.comment'),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: IconFrameworkUtils.getWidth(0.6),
+                      child: CustomButton(
+                        onClick: onSave,
+                        text: Language.translate('common.save'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

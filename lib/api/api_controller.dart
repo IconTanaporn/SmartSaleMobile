@@ -120,8 +120,9 @@ class ApiController {
       OpportunityClient.opportunitySearchFilter();
   static Future opportunityDetail(id) =>
       OpportunityClient.opportunityDetail(id);
-  static Future opportunityCreate(projectId, budget, comment) =>
-      OpportunityClient.opportunityCreate(projectId, budget, comment);
+  static Future opportunityCreate(contactId, projectId, budget, comment) =>
+      OpportunityClient.opportunityCreate(
+          contactId, projectId, budget, comment);
   static Future opportunityUpdate(
           id, name, projectId, contactId, budget, comment) =>
       OpportunityClient.opportunityUpdate(

@@ -8,6 +8,8 @@ import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/input/input.dart';
+import '../../../../components/common/text/text.dart';
+import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../models/common/key_model.dart';
 import '../../../../utils/utils.dart';
@@ -186,7 +188,18 @@ class EditLeadPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: CustomText(
+                          Language.translate('screen.lead.edit.sub_title'),
+                          color: AppColor.red,
+                          fontSize: FontSize.title,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     InputText(
                       controller: firstname,
                       labelText: Language.translate('module.contact.firstname'),

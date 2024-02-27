@@ -17,10 +17,12 @@ import '../../../../models/contact.dart';
 
 final expandProvider = StateProvider.autoDispose<bool>((ref) => false);
 
-final contactProvider =
+final contactProvider = StateProvider.autoDispose((ref) => ContactDetail());
+
+final contactDetailProvider =
     FutureProvider.autoDispose.family<ContactDetail, String>((ref, id) async {
   var data = await ApiController.contactDetail(id);
-  return ContactDetail(
+  var contact = ContactDetail(
     id: id,
     prefix: IconFrameworkUtils.getValue(data, 'prefix_name'),
     trackingAmount: IconFrameworkUtils.getValue(data, 'tracking_amount'),
@@ -47,6 +49,9 @@ final contactProvider =
     city: IconFrameworkUtils.getValue(data, 'city'),
     source: IconFrameworkUtils.getValue(data, 'source_name'),
   );
+  ref.read(contactProvider.notifier).state = contact;
+
+  return contact;
 });
 
 final oppListProvider = FutureProvider.autoDispose
@@ -87,11 +92,11 @@ class ContactPage extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     final expand = ref.watch(expandProvider);
-    final contact = ref.watch(contactProvider(contactId));
+    final contact = ref.watch(contactDetailProvider(contactId));
     final oppList = ref.watch(oppListProvider(contactId));
 
     onRefresh() async {
-      return ref.refresh(contactProvider(contactId));
+      return ref.refresh(contactDetailProvider(contactId));
     }
 
     onTapExpand() {
@@ -102,12 +107,22 @@ class ContactPage extends ConsumerWidget {
       context.router.pushNamed('/project/$projectId/opportunity/$id');
     }
 
+    Future onClickEditOpportunity(id) async {
+      await context.router
+          .pushNamed('/project/$projectId/opportunity/$id/edit');
+    }
+
+    Future onClickDeleteOpportunity(id) async {
+      context.router.pushNamed('/project/$projectId/opportunity/$id/close_job');
+    }
+
     toEditContact() {
       //
     }
 
     toCreateOpp() {
-      //
+      context.router
+          .pushNamed('/project/$projectId/contact/$contactId/opportunity/add');
     }
 
     return Scaffold(
@@ -281,6 +296,10 @@ class ContactPage extends ConsumerWidget {
                           child: ContactOpportunityCard(
                             opportunity: data[index],
                             onClick: () => onClickOpportunity(data[index].id),
+                            onClickEdit: () =>
+                                onClickEditOpportunity(data[index].id),
+                            onClickDelete: () =>
+                                onClickDeleteOpportunity(data[index].id),
                           ),
                         );
                       },

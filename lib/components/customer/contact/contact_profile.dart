@@ -40,8 +40,9 @@ class ContactProfile extends StatelessWidget {
           Descriptions(fontSize: FontSize.normal, colon: '', rows: [
             [
               'module.contact.firstname',
-              '${contact.prefix} ${contact.firstName}'.trim()
+              '${contact.prefix} ${contact.firstName}'
             ],
+            ['module.contact.lastname', contact.lastName],
             if (expand) ['module.contact.nationality', contact.nationality],
             if (expand)
               [

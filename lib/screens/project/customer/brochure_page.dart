@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 
-import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
-import '../../../../components/common/loading/loading.dart';
-import '../../../../components/common/refresh_indicator/refresh_list_view.dart';
-import '../../../../components/common/shader_mask/fade_list_mask.dart';
-import '../../../../components/common/text/text.dart';
-import '../../../../config/constant.dart';
-import '../../../../config/language.dart';
-import '../../../../route/router.dart';
-import '../../../../utils/utils.dart';
+import '../../../api/api_controller.dart';
+import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/loading/loading.dart';
+import '../../../components/common/refresh_indicator/refresh_list_view.dart';
+import '../../../components/common/shader_mask/fade_list_mask.dart';
+import '../../../components/common/text/text.dart';
+import '../../../config/constant.dart';
+import '../../../config/language.dart';
+import '../../../route/router.dart';
+import '../../../utils/utils.dart';
 
 class Brochure {
   final String id, name, project, url;
@@ -46,11 +46,13 @@ class BrochurePage extends ConsumerWidget {
   const BrochurePage({
     @PathParam.inherit('id') this.referenceId = '',
     @PathParam.inherit('projectId') this.projectId = '',
+    this.stage = '',
     super.key,
   });
 
   final String referenceId;
   final String projectId;
+  final String stage;
 
   @override
   Widget build(context, ref) {
@@ -85,7 +87,7 @@ class BrochurePage extends ConsumerWidget {
 
     onSend() {
       context.router
-          .pushNamed('/project/$projectId/lead/$referenceId/brochure/send');
+          .pushNamed('/project/$projectId/$stage/$referenceId/brochure/send');
     }
 
     return Scaffold(

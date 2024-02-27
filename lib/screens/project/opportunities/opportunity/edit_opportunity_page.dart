@@ -7,8 +7,12 @@ import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/input/input.dart';
+import '../../../../components/common/loading/loading.dart';
+import '../../../../components/common/text/text.dart';
+import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../utils/utils.dart';
+import '../../contacts/contact/contact_page.dart';
 import 'opportunity_tab.dart';
 
 class UpdateData {
@@ -75,6 +79,10 @@ class EditOpportunityPage extends ConsumerWidget {
       text: opportunity.value?.comment ?? '',
     );
 
+    onRefresh() {
+      return ref.refresh(opportunityProvider(oppId));
+    }
+
     onSave() async {
       if (_formKey.currentState!.validate()) {
         final isSuccess = await ref.read(_updateProvider(UpdateData(
@@ -85,6 +93,9 @@ class EditOpportunityPage extends ConsumerWidget {
 
         if (isSuccess) {
           context.router.pop();
+          if (opportunity.value?.contactId != '') {
+            ref.refresh(oppListProvider(opportunity.value!.contactId));
+          }
           return ref.refresh(opportunityProvider(oppId));
         }
       } else {
@@ -109,42 +120,62 @@ class EditOpportunityPage extends ConsumerWidget {
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    InputText(
-                      labelText:
-                          Language.translate('module.opportunity.project'),
-                      initialValue: opportunity.value?.projectName ?? '',
-                      disabled: true,
-                    ),
-                    const SizedBox(height: 15),
-                    InputText(
-                      labelText:
-                          Language.translate('module.opportunity.budget'),
-                      controller: budget,
-                      keyboardType: TextInputType.number,
-                      required: false,
-                    ),
-                    const SizedBox(height: 15),
-                    InputTextArea(
-                      controller: comment,
-                      labelText:
-                          Language.translate('module.opportunity.comment'),
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: SizedBox(
-                        width: IconFrameworkUtils.getWidth(0.6),
-                        child: CustomButton(
-                          onClick: onSave,
-                          text: Language.translate('common.save'),
+                child: opportunity.when(
+                    error: (err, stack) => IconButton(
+                          onPressed: onRefresh,
+                          icon: const Icon(Icons.refresh),
                         ),
-                      ),
-                    )
-                  ],
-                ),
+                    loading: () => const Loading(),
+                    data: (data) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomText(
+                                Language.translate(
+                                    'screen.opportunity.edit.sub_title'),
+                                color: AppColor.red,
+                                fontSize: FontSize.title,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          InputText(
+                            labelText: Language.translate(
+                                'module.opportunity.project'),
+                            initialValue: data.projectName,
+                            disabled: true,
+                          ),
+                          const SizedBox(height: 15),
+                          InputText(
+                            labelText:
+                                Language.translate('module.opportunity.budget'),
+                            controller: budget,
+                            keyboardType: TextInputType.number,
+                            required: false,
+                          ),
+                          const SizedBox(height: 15),
+                          InputTextArea(
+                            controller: comment,
+                            labelText: Language.translate(
+                                'module.opportunity.comment'),
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: SizedBox(
+                              width: IconFrameworkUtils.getWidth(0.6),
+                              child: CustomButton(
+                                onClick: onSave,
+                                text: Language.translate('common.save'),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    }),
               ),
             ),
           ),

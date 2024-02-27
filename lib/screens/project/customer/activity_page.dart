@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smart_sale_mobile/screens/project/leads/lead/activity_log_page.dart';
+import 'package:smart_sale_mobile/screens/project/customer/activity_log_page.dart';
 
-import '../../../../components/common/background/defualt_background.dart';
-import '../../../../components/common/text/text.dart';
-import '../../../../config/constant.dart';
-import '../../../../config/language.dart';
+import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/text/text.dart';
+import '../../../config/constant.dart';
+import '../../../config/language.dart';
 
 @RoutePage()
 class ActivityPage extends ConsumerWidget {

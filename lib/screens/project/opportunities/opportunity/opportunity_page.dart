@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/components/common/table/description.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/opportunity/opportunity_detail.dart';
+import 'package:smart_sale_mobile/route/router.dart';
 
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
@@ -40,7 +42,15 @@ class OpportunityPage extends ConsumerWidget {
     Future toContactDetail() async {
       String contactId = opportunity.value?.contactId ?? '';
       if (contactId != '') {
-        context.router.replaceNamed('/project/$projectId/contact/$contactId');
+        bool hasContactStack = context.router.stack
+                .firstWhereOrNull((route) => route.name == ContactRoute.name) !=
+            null;
+
+        if (hasContactStack) {
+          context.router.pop();
+        } else {
+          context.router.replaceNamed('/project/$projectId/contact/$contactId');
+        }
       }
     }
 

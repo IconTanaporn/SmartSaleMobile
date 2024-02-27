@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
-import '../../../../components/common/loading/loading.dart';
-import '../../../../components/common/refresh_indicator/refresh_list_view.dart';
-import '../../../../components/common/text/text.dart';
-import '../../../../config/constant.dart';
-import '../../../../config/language.dart';
-import '../../../../route/router.dart';
-import '../../../../utils/utils.dart';
+import '../../../api/api_controller.dart';
+import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/loading/loading.dart';
+import '../../../components/common/refresh_indicator/refresh_list_view.dart';
+import '../../../components/common/text/text.dart';
+import '../../../config/constant.dart';
+import '../../../config/language.dart';
+import '../../../route/router.dart';
+import '../../../utils/utils.dart';
 
 const int pageSize = 20;
 

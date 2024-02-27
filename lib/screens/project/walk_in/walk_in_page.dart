@@ -208,13 +208,13 @@ class WalkInPage extends ConsumerWidget {
                       labelText: Language.translate('module.contact.firstname'),
                       validator: (value) => validate('firstname', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       controller: _lastname,
                       labelText: Language.translate('module.contact.lastname'),
                       validator: (value) => validate('lastname', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: true, signed: true),
@@ -222,7 +222,7 @@ class WalkInPage extends ConsumerWidget {
                       labelText: Language.translate('module.contact.mobile'),
                       validator: (value) => validate('mobile', value),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     InputText(
                       keyboardType: TextInputType.emailAddress,
                       controller: _email,

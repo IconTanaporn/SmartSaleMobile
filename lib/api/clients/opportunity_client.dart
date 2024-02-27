@@ -43,9 +43,9 @@ class OpportunityClient {
         });
   }
 
-  static Future opportunityCreate(projectId, budget, comment) async {
+  static Future opportunityCreate(contactId, projectId, budget, comment) async {
     return await ApiClient.post('crm/opportunity_create', body: {
-      // 'contact_id': UserProperty.getCustomerId(),
+      'contact_id': contactId,
       'project_id': projectId,
       'opportunity': '0%',
       'budget': budget,

@@ -1,18 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_sale_mobile/screens/project/leads/lead/send_brochure_page.dart';
+import 'package:smart_sale_mobile/screens/project/customer/send_brochure_page.dart';
 import 'package:smart_sale_mobile/screens/project/opportunities/opportunity/opportunity_questionnaire_page.dart';
 import 'package:smart_sale_mobile/screens/setting/setting_page.dart';
 
 import '../screens/auth/login_page.dart';
 import '../screens/auth/splash_page.dart';
 import '../screens/home_page.dart';
+import '../screens/project/contacts/contact/add_opportunity_page.dart';
 import '../screens/project/contacts/contact/contact_page.dart';
+import '../screens/project/contacts/contact/contact_tab.dart';
 import '../screens/project/contacts/contact_list_page.dart';
-import '../screens/project/leads/lead/activity_log_page.dart';
-import '../screens/project/leads/lead/activity_page.dart';
-import '../screens/project/leads/lead/add_activity_page.dart';
-import '../screens/project/leads/lead/brochure_page.dart';
+import '../screens/project/customer/activity_log_page.dart';
+import '../screens/project/customer/activity_page.dart';
+import '../screens/project/customer/add_activity_page.dart';
+import '../screens/project/customer/brochure_page.dart';
 import '../screens/project/leads/lead/calendar_page.dart';
 import '../screens/project/leads/lead/edit_lead_page.dart';
 import '../screens/project/leads/lead/lead_page.dart';
@@ -79,8 +81,13 @@ class RootRoutes extends _$RootRoutes {
   );
 
   final AutoRoute _contactTab = AutoRoute(
-    page: ContactRoute.page,
+    page: ContactTab.page,
     path: '/project/:projectId/contact/:id',
+    children: [
+      AutoRoute(page: ContactRoute.page, path: ''),
+      AutoRoute(page: ActivityLogRoute.page, path: 'activities'),
+      AutoRoute(page: BrochureRoute.page, path: 'brochure'),
+    ],
     guards: [AuthGuard()],
   );
   final AutoRoute _leadTab = AutoRoute(
@@ -109,7 +116,7 @@ class RootRoutes extends _$RootRoutes {
     guards: [AuthGuard()],
   );
 
-  final List<AutoRoute> _leadRoutes = [
+  final List<AutoRoute> _customerRoutes = [
     AutoRoute(
       page: SendBrochureRoute.page,
       path: '/project/:projectId/:stage/:id/brochure/send',
@@ -125,9 +132,18 @@ class RootRoutes extends _$RootRoutes {
       path: '/project/:projectId/:stage/:refId/activity/:id',
       guards: [AuthGuard()],
     ),
+  ];
+  final List<AutoRoute> _contactRoutes = [
+    AutoRoute(
+      page: AddOpportunityRoute.page,
+      path: '/project/:projectId/contact/:id/opportunity/add',
+      guards: [AuthGuard()],
+    ),
+  ];
+  final List<AutoRoute> _leadRoutes = [
     AutoRoute(
       page: EditLeadRoute.page,
-      path: '/project/:projectId/lead/:id/edit',
+      path: '/lead/:id/edit',
       guards: [AuthGuard()],
     ),
   ];
@@ -151,10 +167,12 @@ class RootRoutes extends _$RootRoutes {
         AutoRoute(page: LoginRoute.page, path: '/login'),
         AutoRoute(page: HomeRoute.page, path: '/', guards: [AuthGuard()]),
         _settingTab,
+        ..._customerRoutes,
         ..._leadRoutes,
+        ..._contactRoutes,
+        ..._opportunityRoutes,
         _contactTab,
         _leadTab,
-        ..._opportunityRoutes,
         _opportunityTab,
         _projectTab,
         AutoRoute(page: QRRoute.page, path: '/qr'),
