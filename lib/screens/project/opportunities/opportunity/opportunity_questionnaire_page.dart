@@ -62,6 +62,7 @@ class OpportunityQuestionnairePage extends ConsumerWidget {
         url: q.url,
         title: Language.translate('screen.opportunity.questionnaire.title'),
         detail: q.name,
+        isPreview: true,
       ));
     }
 

@@ -50,11 +50,14 @@ class LeadTapPage extends ConsumerWidget {
       ],
       transitionBuilder: (context, child, animation) => child,
       bottomNavigationBuilder: (context, tabsRouter) {
+        bool isLoading = lead.id == '';
         return BottomNavigationBar(
           currentIndex: tabsRouter.activeIndex,
           onTap: (i) {
             if (i == 4) {
-              onContactCustomer();
+              if (!isLoading) {
+                onContactCustomer();
+              }
             } else {
               tabsRouter.setActiveIndex(i);
             }
@@ -108,7 +111,7 @@ class LeadTapPage extends ConsumerWidget {
             ),
             BottomNavigationBarItem(
               label: Language.translate('screen.lead.menu.contact_customer'),
-              icon: lead.id == ''
+              icon: isLoading
                   ? const Loading(size: 20)
                   : Image.asset(
                       AssetPath.iconContactCustomer,

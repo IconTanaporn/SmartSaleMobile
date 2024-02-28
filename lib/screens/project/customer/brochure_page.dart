@@ -82,6 +82,7 @@ class BrochurePage extends ConsumerWidget {
         url: data.url,
         title: data.project,
         detail: data.name,
+        isPreview: true,
       ));
     }
 

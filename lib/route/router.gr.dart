@@ -363,6 +363,7 @@ abstract class _$RootRoutes extends RootStackRouter {
           url: args.url,
           title: args.title,
           detail: args.detail,
+          isPreview: args.isPreview,
           key: args.key,
         ),
       );
@@ -1150,6 +1151,7 @@ class QRRoute extends PageRouteInfo<QRRouteArgs> {
     String url = '',
     String title = '',
     String detail = '',
+    bool isPreview = false,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -1158,6 +1160,7 @@ class QRRoute extends PageRouteInfo<QRRouteArgs> {
             url: url,
             title: title,
             detail: detail,
+            isPreview: isPreview,
             key: key,
           ),
           initialChildren: children,
@@ -1173,6 +1176,7 @@ class QRRouteArgs {
     this.url = '',
     this.title = '',
     this.detail = '',
+    this.isPreview = false,
     this.key,
   });
 
@@ -1182,11 +1186,13 @@ class QRRouteArgs {
 
   final String detail;
 
+  final bool isPreview;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'QRRouteArgs{url: $url, title: $title, detail: $detail, key: $key}';
+    return 'QRRouteArgs{url: $url, title: $title, detail: $detail, isPreview: $isPreview, key: $key}';
   }
 }
 

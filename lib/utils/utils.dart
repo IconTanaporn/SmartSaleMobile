@@ -1,9 +1,13 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:camera/camera.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../components/common/alert/dialog.dart';
 import '../components/common/alert/snack_bar_content.dart';
@@ -373,15 +377,15 @@ class IconFrameworkUtils {
 
   static Future saveBoundaryImageTemporary(
       RenderRepaintBoundary? boundary) async {
-    // final image = await boundary?.toImage();
-    // final byteData = await image?.toByteData(format: ImageByteFormat.png);
-    // final imageBytes = byteData?.buffer.asUint8List();
-    // if (imageBytes != null) {
-    //   final directory = await getTemporaryDirectory();
-    //   final imagePath = await File('${directory.path}/qr_code.png').create();
-    //   await imagePath.writeAsBytes(imageBytes);
-    //   return imagePath.path;
-    // }
-    // return '';
+    final image = await boundary?.toImage();
+    final byteData = await image?.toByteData(format: ImageByteFormat.png);
+    final imageBytes = byteData?.buffer.asUint8List();
+    if (imageBytes != null) {
+      final directory = await getTemporaryDirectory();
+      final imagePath = await File('${directory.path}/qr_code.png').create();
+      await imagePath.writeAsBytes(imageBytes);
+      return imagePath.path;
+    }
+    return '';
   }
 }

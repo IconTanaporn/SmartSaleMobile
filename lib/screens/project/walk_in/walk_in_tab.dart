@@ -34,15 +34,12 @@ class WalkInTabPage extends ConsumerWidget {
         url: qrCreateContact.value ?? '',
         title: Language.translate('screen.walk_in.title'),
         detail: project.value['title'],
+        isPreview: false,
       ));
     }
 
     toScanCard() {
-      // context.router.push(QRRoute(
-      //   url: qrCreateContact.value ?? '',
-      //   title: Language.translate('screen.walk_in.title'),
-      //   detail: project.value['title'],
-      // ));
+      //
     }
 
     return AutoTabsScaffold(

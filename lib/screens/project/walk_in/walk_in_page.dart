@@ -138,6 +138,7 @@ class WalkInPage extends ConsumerWidget {
                 url: url,
                 title: Language.translate('module.project.questionnaire.title'),
                 detail: '$firstname $lastname',
+                isPreview: true,
               ));
             }
 

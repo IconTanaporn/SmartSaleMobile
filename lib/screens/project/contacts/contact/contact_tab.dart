@@ -40,6 +40,7 @@ class ContactTapPage extends ConsumerWidget {
         url: url,
         title: Language.translate('module.project.questionnaire.title'),
         detail: '${contact.firstName} ${contact.lastName}',
+        isPreview: true,
       ));
     }
 
@@ -68,15 +69,21 @@ class ContactTapPage extends ConsumerWidget {
       ],
       transitionBuilder: (context, child, animation) => child,
       bottomNavigationBuilder: (context, tabsRouter) {
+        bool isLoading = contact.id == '';
+
         return BottomNavigationBar(
           currentIndex: tabsRouter.activeIndex,
           onTap: (i) {
             switch (i) {
               case 3:
-                toQuestionnaire();
+                if (!isLoading) {
+                  toQuestionnaire();
+                }
                 break;
               case 4:
-                onContactCustomer();
+                if (!isLoading) {
+                  onContactCustomer();
+                }
                 break;
               default:
                 tabsRouter.setActiveIndex(i);
@@ -121,7 +128,7 @@ class ContactTapPage extends ConsumerWidget {
             ),
             BottomNavigationBarItem(
               label: Language.translate('screen.contact.menu.questionnaire'),
-              icon: contact.id == ''
+              icon: isLoading
                   ? const Loading(size: 20)
                   : Image.asset(
                       AssetPath.iconQuestionnaire,
@@ -131,7 +138,7 @@ class ContactTapPage extends ConsumerWidget {
             ),
             BottomNavigationBarItem(
               label: Language.translate('screen.contact.menu.contact_customer'),
-              icon: contact.id == ''
+              icon: isLoading
                   ? const Loading(size: 20)
                   : Image.asset(
                       AssetPath.iconContactCustomer,
