@@ -24,6 +24,7 @@ final contactDetailProvider =
   var data = await ApiController.contactDetail(id);
   var contact = ContactDetail(
     id: id,
+    gender: IconFrameworkUtils.getValue(data, 'gender'),
     prefix: IconFrameworkUtils.getValue(data, 'prefix_name'),
     trackingAmount: IconFrameworkUtils.getValue(data, 'tracking_amount'),
     firstName: IconFrameworkUtils.getValue(data, 'firstname'),
@@ -117,7 +118,7 @@ class ContactPage extends ConsumerWidget {
     }
 
     toEditContact() {
-      //
+      context.router.pushNamed('/contact/$contactId/edit');
     }
 
     toCreateOpp() {

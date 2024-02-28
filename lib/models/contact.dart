@@ -5,6 +5,7 @@ enum ContactType { thai, corporation, foreigner }
 enum ContactAddressType { thailand, aboard }
 
 class ContactDetail extends LeadDetail {
+  final String gender;
   final String citizenId;
   final String passportId;
   final String nationality;
@@ -46,6 +47,7 @@ class ContactDetail extends LeadDetail {
 
   ContactDetail({
     super.id = '',
+    this.gender = '',
     super.prefix = '',
     super.firstName = '',
     super.lastName = '',

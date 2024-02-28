@@ -80,8 +80,8 @@ class ApiController {
       LeadClient.leadQualifyUpdate(statusId, comment);
   static Future leadUpdate(updateData) => LeadClient.leadUpdate(updateData);
 
-  static Future addressDetail(addressId) =>
-      AddressClient.addressDetail(addressId);
+  static Future addressDetail(contactId, addressId) =>
+      AddressClient.addressDetail(contactId, addressId);
   static Future provinceList() => AddressClient.provinceList();
   static Future districtList(provinceId) =>
       AddressClient.districtList(provinceId);
@@ -90,8 +90,9 @@ class ApiController {
   static Future provinceByPostCode(postCode) =>
       AddressClient.provinceByPostCode(postCode);
   static Future countryList() => AddressClient.countryList();
-  static Future addressUpdate(addressId, Map<String, dynamic> data) =>
-      AddressClient.addressUpdate(addressId, data);
+  static Future addressUpdate(
+          contactId, addressId, Map<String, dynamic> data) =>
+      AddressClient.addressUpdate(contactId, addressId, data);
   static Future addressTypeList() => AddressClient.addressTypeList();
 
   static Future calendar(stage, refId, startDate, endDate) =>

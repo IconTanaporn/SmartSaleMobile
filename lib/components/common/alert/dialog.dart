@@ -1,8 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 
 import '../../../config/constant.dart';
 import '../../../utils/utils.dart';
+import '../shader_mask/fade_list_mask.dart';
 import '../text/text.dart';
 
 class CustomAlertDialog extends StatelessWidget {
@@ -144,22 +146,22 @@ class CustomConfirmDialog extends StatelessWidget {
 
 //==== Custom Alert Confirm Checkbox ====
 class CustomAlertConfirmCheckbox extends StatefulWidget {
-  final String dialogTitle;
-  final List dialogItemList;
-  final String textButtonNextStep;
-  final String textButtonCancel;
-  final Function(dynamic) pressNextStepButton;
-  final Function()? pressCancelButton;
+  final String title;
+  final List itemList;
+  final String textNext;
+  final String textCancel;
+  final Function(dynamic) onNext;
+  final Function()? onCancel;
   final bool enableAll;
 
   const CustomAlertConfirmCheckbox({
     Key? key,
-    required this.pressNextStepButton,
-    required this.pressCancelButton,
-    required this.dialogTitle,
-    required this.dialogItemList,
-    required this.textButtonNextStep,
-    required this.textButtonCancel,
+    required this.onNext,
+    required this.onCancel,
+    required this.title,
+    required this.itemList,
+    required this.textNext,
+    required this.textCancel,
     this.enableAll = false,
   }) : super(key: key);
   @override
@@ -174,7 +176,7 @@ class _CustomAlertConfirmCheckboxState
   @override
   void initState() {
     super.initState();
-    itemList = widget.dialogItemList;
+    itemList = widget.itemList;
   }
 
   onChangeAll(bool? isCheck) {
@@ -195,15 +197,15 @@ class _CustomAlertConfirmCheckboxState
   @override
   Widget build(BuildContext context) {
     Widget nextStepButton = CustomButton(
-      onClick: () => widget.pressNextStepButton(itemList),
-      text: widget.textButtonNextStep,
+      onClick: () => widget.onNext(itemList),
+      text: widget.textNext,
     );
 
     Widget cancelButton = CustomButton(
-      onClick: widget.pressCancelButton,
-      text: widget.textButtonCancel,
-      backgroundColor: Colors.white,
-      textColor: Colors.black,
+      onClick: widget.onCancel,
+      text: widget.textCancel,
+      backgroundColor: AppColor.white,
+      textColor: AppColor.black,
     );
 
     Widget checkboxListTile(
@@ -218,16 +220,17 @@ class _CustomAlertConfirmCheckboxState
               borderRadius: BorderRadius.circular(200),
               border: Border.all(
                 width: 2,
-                color: value ? AppColor.red : AppColor.grey,
+                color: value ? AppColor.red : AppColor.grey5,
               ),
             ),
             child: CheckboxListTile(
               value: value,
               onChanged: onChanged,
               controlAffinity: ListTileControlAffinity.leading,
+              visualDensity: const VisualDensity(horizontal: -3, vertical: -4),
               title: CustomText(
                 title,
-                fontSize: FontSize.px28,
+                color: value ? AppColor.red : AppColor.black2,
               ),
               activeColor: AppColor.red,
               shape: RoundedRectangleBorder(
@@ -248,82 +251,56 @@ class _CustomAlertConfirmCheckboxState
         mainAxisSize: MainAxisSize.min,
         children: [
           CustomText(
-            widget.dialogTitle,
+            widget.title,
             fontSize: FontSize.title,
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 8),
           Container(
             constraints: BoxConstraints(
-              maxHeight: IconFrameworkUtils.getHeight(0.4),
+              maxHeight: IconFrameworkUtils.getHeight(0.5),
             ),
-            // child: FadeListMask(
-            //   child: SingleChildScrollView(
-            //     child: Row(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Expanded(
-            //           child: Column(
-            //             children: [
-            //               widget.enableAll
-            //                   ? checkboxListTile(
-            //                 itemList.fold(true, (value, element) {
-            //                   return value && element['isCheck'];
-            //                 }),
-            //                 'ทั้งหมด',
-            //                     (isCheck) {
-            //                   onChangeAll(isCheck);
-            //                 },
-            //               )
-            //                   : Container(),
-            //               ...itemList.mapIndexed<Widget>((i, item) {
-            //                 if (i % 2 == (widget.enableAll ? 0 : 1)) {
-            //                   return checkboxListTile(
-            //                     item['isCheck'] ?? false,
-            //                     item['name'] ?? '',
-            //                         (isCheck) {
-            //                       onChange(item['name'], isCheck!);
-            //                     },
-            //                   );
-            //                 }
-            //                 return Container();
-            //               }).toList(),
-            //             ],
-            //           ),
-            //         ),
-            //         Expanded(
-            //           child: Column(
-            //             children: [
-            //               ...itemList.mapIndexed<Widget>((i, item) {
-            //                 if (i % 2 == (widget.enableAll ? 1 : 0)) {
-            //                   return checkboxListTile(
-            //                     item['isCheck'] ?? false,
-            //                     item['name'] ?? '',
-            //                         (isCheck) {
-            //                       onChange(item['name'], isCheck!);
-            //                     },
-            //                   );
-            //                 }
-            //                 return Container();
-            //               }).toList(),
-            //             ],
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
+            child: FadeListMask(
+              bottom: true,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    widget.enableAll
+                        ? checkboxListTile(
+                            itemList.fold(true, (value, element) {
+                              return value && element['isCheck'];
+                            }),
+                            'ทั้งหมด',
+                            (isCheck) {
+                              onChangeAll(isCheck);
+                            },
+                          )
+                        : Container(),
+                    ...itemList.mapIndexed<Widget>((i, item) {
+                      return checkboxListTile(
+                        item['isCheck'] ?? false,
+                        item['name'] ?? '',
+                        (isCheck) {
+                          onChange(item['name'], isCheck!);
+                        },
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 20.0),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: IconFrameworkUtils.getWidth(0.2),
+                width: IconFrameworkUtils.getWidth(0.25),
                 child: cancelButton,
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
               SizedBox(
-                width: IconFrameworkUtils.getWidth(0.2),
+                width: IconFrameworkUtils.getWidth(0.25),
                 child: nextStepButton,
               ),
             ],

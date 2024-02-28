@@ -83,29 +83,7 @@ class WalkInPage extends ConsumerWidget {
   final TextEditingController _email = TextEditingController();
 
   String? validate(key, value) {
-    final String label = Language.translate('module.contact.$key');
-    final String errorText = Language.translate(
-      'common.input.validate.default_validate',
-      translationParams: {'label': label},
-    );
-
-    if (key == 'firstname' || key == 'lastname') {
-      if (!IconFrameworkUtils.validateName(value)) {
-        return errorText;
-      }
-    }
-    if (key == 'mobile') {
-      if (!IconFrameworkUtils.validatePhoneNumber(value)) {
-        return errorText;
-      }
-    }
-    if (key == 'email') {
-      if (!IconFrameworkUtils.validateEmail(value)) {
-        return errorText;
-      }
-    }
-
-    return null;
+    return IconFrameworkUtils.contactValidate(key, value);
   }
 
   @override

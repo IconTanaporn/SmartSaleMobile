@@ -147,6 +147,43 @@ class IconFrameworkUtils {
     return EmailValidator.validate(value);
   }
 
+  static String? contactValidate(key, value, {bool isThai = false}) {
+    final String label = Language.translate('module.contact.$key');
+    final String errorText = Language.translate(
+      'common.input.validate.default_validate',
+      translationParams: {'label': label},
+    );
+
+    if (key == 'firstname' || key == 'lastname') {
+      if (!IconFrameworkUtils.validateName(value)) {
+        return errorText;
+      }
+    }
+    if (key == 'mobile') {
+      if (isThai) {
+        if (!IconFrameworkUtils.validateThaiPhoneNumber(value)) {
+          return errorText;
+        }
+      } else {
+        if (!IconFrameworkUtils.validatePhoneNumber(value)) {
+          return errorText;
+        }
+      }
+    }
+    if (key == 'email') {
+      if (!IconFrameworkUtils.validateEmail(value)) {
+        return errorText;
+      }
+    }
+    if (key == 'citizen_id') {
+      if (!IconFrameworkUtils.validateThaiCitizenId(value)) {
+        return errorText;
+      }
+    }
+
+    return null;
+  }
+
   static DateFormat apiDateFormat = DateFormat('yyyy-MM-dd');
   static DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   static DateFormat timeFormat = DateFormat('HH:mm');
@@ -321,23 +358,19 @@ class IconFrameworkUtils {
       context: navigatorKey.currentContext!,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Container();
-        //
-        // return CustomAlertConfirmCheckbox(
-        //   pressNextStepButton: (itemList) {
-        //     Navigator.of(context, rootNavigator: true).pop(itemList);
-        //   },
-        //   pressCancelButton: () {
-        //     Navigator.of(context, rootNavigator: true).pop([]);
-        //   },
-        //   dialogTitle: title,
-        //   dialogItemList: itemList,
-        //   enableAll: enableAll,
-        //   textButtonNextStep:
-        //       confirmText ?? Language.translate('common.alert.confirm'),
-        //   textButtonCancel:
-        //       cancelText ?? Language.translate('common.alert.cancel'),
-        // );
+        return CustomAlertConfirmCheckbox(
+          onNext: (itemList) {
+            Navigator.of(context, rootNavigator: true).pop(itemList);
+          },
+          onCancel: () {
+            Navigator.of(context, rootNavigator: true).pop([]);
+          },
+          title: title,
+          itemList: itemList,
+          enableAll: enableAll,
+          textNext: confirmText ?? Language.translate('common.alert.confirm'),
+          textCancel: cancelText ?? Language.translate('common.alert.cancel'),
+        );
       },
     );
   }

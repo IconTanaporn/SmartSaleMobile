@@ -20,8 +20,8 @@ final questionnaireProvider =
 });
 
 @RoutePage(name: 'ContactTab')
-class ContactTapPage extends ConsumerWidget {
-  const ContactTapPage({super.key});
+class ContactTabPage extends ConsumerWidget {
+  const ContactTabPage({super.key});
 
   @override
   Widget build(context, ref) {

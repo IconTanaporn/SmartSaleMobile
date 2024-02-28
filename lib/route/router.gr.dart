@@ -161,7 +161,7 @@ abstract class _$RootRoutes extends RootStackRouter {
     ContactTab.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ContactTapPage(),
+        child: const ContactTabPage(),
       );
     },
     CreateContactRoute.name: (routeData) {
@@ -172,6 +172,43 @@ abstract class _$RootRoutes extends RootStackRouter {
         routeData: routeData,
         child: CreateContactPage(
           projectId: pathParams.getString('id'),
+          key: args.key,
+        ),
+      );
+    },
+    EditAddressRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditAddressRouteArgs>(
+          orElse: () => EditAddressRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EditAddressPage(
+          contactId: pathParams.getString(
+            'id',
+            '',
+          ),
+          type: args.type,
+          key: args.key,
+        ),
+      );
+    },
+    EditAddressTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EditAddressTabPage(),
+      );
+    },
+    EditContactRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<EditContactRouteArgs>(
+          orElse: () => EditContactRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EditContactPage(
+          contactId: pathParams.getString(
+            'id',
+            '',
+          ),
           key: args.key,
         ),
       );
@@ -709,7 +746,7 @@ class ContactRouteArgs {
 }
 
 /// generated route for
-/// [ContactTapPage]
+/// [ContactTabPage]
 class ContactTab extends PageRouteInfo<void> {
   const ContactTab({List<PageRouteInfo>? children})
       : super(
@@ -748,6 +785,87 @@ class CreateContactRouteArgs {
   @override
   String toString() {
     return 'CreateContactRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [EditAddressPage]
+class EditAddressRoute extends PageRouteInfo<EditAddressRouteArgs> {
+  EditAddressRoute({
+    KeyModel? type,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EditAddressRoute.name,
+          args: EditAddressRouteArgs(
+            type: type,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditAddressRoute';
+
+  static const PageInfo<EditAddressRouteArgs> page =
+      PageInfo<EditAddressRouteArgs>(name);
+}
+
+class EditAddressRouteArgs {
+  const EditAddressRouteArgs({
+    this.type,
+    this.key,
+  });
+
+  final KeyModel? type;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'EditAddressRouteArgs{type: $type, key: $key}';
+  }
+}
+
+/// generated route for
+/// [EditAddressTabPage]
+class EditAddressTab extends PageRouteInfo<void> {
+  const EditAddressTab({List<PageRouteInfo>? children})
+      : super(
+          EditAddressTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EditAddressTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [EditContactPage]
+class EditContactRoute extends PageRouteInfo<EditContactRouteArgs> {
+  EditContactRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EditContactRoute.name,
+          args: EditContactRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditContactRoute';
+
+  static const PageInfo<EditContactRouteArgs> page =
+      PageInfo<EditContactRouteArgs>(name);
+}
+
+class EditContactRouteArgs {
+  const EditContactRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'EditContactRouteArgs{key: $key}';
   }
 }
 

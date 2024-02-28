@@ -5,9 +5,9 @@ import '../api_client.dart';
 class AddressClient {
   AddressClient._();
 
-  static Future addressDetail(addressId) async {
+  static Future addressDetail(contactId, addressId) async {
     return await ApiClient.post('crm/address_detail', checkNull: true, body: {
-      // 'customer_id': appConstant.customerId,
+      'customer_id': contactId,
       'address_id': addressId,
     });
   }
@@ -39,9 +39,10 @@ class AddressClient {
     return await ApiClient.post('crm/masterdata_country_load');
   }
 
-  static Future addressUpdate(addressId, Map<String, dynamic> data) async {
+  static Future addressUpdate(
+      contactId, addressId, Map<String, dynamic> data) async {
     return await ApiClient.post('crm/address_update', body: {
-      // 'customer_id': appConstant.customerId,
+      'customer_id': contactId,
       'address_id': addressId,
       ...data,
     });

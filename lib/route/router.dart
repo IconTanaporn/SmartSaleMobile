@@ -4,12 +4,16 @@ import 'package:smart_sale_mobile/screens/project/customer/send_brochure_page.da
 import 'package:smart_sale_mobile/screens/project/opportunities/opportunity/opportunity_questionnaire_page.dart';
 import 'package:smart_sale_mobile/screens/setting/setting_page.dart';
 
+import '../models/common/key_model.dart';
 import '../screens/auth/login_page.dart';
 import '../screens/auth/splash_page.dart';
 import '../screens/home_page.dart';
 import '../screens/project/contacts/contact/add_opportunity_page.dart';
+import '../screens/project/contacts/contact/address/edit_address_page.dart';
+import '../screens/project/contacts/contact/address/edit_address_tab.dart';
 import '../screens/project/contacts/contact/contact_page.dart';
 import '../screens/project/contacts/contact/contact_tab.dart';
+import '../screens/project/contacts/contact/edit_contact_page.dart';
 import '../screens/project/contacts/contact_list_page.dart';
 import '../screens/project/customer/activity_log_page.dart';
 import '../screens/project/customer/activity_page.dart';
@@ -109,9 +113,7 @@ class RootRoutes extends _$RootRoutes {
       AutoRoute(page: OpportunityProgressRoute.page, path: 'progress'),
       AutoRoute(page: OpportunityCloseJobRoute.page, path: 'close_job'),
       AutoRoute(
-        page: OpportunityQuestionnaireRoute.page,
-        path: 'questionnaire',
-      ),
+          page: OpportunityQuestionnaireRoute.page, path: 'questionnaire'),
     ],
     guards: [AuthGuard()],
   );
@@ -134,6 +136,19 @@ class RootRoutes extends _$RootRoutes {
     ),
   ];
   final List<AutoRoute> _contactRoutes = [
+    AutoRoute(
+      page: EditContactRoute.page,
+      path: '/contact/:id/edit',
+      guards: [AuthGuard()],
+    ),
+    AutoRoute(
+      page: EditAddressTab.page,
+      path: '/contact/:id/address',
+      guards: [AuthGuard()],
+      children: [
+        AutoRoute(page: EditAddressRoute.page, path: ''),
+      ],
+    ),
     AutoRoute(
       page: AddOpportunityRoute.page,
       path: '/project/:projectId/contact/:id/opportunity/add',
