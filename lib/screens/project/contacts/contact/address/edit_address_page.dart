@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/models/common/key_model.dart';
 import 'package:smart_sale_mobile/screens/project/contacts/contact/contact_page.dart';
+import 'package:smart_sale_mobile/screens/project/contacts/contact/edit_contact_page.dart';
 
 import '../../../../../api/api_client.dart';
 import '../../../../../api/api_controller.dart';
@@ -220,6 +221,22 @@ class EditAddressPage extends ConsumerWidget {
       return ref.refresh(_addressDetailProvider(type?.id ?? ''));
     }
 
+    Future onSaveAddress(AddressDetail updateData) async {
+      if (_formKey.currentState!.validate()) {
+        final isSuccess = await copyAddressByCurrent(updateData);
+
+        if (isSuccess) {
+          context.router.pop();
+          return ref.refresh(fullAddressProvider);
+        }
+      } else {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.alert'),
+          detail: Language.translate('common.input.alert.check_validate'),
+        );
+      }
+    }
+
     return address.when(
       error: (err, stack) =>
           IconButton(onPressed: onRefresh, icon: const Icon(Icons.refresh)),
@@ -231,31 +248,18 @@ class EditAddressPage extends ConsumerWidget {
         final road = TextEditingController(text: data.road);
 
         Future onSave() async {
-          if (_formKey.currentState!.validate()) {
-            final updateData = AddressDetail(
-              id: type?.id ?? '',
-              contactId: contactId,
-              houseNumber: addressNo.text,
-              village: village.text,
-              soi: soi.text,
-              road: road.text,
-              province: province,
-              district: district,
-              subDistrict: subDistrict,
-              zipCode: _zipcode.text,
-            );
-            final isSuccess = await copyAddressByCurrent(updateData);
-
-            if (isSuccess) {
-              context.router.pop();
-              return ref.refresh(contactDetailProvider(contactId));
-            }
-          } else {
-            await IconFrameworkUtils.showAlertDialog(
-              title: Language.translate('common.alert.alert'),
-              detail: Language.translate('common.input.alert.check_validate'),
-            );
-          }
+          onSaveAddress(AddressDetail(
+            id: type?.id ?? '',
+            contactId: contactId,
+            houseNumber: addressNo.text,
+            village: village.text,
+            soi: soi.text,
+            road: road.text,
+            province: province,
+            district: district,
+            subDistrict: subDistrict,
+            zipCode: _zipcode.text,
+          ));
         }
 
         return SingleChildScrollView(

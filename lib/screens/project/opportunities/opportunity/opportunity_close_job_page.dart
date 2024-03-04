@@ -5,6 +5,7 @@ import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/models/common/key_model.dart';
 
+import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/input/input.dart';
@@ -13,6 +14,7 @@ import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../utils/utils.dart';
+import 'opportunity_page.dart';
 
 final statusProvider = StateProvider<KeyModel>((ref) => KeyModel());
 final reasonProvider = StateProvider<KeyModel>((ref) => KeyModel());
@@ -46,6 +48,42 @@ final reasonListProvider = FutureProvider<List<KeyModel>>((ref) async {
   return reasons;
 });
 
+final _updateProvider =
+    FutureProvider.autoDispose.family<bool, String>((ref, comment) async {
+  final data = ref.read(opportunityProvider);
+  final status = ref.read(statusProvider);
+  final reason = ref.read(reasonProvider);
+
+  IconFrameworkUtils.startLoading();
+  try {
+    await ApiController.closeJob(
+      data.projectId,
+      data.oppId,
+      status.id,
+      reason.id,
+      comment,
+    );
+    IconFrameworkUtils.stopLoading();
+    await IconFrameworkUtils.showAlertDialog(
+      title: Language.translate('common.alert.success'),
+      detail: Language.translate('common.alert.save_complete'),
+    );
+    return true;
+  } on ApiException catch (e) {
+    IconFrameworkUtils.stopLoading();
+    IconFrameworkUtils.showAlertDialog(
+      title: Language.translate('common.alert.fail'),
+      detail: e.message,
+    );
+    IconFrameworkUtils.log(
+      'Close Job',
+      'Update Provider',
+      e.message,
+    );
+  }
+  return false;
+});
+
 @RoutePage()
 class OpportunityCloseJobPage extends ConsumerWidget {
   OpportunityCloseJobPage({
@@ -74,19 +112,10 @@ class OpportunityCloseJobPage extends ConsumerWidget {
 
     onSave() async {
       if (_formKey.currentState!.validate()) {
-        bool isSuccess = false;
-        // final isSuccess = await ref.read(_updateProvider(UpdateData(
-        //   id: oppId,
-        //   budget: budget.text,
-        //   comment: comment.text,
-        // )).future);
+        final isSuccess = await ref.read(_updateProvider(_comment.text).future);
 
         if (isSuccess) {
-          // context.router.pop();
-          // if (opportunity.value?.contactId != '') {
-          //   ref.refresh(oppListProvider(opportunity.value!.contactId));
-          // }
-          // return ref.refresh(opportunityProvider(oppId));
+          context.router.pop();
         }
       } else {
         await IconFrameworkUtils.showAlertDialog(

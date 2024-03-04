@@ -3,32 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/app_style.dart';
 import 'package:smart_sale_mobile/route/router.dart';
+import 'package:smart_sale_mobile/screens/project/opportunities/opportunity/opportunity_page.dart';
 
-import '../../../../api/api_controller.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
-import '../../../../models/opportunity.dart';
-import '../../../../utils/utils.dart';
-
-final opportunityProvider = FutureProvider.autoDispose
-    .family<OpportunityDetail, String>((ref, id) async {
-  var data = await ApiController.opportunityDetail(id);
-  return OpportunityDetail(
-    oppId: IconFrameworkUtils.getValue(data, 'id'),
-    oppName: IconFrameworkUtils.getValue(data, 'name'),
-    comment: IconFrameworkUtils.getValue(data, 'comment'),
-    budget: IconFrameworkUtils.getValue(data, 'budget'),
-    projectId: IconFrameworkUtils.getValue(data, 'project_id'),
-    projectName: IconFrameworkUtils.getValue(data, 'project_name'),
-    status: IconFrameworkUtils.getValue(data, 'status'),
-    createDate: IconFrameworkUtils.getValue(data, 'createdate'),
-    expDate: IconFrameworkUtils.getValue(data, 'expdate'),
-    contactId: IconFrameworkUtils.getValue(data, 'contact_id'),
-    contactName: IconFrameworkUtils.getValue(data, 'contact_name'),
-    mobile: IconFrameworkUtils.getValue(data, 'mobile'),
-  );
-});
 
 @RoutePage(name: 'OpportunityTap')
 class OpportunityTapPage extends ConsumerWidget {
@@ -36,6 +15,13 @@ class OpportunityTapPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
+    final opp = ref.read(opportunityProvider);
+    final canEdit = opp.canEdit;
+
+    // if (!canEdit) {
+    //   return OpportunityRoute.page;
+    // }
+
     return AutoTabsScaffold(
       routes: [
         OpportunityRoute(),
@@ -86,16 +72,17 @@ class OpportunityTapPage extends ConsumerWidget {
                 height: 20,
               ),
             ),
-            BottomNavigationBarItem(
-              label: Language.translate('screen.opportunity.menu.close_job'),
-              icon: Image.asset(
-                AssetPath.iconCloseJob,
-                color: (tabsRouter.activeIndex == 3)
-                    ? AppColor.blue
-                    : AppColor.grey2,
-                height: 20,
+            if (canEdit)
+              BottomNavigationBarItem(
+                label: Language.translate('screen.opportunity.menu.close_job'),
+                icon: Image.asset(
+                  AssetPath.iconCloseJob,
+                  color: (tabsRouter.activeIndex == 3)
+                      ? AppColor.blue
+                      : AppColor.grey2,
+                  height: 20,
+                ),
               ),
-            ),
           ],
         );
       },

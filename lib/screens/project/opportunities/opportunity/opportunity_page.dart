@@ -8,12 +8,39 @@ import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/opportunity/opportunity_detail.dart';
 import 'package:smart_sale_mobile/route/router.dart';
 
+import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
-import 'opportunity_tab.dart';
+import '../../../../models/opportunity.dart';
+import '../../../../utils/utils.dart';
+
+final opportunityProvider = StateProvider((ref) => const OpportunityDetail());
+
+final opportunityDetailProvider = FutureProvider.autoDispose
+    .family<OpportunityDetail, String>((ref, id) async {
+  var data = await ApiController.opportunityDetail(id);
+  final opp = OpportunityDetail(
+    oppId: IconFrameworkUtils.getValue(data, 'id'),
+    oppName: IconFrameworkUtils.getValue(data, 'name'),
+    comment: IconFrameworkUtils.getValue(data, 'comment'),
+    budget: IconFrameworkUtils.getValue(data, 'budget'),
+    projectId: IconFrameworkUtils.getValue(data, 'project_id'),
+    projectName: IconFrameworkUtils.getValue(data, 'project_name'),
+    status: IconFrameworkUtils.getValue(data, 'status'),
+    createDate: IconFrameworkUtils.getValue(data, 'createdate'),
+    expDate: IconFrameworkUtils.getValue(data, 'expdate'),
+    contactId: IconFrameworkUtils.getValue(data, 'contact_id'),
+    contactName: IconFrameworkUtils.getValue(data, 'contact_name'),
+    mobile: IconFrameworkUtils.getValue(data, 'mobile'),
+  );
+
+  ref.read(opportunityProvider.notifier).state = opp;
+
+  return opp;
+});
 
 @RoutePage()
 class OpportunityPage extends ConsumerWidget {
@@ -28,10 +55,10 @@ class OpportunityPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final opportunity = ref.watch(opportunityProvider(oppId));
+    final opportunity = ref.watch(opportunityDetailProvider(oppId));
 
     onRefresh() async {
-      return ref.refresh(opportunityProvider(oppId));
+      return ref.refresh(opportunityDetailProvider(oppId));
     }
 
     toEditOpp() {
@@ -156,21 +183,26 @@ class OpportunityPage extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Align(
-                          child: CustomText(
-                            Language.translate('screen.opportunity.sub_title'),
-                            color: AppColor.red,
-                            fontSize: FontSize.title,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Align(
+                            child: CustomText(
+                              Language.translate(
+                                  'screen.opportunity.sub_title'),
+                              color: AppColor.red,
+                              fontSize: FontSize.title,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: toEditOpp,
-                          icon: Image.asset(
-                            AssetPath.iconEdit,
-                            height: 20,
-                          ),
-                        )
+                        if (opportunity.value?.canEdit ?? false)
+                          IconButton(
+                            onPressed: toEditOpp,
+                            icon: Image.asset(
+                              AssetPath.iconEdit,
+                              height: 20,
+                            ),
+                          )
                       ],
                     ),
                   ),

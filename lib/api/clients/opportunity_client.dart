@@ -79,9 +79,9 @@ class OpportunityClient {
     });
   }
 
-  static Future opportunityProcessUpdate(processId) async {
+  static Future opportunityProcessUpdate(oppId, processId) async {
     return await ApiClient.post('crm/saleProcess_update', body: {
-      // 'opportunity_id': UserProperty.getOpportunityPropertyByKey('id'),
+      'opportunity_id': oppId,
       'sale_process_id': processId,
     });
   }
@@ -96,10 +96,10 @@ class OpportunityClient {
     });
   }
 
-  static Future closeJob(statusId, reasonId, comment) async {
+  static Future closeJob(projectId, oppId, statusId, reasonId, comment) async {
     return await ApiClient.post('crm/opportunity_statusUpdate', body: {
-      // 'project_id': UserProperty.getCurrentProjectId(),
-      // 'id': UserProperty.getOpportunityPropertyByKey('id'),
+      'project_id': projectId,
+      'id': oppId,
       'status': statusId,
       'win_lose_reason': reasonId,
       'comment': comment,

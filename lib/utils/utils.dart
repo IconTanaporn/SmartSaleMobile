@@ -90,9 +90,9 @@ class IconFrameworkUtils {
     if (_isNotNull(data, key)) {
       var number = data[key];
       if (number is num) {
-        return data[key] as double;
+        return data[key] + 0.0;
       }
-      return double.tryParse(number) ?? 0;
+      return double.tryParse(number) ?? 0.0;
     } else {
       return 0;
     }

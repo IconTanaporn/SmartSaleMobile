@@ -10,16 +10,14 @@ import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/input/input.dart';
+import '../../../../components/common/loading/loading.dart';
 import '../../../../components/common/show_picker.dart';
 import '../../../../components/common/text/text.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../models/common/key_model.dart';
-import '../../../../providers/master_data/address_provider.dart';
 import '../../../../providers/master_data/customer_provider.dart';
 import '../../../../utils/utils.dart';
-
-final _zipcode = TextEditingController();
 
 final _isThaiProvider = FutureProvider.autoDispose((ref) async {
   final nationality = ref.watch(_nationalityProvider);
@@ -38,7 +36,6 @@ final _sourceProvider = StateProvider.autoDispose<KeyModel?>((ref) => null);
 final _initProvider = FutureProvider.autoDispose((ref) async {
   await IconFrameworkUtils.delayed(milliseconds: 0);
   final contact = ref.read(contactProvider);
-  _zipcode.text = contact.zipCode;
 
   final genderList = await ref.read(genderListProvider.future);
   ref.read(_genderProvider.notifier).state = genderList.firstWhere(
@@ -60,21 +57,6 @@ final _initProvider = FutureProvider.autoDispose((ref) async {
   final sourceList = await ref.read(sourceListProvider.future);
   ref.read(_sourceProvider.notifier).state = sourceList.firstWhereOrNull(
     (e) => e.name == contact.source,
-  );
-  ref.read(zipcodeProvider.notifier).state = contact.zipCode;
-
-  final provinceList = await ref.read(provinceListProvider.future);
-  ref.read(provinceProvider.notifier).state = provinceList.firstWhereOrNull(
-    (e) => e.name == contact.province,
-  );
-  final districtList = await ref.read(districtListProvider.future);
-  ref.read(districtProvider.notifier).state = districtList.firstWhereOrNull(
-    (e) => e.name == contact.district,
-  );
-  final subDistrictList = await ref.read(subDistrictListProvider.future);
-  ref.read(subDistrictProvider.notifier).state =
-      subDistrictList.firstWhereOrNull(
-    (e) => e.name == contact.subDistrict,
   );
 });
 
@@ -100,13 +82,6 @@ final _updateProvider = FutureProvider.autoDispose
       'passport_id': updateData.passportId,
       'we_chat': updateData.weChat,
       'birthday': updateData.birthday,
-      'address_no': updateData.houseNumber,
-      'village': updateData.village,
-      'soi': updateData.soi,
-      'road': updateData.road,
-      'province': updateData.province,
-      'district': updateData.district,
-      'sub_district': updateData.subDistrict,
     });
 
     IconFrameworkUtils.stopLoading();
@@ -130,6 +105,14 @@ final _updateProvider = FutureProvider.autoDispose
   return false;
 });
 
+final fullAddressProvider = FutureProvider.autoDispose((ref) async {
+  final contact = ref.watch(contactProvider);
+
+  var data = await ApiController.contactDetail(contact.id);
+
+  return IconFrameworkUtils.getValue(data, 'full_address');
+});
+
 @RoutePage()
 class EditContactPage extends ConsumerWidget {
   EditContactPage({
@@ -144,6 +127,7 @@ class EditContactPage extends ConsumerWidget {
   Widget build(context, ref) {
     ref.watch(_initProvider);
     final contact = ref.watch(contactProvider);
+    final fullAddress = ref.watch(fullAddressProvider);
     final firstname = TextEditingController(text: contact.firstName);
     final lastname = TextEditingController(text: contact.lastName);
     final mobile = TextEditingController(text: contact.mobile);
@@ -153,27 +137,16 @@ class EditContactPage extends ConsumerWidget {
     final passportId = TextEditingController(text: contact.passportId);
     final birthday = TextEditingController(text: contact.birthday);
     final weChat = TextEditingController(text: contact.weChat);
-    final addressNo = TextEditingController(text: contact.houseNumber);
-    final village = TextEditingController(text: contact.village);
-    final soi = TextEditingController(text: contact.soi);
-    final road = TextEditingController(text: contact.road);
 
     final genderList = ref.watch(genderListProvider);
     final prefixList = ref.watch(prefixListProvider);
     final nationalityList = ref.watch(nationalityListProvider);
-    final provinceList = ref.watch(provinceListProvider);
-    final districtList = ref.watch(districtListProvider);
-    final subDistrictList = ref.watch(subDistrictListProvider);
     final sourceList = ref.watch(sourceListProvider);
-    final zipcodeList = ref.watch(zipcodeListProvider);
 
     final isThai = ref.watch(_isThaiProvider).value ?? true;
     final gender = ref.watch(_genderProvider);
     final prefix = ref.watch(_prefixProvider);
     final nationality = ref.watch(_nationalityProvider);
-    final province = ref.watch(provinceProvider);
-    final district = ref.watch(districtProvider);
-    final subDistrict = ref.watch(subDistrictProvider);
     final source = ref.watch(_sourceProvider);
 
     String? validate(key, value) {
@@ -203,13 +176,6 @@ class EditContactPage extends ConsumerWidget {
           email: email.text,
           weChat: weChat.text,
           birthday: birthday.text,
-          houseNumber: addressNo.text,
-          village: village.text,
-          soi: soi.text,
-          road: road.text,
-          province: province?.name ?? '',
-          district: district?.name ?? '',
-          subDistrict: subDistrict?.name ?? '',
         )).future);
 
         if (isSuccess) {
@@ -224,8 +190,13 @@ class EditContactPage extends ConsumerWidget {
       }
     }
 
-    toEditAddress() {
-      context.router.pushNamed('/contact/$contactId/address');
+    onRefresh() async {
+      return ref.refresh(fullAddressProvider);
+    }
+
+    toEditAddress() async {
+      await context.router.pushNamed('/contact/$contactId/address');
+      // TODO: refresh address
     }
 
     return Scaffold(
@@ -408,68 +379,20 @@ class EditContactPage extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    InputText(
-                      controller: addressNo,
-                      labelText:
-                          Language.translate('module.address.address_no'),
-                    ),
-                    const SizedBox(height: 15),
-                    InputText(
-                      controller: village,
-                      labelText: Language.translate('module.address.village'),
-                      required: false,
-                    ),
-                    const SizedBox(height: 15),
-                    InputText(
-                      controller: soi,
-                      labelText: Language.translate('module.address.soi'),
-                      required: false,
-                    ),
-                    const SizedBox(height: 15),
-                    InputText(
-                      controller: road,
-                      labelText: Language.translate('module.address.road'),
-                      required: false,
-                    ),
-                    const SizedBox(height: 15),
-                    InputText(
-                      controller: _zipcode,
-                      labelText: Language.translate('module.address.zipcode'),
-                      onChanged: (value) {
-                        ref.read(zipcodeProvider.notifier).state = value;
-                      },
-                    ),
-                    const SizedBox(height: 15),
-                    InputDropdown(
-                      labelText: Language.translate('module.address.province'),
-                      value: province,
-                      items: provinceList.value ?? [],
-                      onChanged: (value) =>
-                          ref.read(provinceProvider.notifier).state = value,
-                      isLoading: provinceList.isLoading,
-                    ),
-                    const SizedBox(height: 15),
-                    InputDropdown(
-                      labelText: Language.translate('module.address.district'),
-                      value: district,
-                      items: districtList.value ?? [],
-                      onChanged: (value) =>
-                          ref.read(districtProvider.notifier).state = value,
-                      isLoading: districtList.isLoading,
-                    ),
-                    const SizedBox(height: 15),
-                    InputDropdown(
-                      labelText:
-                          Language.translate('module.address.sub_district'),
-                      value: subDistrict,
-                      items: subDistrictList.value ?? [],
-                      onChanged: (value) {
-                        final data = subDistrictList.value!
-                            .firstWhere((e) => e.id == value.id);
-                        ref.read(subDistrictProvider.notifier).state = data;
-                        _zipcode.text = data.zipcode;
-                      },
-                      isLoading: subDistrictList.isLoading,
+                    fullAddress.when(
+                      skipLoadingOnRefresh: false,
+                      error: (err, stack) => IconButton(
+                        onPressed: onRefresh,
+                        icon: const Icon(Icons.refresh),
+                      ),
+                      loading: () => const Loading(),
+                      data: (data) => InputTextArea(
+                        controller: TextEditingController(
+                          text: data,
+                        ),
+                        labelText: Language.translate('module.contact.address'),
+                        disabled: true,
+                      ),
                     ),
                     const SizedBox(height: 30),
                     Center(

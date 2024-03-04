@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 
+import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/loading/loading.dart';
@@ -12,14 +13,14 @@ import '../../../../components/opportunity/progress/progress_bar.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../utils/utils.dart';
-import 'opportunity_tab.dart';
+import 'opportunity_page.dart';
 
 final selectedProvider = StateProvider<int>((ref) => -1);
 
 class Progress {
-  final int id;
+  final String id;
   final String name;
-  final int percent;
+  final double percent;
   final bool isCheck;
 
   Progress(
@@ -34,13 +35,33 @@ final progressProvider =
     FutureProvider.autoDispose.family<List<Progress>, String>((ref, id) async {
   List list = await ApiController.opportunityProcessList(id);
   return list
-      .map((e) => Progress(
-            e['id'],
-            e['name'],
-            e['percent'],
-            e['ischeck'],
+      .map((data) => Progress(
+            IconFrameworkUtils.getValue(data, 'id'),
+            IconFrameworkUtils.getValue(data, 'name'),
+            IconFrameworkUtils.getNumber(data, 'percent'),
+            data['ischeck'] ?? false,
           ))
       .toList();
+});
+
+final _updateProvider =
+    FutureProvider.autoDispose.family<bool, String>((ref, id) async {
+  try {
+    final opp = ref.read(opportunityProvider);
+
+    await ApiController.opportunityProcessUpdate(opp.oppId, id);
+
+    return true;
+  } on ApiException catch (e) {
+    IconFrameworkUtils.stopLoading();
+    IconFrameworkUtils.showError(e.message);
+    IconFrameworkUtils.log(
+      'Opportunity Progress',
+      'Update Provider',
+      e.message,
+    );
+  }
+  return false;
 });
 
 @RoutePage()
@@ -54,24 +75,46 @@ class OpportunityProgressPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final opportunity = ref.watch(opportunityProvider(oppId));
+    final opportunity = ref.watch(opportunityProvider);
     final progressList = ref.watch(progressProvider(oppId));
     final selectedIndex = ref.watch(selectedProvider);
 
-    final double progress = progressList.value?.foldIndexed(
-          0,
-          (i, total, e) =>
-              (total ?? 0) +
-              ((e.isCheck || i <= selectedIndex) ? e.percent : 0),
-        ) ??
-        0;
+    final double? progress = progressList.value?.foldIndexed(
+      0,
+      (i, total, e) =>
+          (total ?? 0) + ((e.isCheck || i <= selectedIndex) ? e.percent : 0),
+    );
 
     onRefresh() async {
+      ref.read(selectedProvider.notifier).state = -1;
       return ref.refresh(progressProvider(oppId));
     }
 
-    onSave() {
-      //
+    onSave() async {
+      IconFrameworkUtils.startLoading();
+
+      final progressList = await ref.read(progressProvider(oppId).future);
+
+      // TODO: รอ api แก้ แล้วยิง api แค่ครั้งเดียว
+      bool isSuccess = true;
+      for (int i = 0; i <= selectedIndex; i++) {
+        var p = progressList[i];
+        if (!p.isCheck) {
+          isSuccess =
+              await ref.read(_updateProvider(progressList[i].id).future);
+        }
+      }
+
+      await IconFrameworkUtils.delayed();
+      IconFrameworkUtils.stopLoading();
+
+      if (isSuccess) {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.success'),
+          detail: Language.translate('common.alert.save_complete'),
+        );
+        return onRefresh();
+      }
     }
 
     bool checkValidate() {
@@ -112,7 +155,7 @@ class OpportunityProgressPage extends ConsumerWidget {
                           ),
                           const SizedBox(width: 10.0),
                           CustomText(
-                            opportunity.value?.contactName ?? '',
+                            opportunity.contactName ?? '',
                             color: AppColor.blue,
                             fontSize: FontSize.title,
                             fontWeight: FontWeight.bold,
@@ -122,7 +165,7 @@ class OpportunityProgressPage extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: ProgressBar(
-                          progress: progress,
+                          progress: progress ?? 0,
                         ),
                       ),
                     ],
@@ -139,6 +182,7 @@ class OpportunityProgressPage extends ConsumerWidget {
                       ),
                     ),
                     child: progressList.when(
+                      // skipLoadingOnRefresh: false,
                       error: (err, stack) => IconButton(
                         onPressed: onRefresh,
                         icon: const Icon(Icons.refresh),
