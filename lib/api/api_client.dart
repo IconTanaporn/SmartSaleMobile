@@ -39,7 +39,7 @@ class ApiException implements Exception {
 /// * [ApiConfig.authPass]
 class ApiConfig {
   ApiConfig._();
-  static const String baseUrl = _ananda;
+  static const String baseUrl = _afdQas;
 
   /// ### [[Standard]]
   static const String _std = 'https://std-test.iconrem.com/smartsale';
@@ -63,6 +63,11 @@ class ApiConfig {
       case _std:
       case _stdTest:
         return 'iconteam';
+      case _afd:
+      case _afdTest:
+      case _afdQas:
+      case _afdDev:
+        return 'internalapi';
       default:
         return 'admin';
     }
@@ -70,11 +75,11 @@ class ApiConfig {
 
   static String getTokenPass() {
     switch (baseUrl) {
-      case _afd:
-      case _afdTest:
-      case _afdQas:
-      case _afdDev:
-        return 'iC0nFrAmE**1';
+      // case _afd:
+      // case _afdTest:
+      // case _afdQas:
+      // case _afdDev:
+      //   return 'iC0nFrAmE**1';
       default:
         return 'password';
     }

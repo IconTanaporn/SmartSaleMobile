@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/app_style.dart';
+import 'package:smart_sale_mobile/utils/utils.dart';
 
 import '../../api/api_controller.dart';
 import '../../config/asset_path.dart';
@@ -9,9 +10,26 @@ import '../../config/constant.dart';
 import '../../config/language.dart';
 import '../../route/router.dart';
 
-final projectProvider = FutureProvider.family<dynamic, String>((ref, id) async {
+class Project {
+  final String id, name;
+  Project({
+    this.id = '',
+    this.name = '',
+  });
+}
+
+final projectProvider = StateProvider((ref) => Project());
+
+final projectDetailProvider =
+    FutureProvider.family<Project, String>((ref, id) async {
   var data = await ApiController.conceptDetail(id);
-  return data;
+  final project = Project(
+    id: IconFrameworkUtils.getValue(data, 'project_id'),
+    name: IconFrameworkUtils.getValue(data, 'title'),
+  );
+
+  ref.read(projectProvider.notifier).state = project;
+  return project;
 });
 
 @RoutePage()

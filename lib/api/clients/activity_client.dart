@@ -1,3 +1,4 @@
+import '../../utils/utils.dart';
 import '../api_client.dart';
 
 class ActivityClient {
@@ -55,17 +56,17 @@ class ActivityClient {
     });
   }
 
-  static Future createActivityByType(stage, type, refId) async {
+  static Future createActivityByType(projectId, stage, type, refId) async {
     final DateTime now = DateTime.now();
-    // final String date = IconFrameworkUtils.formatDate(now);
+    final String date = IconFrameworkUtils.formatDate(now);
     final String time = '${now.hour}:${now.minute}';
 
     return await ApiClient.post('crm/activity_create_by_type_name', body: {
       'stage': stage,
       'sub_type': type,
-      // 'project_id': UserProperty.getCurrentProjectId(),
+      'project_id': projectId,
       'reference_id': refId,
-      // 'date': date,
+      'date': date,
       'time': time,
     });
   }

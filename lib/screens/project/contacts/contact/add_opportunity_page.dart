@@ -15,9 +15,9 @@ import '../../../../config/language.dart';
 import '../../../../utils/utils.dart';
 import 'contact_page.dart';
 
-final projectProvider = StateProvider.autoDispose<KeyModel?>((ref) => null);
+final _projectProvider = StateProvider.autoDispose<KeyModel?>((ref) => null);
 
-final projectListProvider = FutureProvider<List<KeyModel>>((ref) async {
+final _projectListProvider = FutureProvider<List<KeyModel>>((ref) async {
   List list = await ApiController.opportunityList();
 
   return list
@@ -25,15 +25,15 @@ final projectListProvider = FutureProvider<List<KeyModel>>((ref) async {
       .toList();
 });
 
-final initProjectProvider =
+final _initProjectProvider =
     FutureProvider.autoDispose.family<void, String>((ref, id) async {
-  var list = ref.watch(projectListProvider).value;
+  var list = ref.watch(_projectListProvider).value;
 
   if (list != null && list.isNotEmpty) {
     var project = list.firstWhereOrNull((e) => e.id == id);
     if (project != null) {
       await IconFrameworkUtils.delayed(milliseconds: 100);
-      ref.read(projectProvider.notifier).state = project;
+      ref.read(_projectProvider.notifier).state = project;
     }
   }
 });
@@ -48,9 +48,9 @@ class CreateOppInput {
   });
 }
 
-final createOpportunityProvider =
+final _createOpportunityProvider =
     FutureProvider.autoDispose.family<bool, CreateOppInput>((ref, input) async {
-  final project = ref.read(projectProvider);
+  final project = ref.read(_projectProvider);
 
   try {
     IconFrameworkUtils.startLoading();
@@ -93,13 +93,14 @@ class AddOpportunityPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final projectList = ref.watch(projectListProvider);
-    ref.watch(initProjectProvider(projectId));
-    final project = ref.watch(projectProvider);
+    final projectList = ref.watch(_projectListProvider);
+    ref.watch(_initProjectProvider(projectId));
+    final project = ref.watch(_projectProvider);
 
     onSave() async {
       if (_formKey.currentState!.validate()) {
-        final success = await ref.read(createOpportunityProvider(CreateOppInput(
+        final success =
+            await ref.read(_createOpportunityProvider(CreateOppInput(
           contactId: contactId,
           budget: _budget.text,
           comment: _comment.text,
@@ -151,7 +152,7 @@ class AddOpportunityPage extends ConsumerWidget {
                     items: projectList.value ?? [],
                     isLoading: projectList.isLoading,
                     onChanged: (value) =>
-                        ref.read(projectProvider.notifier).state = value,
+                        ref.read(_projectProvider.notifier).state = value,
                   ),
                   const SizedBox(height: 15),
                   InputText(

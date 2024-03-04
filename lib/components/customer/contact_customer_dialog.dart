@@ -1,15 +1,54 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_sale_mobile/screens/project/contacts/contact/contact_page.dart';
+import 'package:smart_sale_mobile/screens/project/leads/lead/lead_page.dart';
+import 'package:smart_sale_mobile/screens/project/opportunities/opportunity/opportunity_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/constant.dart';
 import '../../../utils/utils.dart';
+import '../../api/api_client.dart';
+import '../../api/api_controller.dart';
 import '../../config/asset_path.dart';
 import '../../config/language.dart';
+import '../../screens/project/project_page.dart';
 import '../common/text/text.dart';
 
-class ContactCustomerDialog extends StatelessWidget {
+class CreateActivityInput {
+  final String stage, type, refId;
+  CreateActivityInput({
+    this.refId = '',
+    this.stage = '',
+    this.type = '',
+  });
+}
+
+final createActivityByTypeProvider =
+    FutureProvider.family<bool, CreateActivityInput>((ref, input) async {
+  final project = ref.read(projectProvider);
+
+  try {
+    IconFrameworkUtils.startLoading();
+    await ApiController.createActivityByType(
+      project.id,
+      input.stage,
+      input.type,
+      input.refId,
+    );
+
+    IconFrameworkUtils.stopLoading();
+    return true;
+  } on ApiException catch (e) {
+    IconFrameworkUtils.stopLoading();
+    await IconFrameworkUtils.showError(e.message);
+  }
+
+  return false;
+});
+
+class ContactCustomerDialog extends ConsumerWidget {
   final String? line, email, tel, stage, refId;
   final Function()? onEmpty;
 
@@ -23,85 +62,104 @@ class ContactCustomerDialog extends StatelessWidget {
     this.onEmpty,
   }) : super(key: key);
 
-  Future alertOnEmpty(String label) async {
-    if (onEmpty == null) {
-      await IconFrameworkUtils.showAlertDialog(
-        title: Language.translate(
-          'module.contact.contact_customer.alert.no_$label',
-        ),
-      );
-    } else {
-      final value = await IconFrameworkUtils.showConfirmDialog(
-        title: Language.translate(
-          'module.contact.contact_customer.alert.no_$label',
-        ),
-      );
-      if (value == AlertDialogValue.confirm) {
-        onEmpty!();
-      }
-    }
-  }
-
-  Future onPressLine() async {
-    if (line == '') {
-      await alertOnEmpty('line');
-    } else {
-      final Uri lineUri = Uri(
-        scheme: 'https',
-        path: 'line.me/R/ti/p/~$line',
-      );
-
-      if (await canLaunchUrl(lineUri)) {
-        await launchUrl(lineUri, mode: LaunchMode.externalApplication);
-        // await createActivityByType('line');
-      } else {
-        IconFrameworkUtils.showAlertDialog(
-          title: Language.translate('common.alert.fail'),
-          detail: 'Can not launch line.',
-        );
-      }
-    }
-  }
-
-  Future onPressEmail() async {
-    if (email == '') {
-      await alertOnEmpty('email');
-    } else {
-      try {
-        final Email mail = Email(
-          recipients: [email!],
-        );
-        await FlutterEmailSender.send(mail);
-        // await createActivityByType('email');
-      } catch (e) {
-        IconFrameworkUtils.showAlertDialog(
-          title: Language.translate('common.alert.fail'),
-          detail: 'Can not launch email.',
-        );
-      }
-    }
-  }
-
-  Future onPressTel() async {
-    if (tel == '') {
-      await alertOnEmpty('tel');
-    } else {
-      Uri telUri = Uri(scheme: 'tel', path: tel);
-
-      if (await canLaunchUrl(telUri)) {
-        await launchUrl(telUri);
-        // await createActivityByType('callout');
-      } else {
-        IconFrameworkUtils.showAlertDialog(
-          title: Language.translate('common.alert.fail'),
-          detail: 'Can not launch phone.',
-        );
-      }
-    }
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
+    Future createActivity(type) async {
+      bool isSuccess =
+          await ref.read(createActivityByTypeProvider(CreateActivityInput(
+        refId: refId ?? '',
+        stage: stage.toString().characters.first ?? '',
+        type: type,
+      )).future);
+      if (isSuccess) {
+        switch (stage) {
+          case 'contact':
+            return ref.refresh(contactDetailProvider(refId ?? ''));
+          case 'lead':
+            return ref.refresh(leadDetailProvider(refId ?? ''));
+          case 'opportunity':
+            return ref.refresh(opportunityDetailProvider(refId ?? ''));
+        }
+      }
+    }
+
+    Future alertOnEmpty(String label) async {
+      if (onEmpty == null) {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate(
+            'module.contact.contact_customer.alert.no_$label',
+          ),
+        );
+      } else {
+        final value = await IconFrameworkUtils.showConfirmDialog(
+          title: Language.translate(
+            'module.contact.contact_customer.alert.no_$label',
+          ),
+        );
+        if (value == AlertDialogValue.confirm) {
+          onEmpty!();
+        }
+      }
+    }
+
+    Future onPressLine() async {
+      if (line == '') {
+        await alertOnEmpty('line');
+      } else {
+        final Uri lineUri = Uri(
+          scheme: 'https',
+          path: 'line.me/R/ti/p/~$line',
+        );
+
+        if (await canLaunchUrl(lineUri)) {
+          await launchUrl(lineUri, mode: LaunchMode.externalApplication);
+          await createActivity('line');
+        } else {
+          IconFrameworkUtils.showAlertDialog(
+            title: Language.translate('common.alert.fail'),
+            detail: 'Can not launch line.',
+          );
+        }
+      }
+    }
+
+    Future onPressEmail() async {
+      if (email == '') {
+        await alertOnEmpty('email');
+      } else {
+        try {
+          final Email mail = Email(
+            recipients: [email!],
+          );
+          await FlutterEmailSender.send(mail);
+          await createActivity('email');
+        } catch (e) {
+          IconFrameworkUtils.showAlertDialog(
+            title: Language.translate('common.alert.fail'),
+            detail: 'Can not launch email.',
+          );
+        }
+      }
+    }
+
+    Future onPressTel() async {
+      if (tel == '') {
+        await alertOnEmpty('tel');
+      } else {
+        Uri telUri = Uri(scheme: 'tel', path: tel);
+
+        if (await canLaunchUrl(telUri)) {
+          await launchUrl(telUri);
+          await createActivity('callout');
+        } else {
+          IconFrameworkUtils.showAlertDialog(
+            title: Language.translate('common.alert.fail'),
+            detail: 'Can not launch phone.',
+          );
+        }
+      }
+    }
+
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(30)),

@@ -107,8 +107,8 @@ class ApiController {
           projectId, type, refId, eventId, subEventId, date, time, detail) =>
       ActivityClient.createActivity(
           projectId, type, refId, eventId, subEventId, date, time, detail);
-  static Future createActivityByType(stage, type, refId) =>
-      ActivityClient.createActivityByType(stage, type, refId);
+  static Future createActivityByType(projectId, stage, type, refId) =>
+      ActivityClient.createActivityByType(projectId, stage, type, refId);
 
   static Future opportunityList() => OpportunityClient.opportunityList();
   static Future opportunityListByContact(id) =>

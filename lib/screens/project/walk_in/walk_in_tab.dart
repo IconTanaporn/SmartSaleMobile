@@ -26,14 +26,15 @@ class WalkInTabPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final project = ref.watch(projectProvider(projectId));
+    ref.watch(projectDetailProvider(projectId));
+    final project = ref.watch(projectProvider);
     final qrCreateContact = ref.watch(qrCreateContactProvider(projectId));
 
     toQrCreateContact() {
       context.router.push(QRRoute(
         url: qrCreateContact.value ?? '',
         title: Language.translate('screen.walk_in.title'),
-        detail: project.value['title'],
+        detail: project.name,
         isPreview: false,
       ));
     }
