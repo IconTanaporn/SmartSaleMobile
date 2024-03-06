@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/opportunity/opportunity_list.dart';
+import 'package:smart_sale_mobile/config/asset_path.dart';
 import 'package:smart_sale_mobile/config/language.dart';
+import 'package:smart_sale_mobile/models/common/key_model.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../api/api_controller.dart';
@@ -13,33 +15,36 @@ import '../../../components/common/input/search_input.dart';
 import '../../../components/common/loading/loading.dart';
 import '../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../components/common/shader_mask/fade_list_mask.dart';
+import '../../../components/customer/filter_drawer.dart';
 import '../../../utils/utils.dart';
 
-const int pageSize = 10;
+const int _pageSize = 10;
 
-final searchProvider = StateProvider.autoDispose<String>((ref) => '');
-final filterProvider = StateProvider.autoDispose<String>((ref) => '');
-final pageProvider = StateProvider.autoDispose<int>((ref) => 0);
-final hasNextPageProvider = StateProvider.autoDispose<bool>((ref) => true);
+final _searchProvider = StateProvider.autoDispose<String>((ref) => '');
+final _filterProvider = StateProvider<KeyModel>((ref) => KeyModel());
+final _pageProvider = StateProvider.autoDispose<int>((ref) => 0);
+final _hasNextPageProvider = StateProvider.autoDispose<bool>((ref) => true);
 
-final filteredProvider =
+final _filterListProvider = FutureProvider((ref) async {
+  List list = await ApiController.opportunitySearchFilter();
+  final filters =
+      list.map((item) => KeyModel(id: item['id'], name: item['name'])).toList();
+  ref.read(_filterProvider.notifier).state = filters.first;
+  return filters;
+});
+
+final _filteredProvider =
     StateProvider.autoDispose<List<Opportunity>>((ref) => []);
 
-final opportunityListProvider = FutureProvider.autoDispose
+final _opportunityListProvider = FutureProvider.autoDispose
     .family<List<Opportunity>, String>((ref, projectId) async {
-  final page = ref.watch(pageProvider);
-  if (page == 0) {
-    ref.read(filteredProvider.notifier).state.clear();
-  }
-
-  final search = ref.watch(searchProvider);
-  final filter = ref.watch(filterProvider);
+  final page = ref.watch(_pageProvider);
+  final search = ref.watch(_searchProvider);
+  final filter = ref.watch(_filterProvider);
 
   List list = await ApiController.opportunitySearchList(
-      projectId, search, filter, page, pageSize);
-  if (list.length < pageSize) {
-    ref.read(hasNextPageProvider.notifier).state = false;
-  }
+      projectId, search, filter.id, page, _pageSize);
+
   final opportunities = list
       .map((e) => Opportunity(
             id: e['id'],
@@ -54,7 +59,13 @@ final opportunityListProvider = FutureProvider.autoDispose
           ))
       .toList();
 
-  ref.read(filteredProvider.notifier).state.addAll(opportunities);
+  if (page == 0) {
+    ref.read(_filteredProvider.notifier).state.clear();
+  }
+  ref.read(_filteredProvider.notifier).state.addAll(opportunities);
+  if (list.length < _pageSize) {
+    ref.read(_hasNextPageProvider.notifier).state = false;
+  }
 
   return opportunities;
 });
@@ -67,13 +78,15 @@ class OpportunityListPage extends ConsumerWidget {
   });
 
   final String projectId;
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   final search = TextEditingController();
 
   @override
   Widget build(context, ref) {
-    final opportunityList = ref.watch(opportunityListProvider(projectId));
-    final filteredList = ref.watch(filteredProvider);
-    final hasNextPage = ref.watch(hasNextPageProvider);
+    final opportunityList = ref.watch(_opportunityListProvider(projectId));
+    final filteredList = ref.watch(_filteredProvider);
+    final hasNextPage = ref.watch(_hasNextPageProvider);
 
     onSelectOpp(id) {
       context.router.pushNamed('/project/$projectId/opportunity/$id');
@@ -81,19 +94,44 @@ class OpportunityListPage extends ConsumerWidget {
 
     getNextPage() async {
       await IconFrameworkUtils.delayed();
-      ref.read(pageProvider.notifier).update((state) => state + 1);
+      ref.read(_pageProvider.notifier).update((state) => state + 1);
     }
 
-    refresh() async {
-      ref.read(pageProvider.notifier).state = 0;
-      ref.read(hasNextPageProvider.notifier).state = true;
-      return ref.refresh(opportunityListProvider(projectId).future);
+    onRefresh() async {
+      ref.read(_pageProvider.notifier).state = 0;
+      ref.read(_hasNextPageProvider.notifier).state = true;
+      return ref.refresh(_opportunityListProvider(projectId).future);
+    }
+
+    onChangedFilter(KeyModel key) {
+      ref.read(_filterProvider.notifier).state = key;
+      onRefresh();
+    }
+
+    onChangedKeyword(keyword) {
+      ref.read(_searchProvider.notifier).state = keyword;
+      onRefresh();
     }
 
     return Scaffold(
+      key: _key,
       appBar: AppBar(
         title: Text(Language.translate('screen.opportunity_list.title')),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Image.asset(
+              AssetPath.iconFilter,
+              height: 18,
+            ),
+            onPressed: () => _key.currentState!.openEndDrawer(),
+          ),
+        ],
+      ),
+      endDrawer: FilterDrawer(
+        onChanged: onChangedFilter,
+        selectedProvider: _filterProvider,
+        listProvider: _filterListProvider,
       ),
       body: DefaultBackgroundImage(
         child: Padding(
@@ -104,10 +142,7 @@ class OpportunityListPage extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 20),
                 child: SearchInput(
                   controller: search,
-                  onChanged: (keyword) {
-                    ref.read(searchProvider.notifier).state = keyword;
-                    refresh();
-                  },
+                  onChanged: onChangedKeyword,
                   hintText: Language.translate(
                     'screen.opportunity_list.search',
                   ),
@@ -121,7 +156,7 @@ class OpportunityListPage extends ConsumerWidget {
               Expanded(
                 child: FadeListMask(
                   child: RefreshScrollView(
-                    onRefresh: refresh,
+                    onRefresh: onRefresh,
                     child: AlignedGridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -140,7 +175,7 @@ class OpportunityListPage extends ConsumerWidget {
                             ),
                             error: (err, stack) => IconButton(
                               onPressed: () => ref.refresh(
-                                  opportunityListProvider(projectId).future),
+                                  _opportunityListProvider(projectId).future),
                               icon: const Icon(Icons.refresh),
                             ),
                             data: (_) => VisibilityDetector(
