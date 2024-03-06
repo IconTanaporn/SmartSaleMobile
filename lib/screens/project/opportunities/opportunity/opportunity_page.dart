@@ -70,11 +70,12 @@ class OpportunityPage extends ConsumerWidget {
       String contactId = opportunity.value?.contactId ?? '';
       if (contactId != '') {
         bool hasContactStack = context.router.stack
-                .firstWhereOrNull((route) => route.name == ContactRoute.name) !=
+                .firstWhereOrNull((route) => route.name == ContactTab.name) !=
             null;
 
         if (hasContactStack) {
-          context.router.pop();
+          context.router
+              .popUntil((route) => route.settings.name == ContactTab.name);
         } else {
           context.router.replaceNamed('/project/$projectId/contact/$contactId');
         }

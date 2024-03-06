@@ -15,12 +15,8 @@ class OpportunityTapPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final opp = ref.read(opportunityProvider);
+    final opp = ref.watch(opportunityProvider);
     final canEdit = opp.canEdit;
-
-    // if (!canEdit) {
-    //   return OpportunityRoute.page;
-    // }
 
     return AutoTabsScaffold(
       routes: [
