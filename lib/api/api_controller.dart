@@ -76,8 +76,8 @@ class ApiController {
   static Future leadSearchFilter() => LeadClient.leadSearchFilter();
   static Future leadDetail(id) => LeadClient.leadDetail(id);
   static Future leadQualifyList() => LeadClient.leadQualifyList();
-  static Future leadQualifyUpdate(statusId, comment) =>
-      LeadClient.leadQualifyUpdate(statusId, comment);
+  static Future leadQualifyUpdate(id, statusId, comment) =>
+      LeadClient.leadQualifyUpdate(id, statusId, comment);
   static Future leadUpdate(updateData) => LeadClient.leadUpdate(updateData);
 
   static Future addressDetail(contactId, addressId) =>

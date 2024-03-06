@@ -4,11 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/components/customer/lead/lead_profile.dart';
+import 'package:smart_sale_mobile/components/customer/lead/qualify/qualify_drawer.dart';
 
 import '../../../../api/api_controller.dart';
 import '../../../../components/common/background/defualt_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
-import '../../../../config/asset_path.dart';
+import '../../../../components/customer/lead/qualify/lead_qualify.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
 import '../../../../models/lead.dart';
@@ -37,7 +38,7 @@ final leadDetailProvider =
 
 @RoutePage()
 class LeadPage extends ConsumerWidget {
-  const LeadPage({
+  LeadPage({
     @PathParam('projectId') this.projectId = '',
     @PathParam('id') this.contactId = '',
     super.key,
@@ -45,11 +46,13 @@ class LeadPage extends ConsumerWidget {
 
   final String projectId, contactId;
 
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(context, ref) {
     final lead = ref.watch(leadDetailProvider(contactId));
 
-    onRefresh() async {
+    Future onRefresh() async {
       return ref.refresh(leadDetailProvider(contactId));
     }
 
@@ -57,13 +60,23 @@ class LeadPage extends ConsumerWidget {
       context.router.pushNamed('/lead/$contactId/edit');
     }
 
+    void onQualify() {
+      _key.currentState!.openEndDrawer();
+    }
+
     return Scaffold(
+      key: _key,
       appBar: AppBar(
         title: Text(
           Language.translate('screen.lead.title'),
         ),
         centerTitle: true,
+        actions: [
+          Container(),
+        ],
       ),
+      endDrawerEnableOpenDragGesture: false,
+      endDrawer: const QualifyDrawer(),
       body: DefaultBackgroundImage(
         child: RefreshScrollView(
           onRefresh: onRefresh,
@@ -90,13 +103,9 @@ class LeadPage extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        IconButton(
-                          onPressed: toEditLead,
-                          icon: Image.asset(
-                            AssetPath.iconEdit,
-                            height: 20,
-                          ),
-                        )
+                        LeadQualifyMenu(
+                          onOpen: onQualify,
+                        ),
                       ],
                     ),
                   ),

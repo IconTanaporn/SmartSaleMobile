@@ -29,11 +29,11 @@ class LeadClient {
     return await ApiClient.post('crm/leadstatus');
   }
 
-  static Future leadQualifyUpdate(statusId, comment) async {
+  static Future leadQualifyUpdate(id, statusId, comment) async {
     return await ApiClient.post(
       'crm/editstatus',
       body: {
-        // 'lead_id': UserProperty.getCustomerId(),
+        'lead_id': id,
         'lead_status': statusId,
         'reason': comment,
       },

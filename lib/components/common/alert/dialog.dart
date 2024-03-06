@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 
 import '../../../config/constant.dart';
+import '../../../config/language.dart';
 import '../../../utils/utils.dart';
 import '../shader_mask/fade_list_mask.dart';
 import '../text/text.dart';
@@ -10,14 +11,14 @@ import '../text/text.dart';
 class CustomAlertDialog extends StatelessWidget {
   final String title;
   final String detail;
-  final String nextText;
+  final String? nextText;
   final Function()? onNext;
 
   const CustomAlertDialog({
     Key? key,
-    required this.title,
+    this.title = '',
     this.detail = '',
-    required this.nextText,
+    this.nextText,
     required this.onNext,
   }) : super(key: key);
 
@@ -27,36 +28,41 @@ class CustomAlertDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (title != '')
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: CustomText(
-                title,
-                fontSize: FontSize.title,
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          if (detail != '')
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: CustomText(
-                detail,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          SizedBox(
-            width: IconFrameworkUtils.getWidth(0.45),
-            child: CustomButton(
-              onClick: onNext,
-              text: nextText,
-            ),
+      title: title != ''
+          ? CustomText(
+              title,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+            )
+          : null,
+      titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+      contentPadding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+      actionsPadding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      content: (detail != '')
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (detail != '')
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: CustomText(
+                      detail,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+              ],
+            )
+          : null,
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        SizedBox(
+          width: IconFrameworkUtils.getWidth(0.45),
+          child: CustomButton(
+            onClick: onNext,
+            text: nextText ?? Language.translate('common.alert.confirm'),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -64,8 +70,8 @@ class CustomAlertDialog extends StatelessWidget {
 class CustomConfirmDialog extends StatelessWidget {
   final String title;
   final String detail;
-  final String nextText;
-  final String cancelText;
+  final String? nextText;
+  final String? cancelText;
   final Function()? onNext;
   final Function()? onCancel;
   final bool disable;
@@ -75,8 +81,8 @@ class CustomConfirmDialog extends StatelessWidget {
     Key? key,
     this.title = '',
     this.detail = '',
-    required this.nextText,
-    required this.cancelText,
+    this.nextText,
+    this.cancelText,
     this.onNext,
     this.onCancel,
     this.disable = false,
@@ -86,14 +92,18 @@ class CustomConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget nextStepButton = CustomButton(
-      onClick: onNext,
-      text: nextText,
+      onClick: onNext ??
+          () => Navigator.of(context, rootNavigator: true)
+              .pop(AlertDialogValue.confirm),
+      text: nextText ?? Language.translate('common.alert.confirm'),
       disable: disable,
     );
 
     Widget cancelButton = CustomButton(
-      onClick: onCancel,
-      text: cancelText,
+      onClick: onCancel ??
+          () => Navigator.of(context, rootNavigator: true)
+              .pop(AlertDialogValue.cancel),
+      text: cancelText ?? Language.translate('common.alert.cancel'),
       backgroundColor: AppColor.white,
       textColor: AppColor.black,
     );
@@ -102,44 +112,44 @@ class CustomConfirmDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (title != '')
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: CustomText(
-                title,
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          if (detail != '')
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: CustomText(
-                detail,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          child ?? Container(),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: IconFrameworkUtils.getWidth(0.2),
-                child: cancelButton,
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                width: IconFrameworkUtils.getWidth(0.2),
-                child: nextStepButton,
-              ),
-            ],
-          ),
-        ],
-      ),
+      title: title != ''
+          ? CustomText(
+              title,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+            )
+          : null,
+      titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+      contentPadding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+      actionsPadding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      actionsOverflowButtonSpacing: 10,
+      content: (detail != '' || child != null)
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (detail != '')
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: CustomText(
+                      detail,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                child ?? Container(),
+              ],
+            )
+          : null,
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        SizedBox(
+          width: IconFrameworkUtils.getWidth(0.2),
+          child: cancelButton,
+        ),
+        SizedBox(
+          width: IconFrameworkUtils.getWidth(0.2),
+          child: nextStepButton,
+        ),
+      ],
     );
   }
 }
