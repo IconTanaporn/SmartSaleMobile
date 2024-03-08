@@ -10,8 +10,10 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../components/common/alert/dialog.dart';
+import '../components/common/alert/input_dialog.dart';
 import '../components/common/alert/snack_bar_content.dart';
 import '../components/common/loading/loading.dart';
+import '../components/customer/contact_customer_dialog.dart';
 import '../config/constant.dart';
 import '../config/language.dart';
 import 'debounce.dart';
@@ -303,12 +305,9 @@ class IconFrameworkUtils {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return CustomAlertDialog(
-          onNext: () {
-            Navigator.of(context).pop(AlertDialogValue.dialog);
-          },
           title: title,
           detail: detail,
-          nextText: cancelText ?? Language.translate('common.confirm'),
+          nextText: cancelText,
         );
       },
     );
@@ -327,28 +326,37 @@ class IconFrameworkUtils {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return CustomConfirmDialog(
-          onNext: () {
-            Navigator.of(context, rootNavigator: true)
-                .pop(AlertDialogValue.confirm);
-          },
-          onCancel: () {
-            Navigator.of(context, rootNavigator: true)
-                .pop(AlertDialogValue.cancel);
-          },
           title: title,
           detail: detail,
-          nextText: confirmText ?? Language.translate('common.alert.confirm'),
           disable: disable,
-          cancelText: cancelText ?? Language.translate('common.alert.cancel'),
+          nextText: confirmText,
+          cancelText: cancelText,
           child: child,
         );
       },
     );
   }
 
-  static Future showConfirmCheckboxDialog({
+  static Future showTextAreaDialog({
+    TextEditingController? controller,
     String title = '',
-    String description = '',
+    String inputLabel = '',
+  }) async {
+    return await await showDialog(
+      context: navigatorKey.currentContext!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return InputTextAreaDialog(
+          controller: controller,
+          title: title,
+          inputLabel: inputLabel,
+        );
+      },
+    );
+  }
+
+  static Future showCheckboxDialog({
+    String title = '',
     List itemList = const [],
     String? confirmText,
     String? cancelText,
@@ -358,18 +366,18 @@ class IconFrameworkUtils {
       context: navigatorKey.currentContext!,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return CustomAlertConfirmCheckbox(
+        return CheckboxDialog(
+          title: title,
+          itemList: itemList,
+          enableAll: enableAll,
+          nextText: confirmText,
+          cancelText: cancelText,
           onNext: (itemList) {
             Navigator.of(context, rootNavigator: true).pop(itemList);
           },
           onCancel: () {
             Navigator.of(context, rootNavigator: true).pop([]);
           },
-          title: title,
-          itemList: itemList,
-          enableAll: enableAll,
-          textNext: confirmText ?? Language.translate('common.alert.confirm'),
-          textCancel: cancelText ?? Language.translate('common.alert.cancel'),
         );
       },
     );
@@ -381,31 +389,22 @@ class IconFrameworkUtils {
     String email = '',
     String tel = '',
     String stage = '',
-    Function()? onEmptyLine,
-    Function()? onEmptyEmail,
-    Function()? onEmptyTel,
+    Function()? onEmpty,
   }) async {
-    return Container();
-    //
-    // return await showDialog(
-    //   context: navigatorKey.currentContext!,
-    //   barrierDismissible: true,
-    //   builder: (BuildContext context) {
-    //     return CustomContactDialog(
-    //       refId: refId,
-    //       line: line,
-    //       email: email,
-    //       tel: tel,
-    //       stage: stage,
-    //       onEmptyLine: onEmptyLine,
-    //       onEmptyEmail: onEmptyEmail,
-    //       onEmptyTel: onEmptyTel,
-    //       onClose: () {
-    //         Navigator.of(context).pop(AlertDialogValue.dialog);
-    //       },
-    //     );
-    //   },
-    // );
+    await showDialog(
+      context: navigatorKey.currentContext!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return ContactCustomerDialog(
+          line: line,
+          email: tel,
+          tel: email,
+          stage: stage,
+          refId: refId,
+          onEmpty: onEmpty,
+        );
+      },
+    );
   }
 
   static Future saveBoundaryImageTemporary(

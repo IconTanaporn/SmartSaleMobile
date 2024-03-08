@@ -6,7 +6,6 @@ import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/route/router.dart';
 
 import '../../../../api/api_controller.dart';
-import '../../../../components/customer/contact_customer_dialog.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
@@ -45,19 +44,13 @@ class ContactTabPage extends ConsumerWidget {
     }
 
     onContactCustomer() async {
-      await showDialog(
-        context: navigatorKey.currentContext!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return ContactCustomerDialog(
-            line: contact.lineId,
-            email: contact.email,
-            tel: contact.mobile,
-            stage: 'contact',
-            refId: contact.id,
-            onEmpty: toEditContact,
-          );
-        },
+      await IconFrameworkUtils.showContactDialog(
+        line: contact.lineId,
+        email: contact.email,
+        tel: contact.mobile,
+        stage: 'contact',
+        refId: contact.id,
+        onEmpty: toEditContact,
       );
     }
 

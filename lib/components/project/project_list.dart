@@ -31,11 +31,13 @@ class ProjectCard extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 3),
-                child: ImageNetwork(
-                  project.imgSource,
-                  fit: BoxFit.cover,
-                  height: 75,
-                  radius: 5,
+                child: AspectRatio(
+                  aspectRatio: 125 / 75,
+                  child: ImageNetwork(
+                    project.imgSource,
+                    fit: BoxFit.cover,
+                    radius: 5,
+                  ),
                 ),
               ),
               CustomText(

@@ -36,11 +36,13 @@
       "installment": "Installment",
       "times": "Times"
     },
+    "all": "All",
     "no_data": "No results found.",
     "search": "Search",
     "filter": "Filter",
     "share_qr": "Share QR",
     "confirm": "Confirm",
+    "cancel": "Cancel",
     "done": "Done",
     "save": "Save",
     "next": "Next"

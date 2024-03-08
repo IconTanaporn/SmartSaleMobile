@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/api/api_controller.dart';
+import 'package:smart_sale_mobile/components/common/alert/dialog.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/config/language.dart';
@@ -33,7 +34,7 @@ class CreateContactResponse {
   CreateContactResponse({this.customerId, this.oppId, this.dup});
 }
 
-final createContactProvider = FutureProvider.autoDispose
+final _createContactProvider = FutureProvider.autoDispose
     .family<CreateContactResponse?, CreateContactInput>((ref, input) async {
   try {
     IconFrameworkUtils.startLoading();
@@ -61,7 +62,7 @@ final createContactProvider = FutureProvider.autoDispose
   }
 });
 
-final questionnaireProvider = FutureProvider.autoDispose
+final _questionnaireProvider = FutureProvider.autoDispose
     .family<dynamic, CreateContactResponse>((ref, input) async {
   final data = await ApiController.questionnaire(
       contactId: input.customerId, oppId: input.oppId);
@@ -96,10 +97,17 @@ class WalkInPage extends ConsumerWidget {
         final email = _email.text.trim();
 
         // final source = await selectSourceType();
-        String source = 'walkin';
+        // String source = 'walkin';
+        final source = await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return CustomAlertDialog();
+          },
+        );
         if (source != AlertDialogValue.cancel) {
           final CreateContactResponse? response =
-              await ref.watch(createContactProvider(CreateContactInput(
+              await ref.watch(_createContactProvider(CreateContactInput(
             firstname,
             lastname,
             mobile,
@@ -109,7 +117,7 @@ class WalkInPage extends ConsumerWidget {
 
           if (response?.customerId != null) {
             final url =
-                await ref.watch(questionnaireProvider(response!).future);
+                await ref.read(_questionnaireProvider(response!).future);
 
             if (url != null) {
               await context.router.push(QRRoute(
@@ -145,7 +153,7 @@ class WalkInPage extends ConsumerWidget {
               },
             );
 
-            if (value != AlertDialogValue.cancel) {
+            if (value is DupContact) {
               DupContact dupContact = value;
               context.router
                   .pushNamed('/project/$projectId/contact/${dupContact.id}');
@@ -158,6 +166,14 @@ class WalkInPage extends ConsumerWidget {
           detail: Language.translate('common.input.alert.check_validate'),
         );
       }
+    }
+
+    onReset() {
+      _firstname.clear();
+      _lastname.clear();
+      _mobile.clear();
+      _email.clear();
+      _formKey.currentState!.reset();
     }
 
     return Scaffold(
@@ -209,12 +225,27 @@ class WalkInPage extends ConsumerWidget {
                       validator: (value) => validate('email', value),
                     ),
                     const SizedBox(height: 30),
-                    SizedBox(
-                      width: IconFrameworkUtils.getWidth(0.6),
-                      child: CustomButton(
-                        text: Language.translate('common.save'),
-                        onClick: onSave,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: IconFrameworkUtils.getWidth(0.3),
+                          child: CustomButton(
+                            text: Language.translate('common.cancel'),
+                            backgroundColor: AppColor.grey,
+                            borderColor: AppColor.grey,
+                            onClick: onReset,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        SizedBox(
+                          width: IconFrameworkUtils.getWidth(0.3),
+                          child: CustomButton(
+                            text: Language.translate('common.save'),
+                            onClick: onSave,
+                          ),
+                        )
+                      ],
                     )
                   ],
                 ),

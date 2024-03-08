@@ -49,9 +49,9 @@ class ImageNetwork extends StatelessWidget {
                 return SizedBox(
                   width: width,
                   height: height,
-                  child: SpinKitCircle(
-                    color: AppColor.white,
-                    size: width ?? 50,
+                  child: const SpinKitCircle(
+                    color: AppColor.grey5,
+                    size: 50,
                   ),
                 );
               },

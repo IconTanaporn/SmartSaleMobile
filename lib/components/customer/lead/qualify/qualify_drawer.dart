@@ -11,7 +11,6 @@ import '../../../../route/router.dart';
 import '../../../../screens/project/leads/lead/lead_page.dart';
 import '../../../../screens/project/project_page.dart';
 import '../../../../utils/utils.dart';
-import '../../../common/alert/input_dialog.dart';
 import '../../../common/loading/loading.dart';
 import '../../../common/text/text.dart';
 import '../../walk_in/contacts_dialog.dart';
@@ -79,7 +78,7 @@ final _updateQualifyProvider =
           },
         );
 
-        if (value != AlertDialogValue.cancel) {
+        if (value is DupContact) {
           DupContact dupContact = value;
           return dupContact.id;
         } else {
@@ -157,21 +156,16 @@ class QualifyDrawer extends ConsumerWidget {
       } else {
         TextEditingController input = TextEditingController();
 
-        final value = await showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return InputTextAreaDialog(
-              controller: input,
-              title: Language.translate(
-                'screen.lead.qualify.alert.confirm_status',
-                translationParams: {'status': name},
-              ),
-              inputLabel:
-                  Language.translate('screen.lead.qualify.input.reason.label'),
-            );
-          },
+        final value = await IconFrameworkUtils.showTextAreaDialog(
+          controller: input,
+          title: Language.translate(
+            'screen.lead.qualify.alert.confirm_status',
+            translationParams: {'status': name},
+          ),
+          inputLabel:
+              Language.translate('screen.lead.qualify.input.reason.label'),
         );
+
         if (value == AlertDialogValue.confirm) {
           onUpdateQualify(key.id, input.text, false);
         }

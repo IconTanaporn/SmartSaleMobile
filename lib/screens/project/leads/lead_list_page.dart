@@ -13,7 +13,6 @@ import '../../../components/common/input/search_input.dart';
 import '../../../components/common/loading/loading.dart';
 import '../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../components/common/shader_mask/fade_list_mask.dart';
-import '../../../components/customer/contact_customer_dialog.dart';
 import '../../../components/customer/customer_list.dart';
 import '../../../components/customer/filter_drawer.dart';
 import '../../../config/asset_path.dart';
@@ -89,17 +88,11 @@ class LeadListPage extends ConsumerWidget {
     }
 
     Future onContactCustomer(Customer lead) async {
-      await showDialog(
-        context: navigatorKey.currentContext!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return ContactCustomerDialog(
-            email: lead.email,
-            tel: lead.mobile,
-            stage: 'lead',
-            refId: lead.id,
-          );
-        },
+      await IconFrameworkUtils.showContactDialog(
+        email: lead.email,
+        tel: lead.mobile,
+        stage: 'lead',
+        refId: lead.id,
       );
     }
 

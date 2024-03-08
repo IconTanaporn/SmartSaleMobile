@@ -24,8 +24,8 @@ class DupContactsDialog extends ConsumerWidget {
   Widget build(context, ref) {
     final contact = ref.watch(dupContactProvider);
 
-    void onSelect(DupContact value) {
-      ref.read(dupContactProvider.notifier).state = value;
+    void onSelect(DupContact selected) {
+      ref.read(dupContactProvider.notifier).state = selected;
     }
 
     return CustomConfirmDialog(
@@ -37,8 +37,7 @@ class DupContactsDialog extends ConsumerWidget {
       },
       title: Language.translate('module.contact.duplicate.title'),
       detail: Language.translate('module.contact.duplicate.sub_title'),
-      nextText: Language.translate('common.alert.confirm'),
-      cancelText: Language.translate('common.alert.cancel'),
+      disable: contact == null,
       child: Flexible(
         child: Container(
           constraints: BoxConstraints(
@@ -50,11 +49,12 @@ class DupContactsDialog extends ConsumerWidget {
             child: SingleChildScrollView(
               child: Wrap(
                 children: list.map((e) {
-                  bool isSelected = e.id == contact?.id;
+                  bool isSelected = e == contact;
 
                   return Material(
                     color: Colors.transparent,
                     child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
                       width: IconFrameworkUtils.getWidth(1),
                       decoration: BoxDecoration(
                         borderRadius:
@@ -68,61 +68,52 @@ class DupContactsDialog extends ConsumerWidget {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20)),
                         onTap: () => onSelect(e),
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  value: isSelected,
-                                  onChanged: (c) => onSelect(e),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  activeColor: AppColor.red,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: isSelected,
+                                onChanged: (v) => onSelect(e),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
                                 ),
-                                Flexible(
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(
-                                          e.name,
-                                          fontSize: FontSize.normal,
-                                        ),
-                                        Descriptions(
-                                          colors: const [
-                                            AppColor.grey3,
-                                            AppColor.black2,
+                                activeColor: AppColor.red,
+                              ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      e.name,
+                                      fontSize: FontSize.normal,
+                                    ),
+                                    Descriptions(
+                                      colors: const [
+                                        AppColor.grey3,
+                                        AppColor.black2,
+                                      ],
+                                      rows: [
+                                        if (e.mobile != '')
+                                          ['module.contact.mobile', e.mobile],
+                                        if (e.email != '')
+                                          ['module.contact.email', e.email],
+                                        if (e.citizenId != '')
+                                          [
+                                            'module.contact.citizen_id',
+                                            e.citizenId
                                           ],
-                                          rows: [
-                                            if (e.mobile != '')
-                                              [
-                                                'module.contact.mobile',
-                                                e.mobile
-                                              ],
-                                            if (e.email != '')
-                                              ['module.contact.email', e.email],
-                                            if (e.citizenId != '')
-                                              [
-                                                'module.contact.citizen_id',
-                                                e.citizenId
-                                              ],
-                                            if (e.passportId != '')
-                                              [
-                                                'module.contact.passport_id',
-                                                e.passportId
-                                              ],
+                                        if (e.passportId != '')
+                                          [
+                                            'module.contact.passport_id',
+                                            e.passportId
                                           ],
-                                        ),
                                       ],
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

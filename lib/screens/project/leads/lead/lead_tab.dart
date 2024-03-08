@@ -5,7 +5,6 @@ import 'package:smart_sale_mobile/components/app_style.dart';
 import 'package:smart_sale_mobile/route/router.dart';
 
 import '../../../../components/common/loading/loading.dart';
-import '../../../../components/customer/contact_customer_dialog.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';
 import '../../../../config/language.dart';
@@ -25,19 +24,13 @@ class LeadTapPage extends ConsumerWidget {
     }
 
     onContactCustomer() async {
-      await showDialog(
-        context: navigatorKey.currentContext!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return ContactCustomerDialog(
-            line: lead.lineId,
-            email: lead.email,
-            tel: lead.mobile,
-            stage: 'lead',
-            refId: lead.id,
-            onEmpty: toEditLead,
-          );
-        },
+      await IconFrameworkUtils.showContactDialog(
+        line: lead.lineId,
+        email: lead.email,
+        tel: lead.mobile,
+        stage: 'lead',
+        refId: lead.id,
+        onEmpty: toEditLead,
       );
     }
 

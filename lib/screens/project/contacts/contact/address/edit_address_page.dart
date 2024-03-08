@@ -176,7 +176,7 @@ class EditAddressPage extends ConsumerWidget {
           .where((e) => e['id'] != type?.id)
           .toList();
 
-      final List items = await IconFrameworkUtils.showConfirmCheckboxDialog(
+      final List items = await IconFrameworkUtils.showCheckboxDialog(
         title: Language.translate(
           'screen.contact.edit_address.copy_address',
           translationParams: {'label': type?.name ?? ''},
