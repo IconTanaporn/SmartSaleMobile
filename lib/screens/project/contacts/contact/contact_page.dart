@@ -7,7 +7,7 @@ import 'package:smart_sale_mobile/components/customer/contact/contact_opportunit
 import 'package:smart_sale_mobile/utils/utils.dart';
 
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../components/customer/contact/contact_profile.dart';
 import '../../../../config/asset_path.dart';

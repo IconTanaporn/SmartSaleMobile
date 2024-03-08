@@ -4,7 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../components/common/background/defualt_background.dart';
+import '../../components/common/background/default_background.dart';
 import '../../components/common/text/text.dart';
 import '../../config/constant.dart';
 import '../../config/language.dart';

@@ -6,7 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:smart_sale_mobile/api/api_controller.dart';
 import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 
-import '../components/common/background/defualt_background.dart';
+import '../components/common/background/default_background.dart';
 import '../components/common/input/search_input.dart';
 import '../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../components/common/text/text.dart';

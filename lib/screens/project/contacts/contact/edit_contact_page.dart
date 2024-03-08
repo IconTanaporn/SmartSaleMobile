@@ -8,7 +8,7 @@ import 'package:smart_sale_mobile/screens/project/contacts/contact/contact_page.
 
 import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/input/input.dart';
 import '../../../../components/common/loading/loading.dart';
 import '../../../../components/common/show_picker.dart';

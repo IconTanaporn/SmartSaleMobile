@@ -5,7 +5,7 @@ import 'package:smart_sale_mobile/components/common/button/button.dart';
 
 import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/input/input.dart';
 import '../../../../components/common/text/text.dart';
 import '../../../../config/constant.dart';

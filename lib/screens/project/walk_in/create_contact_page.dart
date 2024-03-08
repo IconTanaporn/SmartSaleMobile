@@ -5,13 +5,21 @@ import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/config/language.dart';
 import 'package:smart_sale_mobile/models/common/key_model.dart';
+import 'package:smart_sale_mobile/screens/project/walk_in/walk_in_tab.dart';
 
-import '../../../components/common/background/defualt_background.dart';
+import '../../../api/api_client.dart';
+import '../../../api/api_controller.dart';
+import '../../../components/common/background/default_background.dart';
 import '../../../components/common/input/input.dart';
+import '../../../components/common/show_picker.dart';
+import '../../../components/customer/walk_in/contacts_dialog.dart';
+import '../../../components/customer/walk_in/source_dialog.dart';
 import '../../../config/constant.dart';
 import '../../../providers/master_data/address_provider.dart';
 import '../../../providers/master_data/customer_provider.dart';
+import '../../../route/router.dart';
 import '../../../utils/utils.dart';
+import '../project_page.dart';
 
 final _isThaiProvider = FutureProvider.autoDispose((ref) async {
   final nationality = ref.watch(_nationalityProvider);
@@ -25,6 +33,35 @@ final _genderProvider = StateProvider.autoDispose<KeyModel?>((ref) => null);
 final _prefixProvider = StateProvider.autoDispose<KeyModel?>((ref) => null);
 final _nationalityProvider =
     StateProvider.autoDispose<KeyModel?>((ref) => null);
+
+final _createContactProvider = FutureProvider.autoDispose
+    .family<CreateContactResponse, Map<String, String>>((ref, input) async {
+  try {
+    IconFrameworkUtils.startLoading();
+    final data = await ApiController.createContact(input);
+
+    IconFrameworkUtils.stopLoading();
+    return CreateContactResponse(
+      customerId: IconFrameworkUtils.getValue(data, 'id'),
+      oppId: IconFrameworkUtils.getValue(data, 'opp_id'),
+      isSuccess: true,
+    );
+  } on ApiException catch (e) {
+    IconFrameworkUtils.stopLoading();
+
+    if (!e.isDuplicate()) {
+      await IconFrameworkUtils.showAlertDialog(
+        title: Language.translate('common.alert.save_fail'),
+        detail: e.message,
+      );
+    }
+
+    return CreateContactResponse(
+      duplicateList: e.body,
+      isSuccess: false,
+    );
+  }
+});
 
 @RoutePage()
 class CreateContactPage extends ConsumerWidget {
@@ -55,7 +92,6 @@ class CreateContactPage extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    // ref.watch(zipcodeListProvider2);
     final genderList = ref.watch(genderListProvider);
     final prefixList = ref.watch(prefixListProvider);
     final nationalityList = ref.watch(nationalityListProvider);
@@ -76,9 +112,156 @@ class CreateContactPage extends ConsumerWidget {
       return IconFrameworkUtils.contactValidate(key, value, isThai: isThai);
     }
 
-    onSave() {
+    showDatePicker() async {
+      DateTime date = _birthday.text.isNotEmpty
+          ? IconFrameworkUtils.dateFormat.parse(_birthday.text)
+          : DateTime.now();
+      final picked = await ShowPicker.selectDate(date);
+
+      _birthday.text = IconFrameworkUtils.dateFormat.format(picked);
+    }
+
+    toContact(id) {
+      context.navigateNamedTo('/project/$projectId/contact/$id');
+    }
+
+    onReset() async {
+      ref.read(_genderProvider.notifier).state = null;
+      ref.read(_prefixProvider.notifier).state = null;
+      ref.read(_nationalityProvider.notifier).state = null;
+      ref.read(provinceProvider.notifier).state = null;
+      ref.read(districtProvider.notifier).state = null;
+      ref.read(subDistrictProvider.notifier).state = null;
+      ref.read(zipcodeProvider.notifier).state = '';
+
+      _firstname.clear();
+      _lastname.clear();
+      _citizenId.clear();
+      _passportId.clear();
+
+      _addressNo.clear();
+      _village.clear();
+      _soi.clear();
+      _road.clear();
+      _zipcode.clear();
+
+      _birthday.clear();
+      _mobile.clear();
+      _email.clear();
+      _lineId.clear();
+      _weChat.clear();
+
+      await IconFrameworkUtils.delayed(milliseconds: 100);
+
+      _formKey.currentState!.reset();
+    }
+
+    Future onSuccess(firstname, lastname, id, oppId) async {
+      final url = await ref
+          .read(questionnaireProvider(QuestionnaireInput(id, oppId)).future);
+
+      if (url != null) {
+        await context.router.push(QRRoute(
+          url: url,
+          title: Language.translate('module.project.questionnaire.title'),
+          detail: '$firstname $lastname',
+          isPreview: true,
+        ));
+      }
+
+      toContact(id);
+    }
+
+    Future onDuplicate(List list) async {
+      final value = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return DupContactsDialog(
+            list: list
+                .map((e) => DupContact(
+                      IconFrameworkUtils.getValue(e, 'id'),
+                      IconFrameworkUtils.getValue(e, 'name'),
+                      mobile: IconFrameworkUtils.getValue(e, 'mobile'),
+                      email: IconFrameworkUtils.getValue(e, 'email'),
+                      citizenId: IconFrameworkUtils.getValue(e, 'citizen_id'),
+                      passportId: IconFrameworkUtils.getValue(e, 'passport_id'),
+                    ))
+                .toList(),
+          );
+        },
+      );
+
+      if (value is DupContact) {
+        toContact(value.id);
+      }
+    }
+
+    Future onCreateContact(String source) async {
+      final firstname = _firstname.text.trim();
+      final lastname = _lastname.text.trim();
+      final project = ref.read(projectProvider);
+
+      final response = await ref.watch(_createContactProvider({
+        'project_id': project.id,
+        'gender': gender?.name ?? '',
+        'prefix_id': prefix?.id ?? '',
+        'firstname': firstname,
+        'lastname': lastname,
+        'firstname_en': firstname,
+        'lastname_en': lastname,
+        'nationality_id': nationality?.id ?? '',
+        'citizen_id': isThai ? _citizenId.text.trim() : '',
+        'passport_id': isThai ? '' : _passportId.text.trim(),
+        'birth_date': _birthday.text,
+        'mobile': _mobile.text.trim(),
+        'email': _email.text.trim(),
+        'line_id': _lineId.text.trim(),
+        'wechat': _weChat.text.trim(),
+        'address_no': _addressNo.text.trim(),
+        'village': _village.text.trim(),
+        'soi': _soi.text.trim(),
+        'road': _road.text.trim(),
+        'zipcode': _zipcode.text.trim(),
+        'province': province?.name ?? '',
+        'district': district?.name ?? '',
+        'subdistrict': subDistrict?.name ?? '',
+        'country': 'ไทย',
+        'source': source,
+      }).future);
+
+      if (response.isSuccess) {
+        onReset();
+        await onSuccess(
+          firstname,
+          lastname,
+          response.customerId,
+          response.oppId,
+        );
+      } else if (response.duplicateList.isNotEmpty) {
+        onReset();
+        await onDuplicate(response.duplicateList);
+      }
+    }
+
+    Future onSave() async {
       if (_formKey.currentState?.validate() ?? false) {
-        // print(prefix?.name);
+        final source = await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const SelectSourceDialog();
+          },
+        );
+
+        if (source != AlertDialogValue.cancel) {
+          await onCreateContact(source);
+        }
+      } else {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.alert'),
+          detail: Language.translate('common.input.alert.check_validate'),
+        );
       }
     }
 
@@ -166,7 +349,7 @@ class CreateContactPage extends ConsumerWidget {
                         Icons.calendar_month,
                         size: 25,
                       ),
-                      // onTap: onSelectedBirthday,
+                      onTap: showDatePicker,
                     ),
                     const SizedBox(height: 15),
                     InputText(
@@ -271,12 +454,27 @@ class CreateContactPage extends ConsumerWidget {
                       isLoading: subDistrictList.isLoading,
                     ),
                     const SizedBox(height: 30),
-                    SizedBox(
-                      width: IconFrameworkUtils.getWidth(0.6),
-                      child: CustomButton(
-                        text: Language.translate('common.save'),
-                        onClick: onSave,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: IconFrameworkUtils.getWidth(0.3),
+                          child: CustomButton(
+                            text: Language.translate('common.cancel'),
+                            backgroundColor: AppColor.grey,
+                            borderColor: AppColor.grey,
+                            onClick: onReset,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        SizedBox(
+                          width: IconFrameworkUtils.getWidth(0.3),
+                          child: CustomButton(
+                            text: Language.translate('common.save'),
+                            onClick: onSave,
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),

@@ -2,23 +2,25 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/api/api_controller.dart';
-import 'package:smart_sale_mobile/components/common/alert/dialog.dart';
 import 'package:smart_sale_mobile/components/common/button/button.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 import 'package:smart_sale_mobile/config/language.dart';
+import 'package:smart_sale_mobile/screens/project/project_page.dart';
+import 'package:smart_sale_mobile/screens/project/walk_in/walk_in_tab.dart';
 
 import '../../../api/api_client.dart';
-import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/background/default_background.dart';
 import '../../../components/common/input/input.dart';
 import '../../../components/customer/walk_in/contacts_dialog.dart';
+import '../../../components/customer/walk_in/source_dialog.dart';
 import '../../../config/constant.dart';
 import '../../../route/router.dart';
 import '../../../utils/utils.dart';
 
-class CreateContactInput {
+class _Input {
   final String firstname, lastname, mobile, email, source;
 
-  CreateContactInput(
+  _Input(
     this.firstname,
     this.lastname,
     this.mobile,
@@ -27,46 +29,42 @@ class CreateContactInput {
   );
 }
 
-class CreateContactResponse {
-  final String? customerId, oppId;
-  final List? dup;
-
-  CreateContactResponse({this.customerId, this.oppId, this.dup});
-}
-
 final _createContactProvider = FutureProvider.autoDispose
-    .family<CreateContactResponse?, CreateContactInput>((ref, input) async {
+    .family<CreateContactResponse, _Input>((ref, input) async {
   try {
     IconFrameworkUtils.startLoading();
-    final data = await ApiController.quickCreateContact(input.firstname,
-        input.lastname, input.mobile, input.email, input.source);
-    IconFrameworkUtils.stopLoading();
 
+    final project = ref.read(projectProvider);
+    final data = await ApiController.quickCreateContact(
+      project.id,
+      input.firstname,
+      input.lastname,
+      input.mobile,
+      input.email,
+      input.source,
+    );
+
+    IconFrameworkUtils.stopLoading();
     return CreateContactResponse(
-      customerId: data['id'],
-      oppId: data['opp_id'],
+      customerId: IconFrameworkUtils.getValue(data, 'id'),
+      oppId: IconFrameworkUtils.getValue(data, 'opp_id'),
+      isSuccess: true,
     );
   } on ApiException catch (e) {
     IconFrameworkUtils.stopLoading();
 
-    if (e.isDuplicate()) {
-      return CreateContactResponse(
-        dup: e.body,
-      );
-    } else {
+    if (!e.isDuplicate()) {
       await IconFrameworkUtils.showAlertDialog(
         title: Language.translate('common.alert.save_fail'),
         detail: e.message,
       );
     }
-  }
-});
 
-final _questionnaireProvider = FutureProvider.autoDispose
-    .family<dynamic, CreateContactResponse>((ref, input) async {
-  final data = await ApiController.questionnaire(
-      contactId: input.customerId, oppId: input.oppId);
-  return data['questionnaire_url'];
+    return CreateContactResponse(
+      duplicateList: e.body,
+      isSuccess: false,
+    );
+  }
 });
 
 @RoutePage()
@@ -87,78 +85,99 @@ class WalkInPage extends ConsumerWidget {
     return IconFrameworkUtils.contactValidate(key, value);
   }
 
+  onReset() {
+    _firstname.clear();
+    _lastname.clear();
+    _mobile.clear();
+    _email.clear();
+    _formKey.currentState!.reset();
+  }
+
   @override
   Widget build(context, ref) {
+    toContact(id) {
+      context.navigateNamedTo('/project/$projectId/contact/$id');
+    }
+
+    Future onSuccess(firstname, lastname, id, oppId) async {
+      final url = await ref
+          .read(questionnaireProvider(QuestionnaireInput(id, oppId)).future);
+
+      if (url != null) {
+        await context.router.push(QRRoute(
+          url: url,
+          title: Language.translate('module.project.questionnaire.title'),
+          detail: '$firstname $lastname',
+          isPreview: true,
+        ));
+      }
+
+      toContact(id);
+    }
+
+    Future onDuplicate(List list) async {
+      final value = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return DupContactsDialog(
+            list: list
+                .map((e) => DupContact(
+                      IconFrameworkUtils.getValue(e, 'id'),
+                      IconFrameworkUtils.getValue(e, 'name'),
+                      mobile: IconFrameworkUtils.getValue(e, 'mobile'),
+                      email: IconFrameworkUtils.getValue(e, 'email'),
+                      citizenId: IconFrameworkUtils.getValue(e, 'citizen_id'),
+                      passportId: IconFrameworkUtils.getValue(e, 'passport_id'),
+                    ))
+                .toList(),
+          );
+        },
+      );
+
+      if (value is DupContact) {
+        toContact(value.id);
+      }
+    }
+
+    Future onCreateContact(String source) async {
+      final firstname = _firstname.text.trim();
+      final lastname = _lastname.text.trim();
+
+      final response = await ref.watch(_createContactProvider(_Input(
+        firstname,
+        lastname,
+        _mobile.text.trim(),
+        _email.text.trim(),
+        source,
+      )).future);
+
+      if (response.isSuccess) {
+        onReset();
+        await onSuccess(
+          firstname,
+          lastname,
+          response.customerId,
+          response.oppId,
+        );
+      } else if (response.duplicateList.isNotEmpty) {
+        onReset();
+        await onDuplicate(response.duplicateList);
+      }
+    }
+
     Future onSave() async {
       if (_formKey.currentState?.validate() ?? false) {
-        final firstname = _firstname.text.trim();
-        final lastname = _lastname.text.trim();
-        final mobile = _mobile.text.trim();
-        final email = _email.text.trim();
-
-        // final source = await selectSourceType();
-        // String source = 'walkin';
         final source = await showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return CustomAlertDialog();
+            return const SelectSourceDialog();
           },
         );
+
         if (source != AlertDialogValue.cancel) {
-          final CreateContactResponse? response =
-              await ref.watch(_createContactProvider(CreateContactInput(
-            firstname,
-            lastname,
-            mobile,
-            email,
-            source,
-          )).future);
-
-          if (response?.customerId != null) {
-            final url =
-                await ref.read(_questionnaireProvider(response!).future);
-
-            if (url != null) {
-              await context.router.push(QRRoute(
-                url: url,
-                title: Language.translate('module.project.questionnaire.title'),
-                detail: '$firstname $lastname',
-                isPreview: true,
-              ));
-            }
-
-            context.navigateNamedTo(
-              '/project/$projectId/contact/${response.customerId}',
-            );
-          }
-
-          if (response?.dup != null) {
-            final value = await showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return DupContactsDialog(
-                  list: response!.dup!
-                      .map((e) => DupContact(
-                            e['id'] ?? '',
-                            e['name'] ?? '',
-                            mobile: e['mobile'] ?? '',
-                            email: e['email'] ?? '',
-                            citizenId: e['citizen_id'] ?? '',
-                            passportId: e['passport_id'] ?? '',
-                          ))
-                      .toList(),
-                );
-              },
-            );
-
-            if (value is DupContact) {
-              DupContact dupContact = value;
-              context.router
-                  .pushNamed('/project/$projectId/contact/${dupContact.id}');
-            }
-          }
+          await onCreateContact(source);
         }
       } else {
         await IconFrameworkUtils.showAlertDialog(
@@ -166,14 +185,6 @@ class WalkInPage extends ConsumerWidget {
           detail: Language.translate('common.input.alert.check_validate'),
         );
       }
-    }
-
-    onReset() {
-      _firstname.clear();
-      _lastname.clear();
-      _mobile.clear();
-      _email.clear();
-      _formKey.currentState!.reset();
     }
 
     return Scaffold(
@@ -246,7 +257,7 @@ class WalkInPage extends ConsumerWidget {
                           ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

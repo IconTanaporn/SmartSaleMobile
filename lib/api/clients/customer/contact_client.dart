@@ -26,7 +26,7 @@ class ContactClient {
   }
 
   static Future quickCreateContact(
-      firstname, lastname, mobile, email, source) async {
+      projectId, firstname, lastname, mobile, email, source) async {
     return await ApiClient.post(
       'crm/quick_create',
       body: {
@@ -44,10 +44,7 @@ class ContactClient {
   static Future createContact(data) async {
     return await ApiClient.post(
       'crm/contact_create_by_idcard',
-      body: {
-        ...data,
-        // 'project_id': UserProperty.getCurrentProjectId(),
-      },
+      body: data,
       checkDup: true,
     );
   }

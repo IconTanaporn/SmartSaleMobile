@@ -7,7 +7,7 @@ import 'package:smart_sale_mobile/components/common/table/description.dart';
 import 'package:smart_sale_mobile/components/common/text/text.dart';
 
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/calendar/calendar.dart';
 import '../../../../components/common/loading/loading.dart';
 import '../../../../components/common/refresh_indicator/refresh_list_view.dart';

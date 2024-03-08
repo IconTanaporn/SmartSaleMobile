@@ -7,7 +7,7 @@ import 'package:smart_sale_mobile/components/customer/lead/lead_profile.dart';
 import 'package:smart_sale_mobile/components/customer/lead/qualify/qualify_drawer.dart';
 
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../components/customer/lead/qualify/lead_qualify.dart';
 import '../../../../config/constant.dart';

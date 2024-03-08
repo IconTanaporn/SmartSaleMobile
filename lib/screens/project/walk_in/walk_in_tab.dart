@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_sale_mobile/utils/utils.dart';
 
 import '../../../api/api_controller.dart';
 import '../../../components/common/loading/loading.dart';
@@ -9,10 +10,39 @@ import '../../../config/language.dart';
 import '../../../route/router.dart';
 import '../project_page.dart';
 
+class QuestionnaireInput {
+  final String? customerId, oppId;
+
+  QuestionnaireInput(
+    this.customerId,
+    this.oppId,
+  );
+}
+
+class CreateContactResponse {
+  final String? customerId, oppId;
+  final List duplicateList;
+  final bool isSuccess;
+
+  CreateContactResponse({
+    this.customerId,
+    this.oppId,
+    this.duplicateList = const [],
+    this.isSuccess = false,
+  });
+}
+
+final questionnaireProvider =
+    FutureProvider.family<dynamic, QuestionnaireInput>((ref, input) async {
+  final data = await ApiController.questionnaire(
+      contactId: input.customerId, oppId: input.oppId);
+  return IconFrameworkUtils.getValue(data, 'questionnaire_url');
+});
+
 final qrCreateContactProvider =
     FutureProvider.autoDispose.family<String, String>((ref, id) async {
   var data = await ApiController.qrCreateContact(id);
-  return data['url'].toString();
+  return IconFrameworkUtils.getValue(data, 'url');
 });
 
 @RoutePage(name: 'WalkInTab')

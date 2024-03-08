@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../api/api_controller.dart';
-import '../../components/common/background/defualt_background.dart';
+import '../../components/common/background/default_background.dart';
 import '../../components/common/loading/loading.dart';
 import '../../components/common/text/text.dart';
 import '../../config/asset_path.dart';

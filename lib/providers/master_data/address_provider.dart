@@ -93,23 +93,3 @@ final zipcodeListProvider = FutureProvider.autoDispose((ref) async {
 
   return [];
 });
-
-final zipcodeListProvider2 = FutureProvider.autoDispose((ref) async {
-  final list = ref.watch(zipcodeListProvider).value ?? [];
-
-  if (list.isNotEmpty) {
-    dynamic data = list.first;
-
-    await IconFrameworkUtils.delayed(milliseconds: 100);
-    final districtList = ref.watch(districtListProvider).value ?? [];
-    ref.read(districtProvider.notifier).state =
-        districtList.firstWhere((o) => o.id == data['district_id']);
-
-    await IconFrameworkUtils.delayed(milliseconds: 100);
-    final subDistrictList = ref.watch(subDistrictListProvider).value ?? [];
-    ref.read(subDistrictProvider.notifier).state =
-        subDistrictList.firstWhere((o) => o.id == data['sub_district_id']);
-  }
-
-  return null;
-});

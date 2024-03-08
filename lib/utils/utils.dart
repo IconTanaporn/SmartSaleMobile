@@ -82,7 +82,7 @@ class IconFrameworkUtils {
 
   static String getValue(var data, String key) {
     if (_isNotNull(data, key)) {
-      return data[key].toString();
+      return data[key].toString().trim();
     } else {
       return '';
     }

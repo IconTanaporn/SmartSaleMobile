@@ -9,7 +9,7 @@ import 'package:smart_sale_mobile/components/opportunity/opportunity_detail.dart
 import 'package:smart_sale_mobile/route/router.dart';
 
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/refresh_indicator/refresh_scroll_view.dart';
 import '../../../../config/asset_path.dart';
 import '../../../../config/constant.dart';

@@ -7,7 +7,7 @@ import 'package:smart_sale_mobile/config/language.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../api/api_controller.dart';
-import '../../../components/common/background/defualt_background.dart';
+import '../../../components/common/background/default_background.dart';
 import '../../../components/common/input/search_input.dart';
 import '../../../components/common/loading/loading.dart';
 import '../../../components/common/refresh_indicator/refresh_scroll_view.dart';

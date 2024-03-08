@@ -7,7 +7,7 @@ import 'package:smart_sale_mobile/models/common/key_model.dart';
 
 import '../../../../api/api_client.dart';
 import '../../../../api/api_controller.dart';
-import '../../../../components/common/background/defualt_background.dart';
+import '../../../../components/common/background/default_background.dart';
 import '../../../../components/common/input/input.dart';
 import '../../../../components/common/loading/loading.dart';
 import '../../../../config/asset_path.dart';

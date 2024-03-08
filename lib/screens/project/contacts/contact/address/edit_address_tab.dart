@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smart_sale_mobile/components/app_style.dart';
 
-import '../../../../../components/common/background/defualt_background.dart';
+import '../../../../../components/common/background/default_background.dart';
 import '../../../../../components/common/loading/loading.dart';
 import '../../../../../config/constant.dart';
 import '../../../../../config/language.dart';

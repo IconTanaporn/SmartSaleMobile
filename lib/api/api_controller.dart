@@ -61,9 +61,9 @@ class ApiController {
   static Future contactSearchFilter() => ContactClient.contactSearchFilter();
   static Future contactDetail(id) => ContactClient.contactDetail(id);
   static Future quickCreateContact(
-          firstname, lastname, mobile, email, source) =>
+          projectId, firstname, lastname, mobile, email, source) =>
       ContactClient.quickCreateContact(
-          firstname, lastname, mobile, email, source);
+          projectId, firstname, lastname, mobile, email, source);
   static Future createContact(Map<String, String> data) =>
       ContactClient.createContact(data);
   static Future questionnaire({contactId, oppId}) =>

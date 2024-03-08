@@ -6,7 +6,7 @@ import 'package:smart_sale_mobile/components/common/loading/loading.dart';
 import 'package:smart_sale_mobile/providers/auth_provider.dart';
 
 import '../../api/api_controller.dart';
-import '../../components/common/background/defualt_background.dart';
+import '../../components/common/background/default_background.dart';
 import '../../components/common/text/text.dart';
 import '../../config/constant.dart';
 import '../../config/language.dart';
