@@ -12,6 +12,7 @@ class Language {
   static Map<String, dynamic> file = <String, dynamic>{};
 
   static String get currentLanguage => _lang;
+  static Locale get currentLocate => Locale(_lang);
 
   static FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: FileTranslationLoader(

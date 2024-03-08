@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_sale_mobile/config/language.dart';
 
 import '../../utils/utils.dart';
 
@@ -11,6 +12,7 @@ class ShowPicker {
       initialDate: initialDate,
       firstDate: DateTime(initialDate.year - 100),
       lastDate: DateTime(initialDate.year + 100),
+      locale: Language.currentLocate,
     );
 
     if (picked != null) {

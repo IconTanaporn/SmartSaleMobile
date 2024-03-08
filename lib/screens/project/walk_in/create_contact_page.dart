@@ -109,7 +109,7 @@ class CreateContactPage extends ConsumerWidget {
     final subDistrict = ref.watch(subDistrictProvider);
 
     String? validate(key, value) {
-      return IconFrameworkUtils.contactValidate(key, value, isThai: isThai);
+      return IconFrameworkUtils.contactValidate(key, value, isThai);
     }
 
     showDatePicker() async {

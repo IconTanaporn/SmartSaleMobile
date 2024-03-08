@@ -150,7 +150,7 @@ class EditContactPage extends ConsumerWidget {
     final source = ref.watch(_sourceProvider);
 
     String? validate(key, value) {
-      return IconFrameworkUtils.contactValidate(key, value, isThai: isThai);
+      return IconFrameworkUtils.contactValidate(key, value, isThai);
     }
 
     showDatePicker() async {

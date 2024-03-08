@@ -149,7 +149,7 @@ class IconFrameworkUtils {
     return EmailValidator.validate(value);
   }
 
-  static String? contactValidate(key, value, {bool isThai = false}) {
+  static String? contactValidate(key, value, [bool isThai = false]) {
     final String label = Language.translate('module.contact.$key');
     final String errorText = Language.translate(
       'common.input.validate.default_validate',
@@ -286,7 +286,7 @@ class IconFrameworkUtils {
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: SnackBarContent(
-          // label: Language.translate('common.alert.fail'),
+          label: Language.translate('common.alert.fail'),
           text: errorText,
           color: AppColor.red,
           backgroundColor: AppColor.red2,
