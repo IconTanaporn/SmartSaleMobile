@@ -33,6 +33,10 @@ class SettingBuPage extends ConsumerWidget {
     final authController = ref.watch(authControllerProvider);
     final buId = authController.auth.buId;
 
+    onRefresh() {
+      return ref.refresh(buProvider);
+    }
+
     Future onChangeBu(String name, id) async {
       final value = await IconFrameworkUtils.showConfirmDialog(
         title: Language.translate('screen.setting.bu.change_bu'),
@@ -58,8 +62,12 @@ class SettingBuPage extends ConsumerWidget {
       ),
       body: DefaultBackgroundImage(
         child: buList.when(
+          skipLoadingOnRefresh: false,
           loading: () => const Center(child: Loading()),
-          error: (err, stack) => CustomText('Error: $err'),
+          error: (err, stack) => IconButton(
+            onPressed: onRefresh,
+            icon: const Icon(Icons.refresh),
+          ),
           data: (data) {
             if (data.isEmpty) {
               return CustomText(

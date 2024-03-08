@@ -1,4 +1,3 @@
-import '../../providers/auth_provider.dart';
 import '../api_client.dart';
 
 class OpportunityClient {
@@ -9,12 +8,8 @@ class OpportunityClient {
   }
 
   static Future opportunityListByContact(id) async {
-    return await ApiClient.post('crm/opportunity_load_by_contact', body: {
-      'bu_id': user.buId,
-      'contact_id': id,
-      'current_page': 0,
-      'page_size': '10'
-    });
+    return await ApiClient.post('crm/opportunity_load_by_contact',
+        body: {'contact_id': id, 'current_page': 0, 'page_size': '10'});
   }
 
   static Future opportunitySearchList(

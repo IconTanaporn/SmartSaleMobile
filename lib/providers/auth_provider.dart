@@ -21,10 +21,12 @@ class User {
   }
 
   setSaleId(String value) {
+    ApiClient.setSaleId(value);
     _saleId = value;
   }
 
   setBuId(String value) {
+    ApiClient.setBuId(value);
     _buId = value;
   }
 }
@@ -47,11 +49,9 @@ class AuthController extends ChangeNotifier {
       var data = jsonDecode(auth);
       String saleId = data['sale_id'].toString();
       if (saleId != '') {
-        ApiClient.setSaleId(saleId);
         await user.setSaleId(saleId);
       }
       if (buId != '') {
-        ApiClient.setBuId(buId);
         await user.setBuId(buId);
       }
     }
@@ -80,8 +80,7 @@ class AuthController extends ChangeNotifier {
     String saleId = data['sale_id'];
     String buId = data['bu_id'].toString();
     if (saleId != '') {
-      ApiClient.setSaleId(saleId);
-      await user.setSaleId(data['sale_id']);
+      await user.setSaleId(saleId);
     }
 
     if (buId != '') {

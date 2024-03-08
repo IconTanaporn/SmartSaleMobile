@@ -45,7 +45,7 @@ final sendBrochureProvider =
 
 @RoutePage()
 class SendBrochurePage extends ConsumerWidget {
-  const SendBrochurePage({
+  SendBrochurePage({
     @PathParam.inherit('id') this.referenceId = '',
     @PathParam.inherit('stage') this.stage = '',
     @PathParam.inherit('projectId') this.projectId = '',
@@ -55,6 +55,7 @@ class SendBrochurePage extends ConsumerWidget {
   final String referenceId;
   final String stage;
   final String projectId;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(context, ref) {
@@ -68,12 +69,19 @@ class SendBrochurePage extends ConsumerWidget {
     );
 
     onSend() async {
-      final success = await ref.read(sendBrochureProvider(
-        SendBrochure(selected, email.text),
-      ).future);
+      if (_formKey.currentState!.validate()) {
+        final success = await ref.read(sendBrochureProvider(
+          SendBrochure(selected, email.text),
+        ).future);
 
-      if (success) {
-        context.router.pop();
+        if (success) {
+          context.router.pop();
+        }
+      } else {
+        await IconFrameworkUtils.showAlertDialog(
+          title: Language.translate('common.alert.alert'),
+          detail: Language.translate('common.input.alert.check_validate'),
+        );
       }
     }
 
@@ -87,34 +95,35 @@ class SendBrochurePage extends ConsumerWidget {
       body: DefaultBackgroundImage(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomText(
-                Language.translate('screen.brochure.email'),
-                fontSize: FontSize.title,
-                fontWeight: FontWeight.bold,
-              ),
-              const SizedBox(height: 16),
-              InputText(
-                keyboardType: TextInputType.emailAddress,
-                controller: email,
-                labelText:
-                    Language.translate('screen.brochure.input.email.label'),
-                errorText: email.text.isNotEmpty
-                    ? null
-                    : Language.translate('screen.brochure.input.email.error'),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: IconFrameworkUtils.getWidth(0.45),
-                child: CustomButton(
-                  onClick: onSend,
-                  text: Language.translate('common.confirm'),
-                  disable: email.text.isEmpty,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomText(
+                  Language.translate('screen.brochure.email'),
+                  fontSize: FontSize.title,
+                  fontWeight: FontWeight.bold,
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                InputText(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: email,
+                  labelText:
+                      Language.translate('screen.brochure.input.email.label'),
+                  validator: (value) =>
+                      IconFrameworkUtils.contactValidate('email', value),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: IconFrameworkUtils.getWidth(0.45),
+                  child: CustomButton(
+                    onClick: onSend,
+                    text: Language.translate('common.confirm'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

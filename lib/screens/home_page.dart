@@ -33,13 +33,15 @@ final projectListProvider = FutureProvider.autoDispose((ref) async {
 final searchProvider = StateProvider((ref) => '');
 
 final filteredProject = Provider.autoDispose<List<Project>>((ref) {
-  final projects = ref.watch(projectListProvider).value;
+  final projects = ref.watch(projectListProvider);
   final keyword = ref.watch(searchProvider);
 
   if (keyword.isEmpty) {
-    return projects ?? [];
-  } else if (projects?.isNotEmpty ?? false) {
-    return projects!
+    if (projects.hasValue) {
+      return projects.value ?? [];
+    }
+  } else if (projects.hasValue) {
+    return projects.value!
         .where((Project project) =>
             project.name.toLowerCase().contains(keyword.toLowerCase()) ||
             project.location.toLowerCase().contains(keyword.toLowerCase()))
@@ -160,8 +162,14 @@ class HomePage extends ConsumerWidget {
                   ),
                 ),
                 projectList.when(
+                  skipLoadingOnRefresh: false,
                   loading: () => const Center(child: Loading()),
-                  error: (err, stack) => CustomText('Error: $err'),
+                  error: (err, stack) => Center(
+                    child: IconButton(
+                      onPressed: onRefresh,
+                      icon: const Icon(Icons.refresh),
+                    ),
+                  ),
                   data: (data) {
                     if (filteredList.isEmpty) {
                       return CustomText(

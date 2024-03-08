@@ -68,6 +68,10 @@ class SettingProfilePage extends ConsumerWidget {
   Widget build(context, ref) {
     final sale = ref.watch(saleProvider);
 
+    onRefresh() {
+      return ref.refresh(saleProvider);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -77,8 +81,12 @@ class SettingProfilePage extends ConsumerWidget {
       ),
       body: DefaultBackgroundImage(
         child: sale.when(
+          skipLoadingOnRefresh: false,
           loading: () => const Center(child: Loading()),
-          error: (err, stack) => CustomText('Error: $err'),
+          error: (err, stack) => IconButton(
+            onPressed: onRefresh,
+            icon: const Icon(Icons.refresh),
+          ),
           data: (data) {
             if (data.address == null) {
               return CustomText(
